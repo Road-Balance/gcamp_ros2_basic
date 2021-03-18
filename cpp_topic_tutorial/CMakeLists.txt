@@ -32,3 +32,40 @@ if(BUILD_TESTING)
 endif()
 
 ament_package()
+
+add_executable(topic_pub_node src/topic_pub)
+ament_target_dependencies(topic_pub_node rclcpp)
+
+add_executable(topic_pub_oop_node src/topic_pub_oop)
+ament_target_dependencies(topic_pub_oop_node rclcpp)
+
+add_executable(topic_sub_node src/topic_sub)
+ament_target_dependencies(topic_sub_node rclcpp)
+
+add_executable(topic_sub_oop_node src/topic_sub_oop)
+ament_target_dependencies(topic_sub_oop_node rclcpp)
+
+install(TARGETS
+  topic_pub_node
+  DESTINATION lib/${PROJECT_NAME}
+)
+
+install(TARGETS
+  topic_pub_oop_node
+  DESTINATION lib/${PROJECT_NAME}
+)
+
+install(TARGETS
+  topic_sub_node
+  DESTINATION lib/${PROJECT_NAME}
+)
+
+install(TARGETS
+  topic_sub_oop_node
+  DESTINATION lib/${PROJECT_NAME}
+)
+
+install(DIRECTORY
+  launch
+  DESTINATION share/${PROJECT_NAME}/
+)
