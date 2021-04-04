@@ -1,5 +1,4 @@
 #include <inttypes.h>
-
 #include <memory>
 
 #include "gazebo_msgs/srv/delete_model.hpp"

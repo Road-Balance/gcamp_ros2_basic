@@ -10,6 +10,7 @@
   <buildtool_depend>ament_cmake</buildtool_depend>
 
   <depend>std_msgs</depend>
+  <depend>std_srvs</depend>
   <depend>rclcpp</depend>
   <depend>gazebo_msgs</depend>
 

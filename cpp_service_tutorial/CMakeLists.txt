@@ -18,6 +18,7 @@ endif()
 # find dependencies
 find_package(ament_cmake REQUIRED)
 find_package(std_msgs REQUIRED)
+find_package(std_srvs REQUIRED)
 find_package(rclcpp REQUIRED)
 find_package(gazebo_msgs REQUIRED)
 
@@ -37,7 +38,8 @@ function(custom_executable target)
   ament_target_dependencies(${target}_node
     "gazebo_msgs"
     "rclcpp"
-    "std_msgs")
+    "std_msgs"
+    "std_srvs")
   install(TARGETS ${target}_node
   DESTINATION lib/${PROJECT_NAME})
 endfunction()
@@ -45,5 +47,7 @@ endfunction()
 # Adding Services
 custom_executable(cpp_simple_service_client)
 custom_executable(cpp_simple_service_dummy_server)
+custom_executable(srv_server)
+custom_executable(srv_client)
 
 ament_package()
