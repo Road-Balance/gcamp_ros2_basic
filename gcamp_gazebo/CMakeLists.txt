@@ -19,6 +19,25 @@ endif()
 find_package(ament_cmake REQUIRED)
 find_package(rclcpp REQUIRED)
 
+# Generate .urdf files from .urdf.xacro files
+find_package(xacro REQUIRED)
+# Xacro files
+file(GLOB xacro_files urdf/*.urdf.xacro)
+
+foreach(it ${xacro_files})
+  # remove .xacro extension
+  string(REGEX MATCH "(.*)[.]xacro$" unused ${it})
+  set(output_filename ${CMAKE_MATCH_1})
+
+  # create a rule to generate ${output_filename} from {it}
+  xacro_add_xacro_file(${it} ${output_filename})
+
+  list(APPEND urdf_files ${output_filename})
+endforeach(it)
+
+# add an abstract target to actually trigger the builds
+add_custom_target(media_files ALL DEPENDS ${urdf_files})
+
 if(BUILD_TESTING)
   find_package(ament_lint_auto REQUIRED)
   # the following line skips the linter which checks for copyrights
@@ -30,9 +49,20 @@ if(BUILD_TESTING)
   ament_lint_auto_find_test_dependencies()
 endif()
 
-ament_package()
-
 install(DIRECTORY
   launch
-  DESTINATION share/${PROJECT_NAME}/
+  DESTINATION share/${PROJECT_NAME}
 )
+
+install(DIRECTORY 
+  worlds  
+  DESTINATION share/${PROJECT_NAME}
+)
+
+install(DIRECTORY 
+  urdf
+  DESTINATION share/${PROJECT_NAME}
+)
+
+ament_package()
+

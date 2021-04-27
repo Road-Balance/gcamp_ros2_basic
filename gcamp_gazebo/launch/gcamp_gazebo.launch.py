@@ -27,5 +27,6 @@ def generate_launch_description():
                 output='screen')
 
     return LaunchDescription([
-        gzserver, spawn_entity
+        gzserver,
+        # spawn_entity
     ])
