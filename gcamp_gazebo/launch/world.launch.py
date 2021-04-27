@@ -10,14 +10,16 @@ from launch.substitutions import LaunchConfiguration
 
 def generate_launch_description():
 
-    package_name = 'gcamp_gazebo'
-    world_file_name = 'boc_office.world'
     robot_file = 'skidbot.urdf'
+    package_name = 'gcamp_gazebo'
+    world_file_name = 'bocbot_office.world'
 
     # full  path to urdf and world file
     
-    world = os.path.join(get_package_share_directory(package_name), 'worlds', world_file_name)
-    urdf = os.path.join(get_package_share_directory(package_name), 'urdf', robot_file)
+    world = os.path.join(get_package_share_directory(package_name), 
+                        'worlds', world_file_name)
+    urdf = os.path.join(get_package_share_directory(package_name), 
+                        'urdf', robot_file)
     
     # read urdf contents because to spawn an entity in 
     # gazebo we need to provide entire urdf as string on  command line
