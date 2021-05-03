@@ -12,7 +12,7 @@ def generate_launch_description():
     rviz_file = 'skidbot.rviz'
     robot_file = 'skidbot.urdf'
     package_name = 'gcamp_gazebo'
-    world_file_name = 'bocbot_office.world'
+    world_file_name = 'gcamp_world.world'
 
     # full  path to urdf and world file
     world = os.path.join(get_package_share_directory(package_name), 
@@ -49,7 +49,4 @@ def generate_launch_description():
         ExecuteProcess(
             cmd=['ros2', 'run', 'rviz2', 'rviz2', '-d', rviz],
             output='screen'),
-
-        # ros2 launch urdf_tutorial display.launch.py model:=/path/to/your/urdf
-
     ])

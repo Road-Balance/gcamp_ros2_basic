@@ -17,7 +17,7 @@ def generate_launch_description():
 
     robot_file = 'skidbot.urdf'
     package_name = 'gcamp_gazebo'
-    world_file_name = 'bocbot_office.world'
+    world_file_name = 'gcamp_world.world'
 
     world = os.path.join(get_package_share_directory(package_name), 
                         'worlds', world_file_name)
