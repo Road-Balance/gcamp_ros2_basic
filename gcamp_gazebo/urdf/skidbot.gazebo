@@ -66,8 +66,8 @@
           <argument>camera/image_raw:=/skidbot/camera/image</argument>
           <argument>camera/camera_info:=/skidbot/camera/image/camera_info</argument>
         </ros>
-        <camera_name>camera</camera_name>
-        <frame_name>camera</frame_name>
+        <camera_name>camera_sensor</camera_name>
+        <frame_name>robot_footprint</frame_name>
         <hack_baseline>0.07</hack_baseline>
       </plugin>
     </sensor>

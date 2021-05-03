@@ -62,8 +62,8 @@
           <argument>camera/image_raw:=/skidbot/camera/image</argument>
           <argument>camera/camera_info:=/skidbot/camera/image/camera_info</argument>
         </ros>
-        <camera_name>camera</camera_name>
-        <frame_name>camera</frame_name>
+        <camera_name>camera_sensor</camera_name>
+        <frame_name>robot_footprint</frame_name>
         <hack_baseline>0.07</hack_baseline>
       </plugin>
     </sensor>
@@ -254,7 +254,6 @@
     <visual name="hokuyo_visual">
       <origin rpy="0 0 0" xyz="0 0 0"/>
       <geometry>
-        <!-- <mesh filename="$(find skidbot)/meshes/hokuyo.dae"/> -->
         <box size="0.05 0.05 0.05"/>
       </geometry>
     </visual>
@@ -321,11 +320,6 @@
   </joint>
   <gazebo reference="chassis">
     <material>Gazebo/Green</material>
-    <!-- <ambient>0.996078 0.47451 0.0196078 1</ambient>
-    <diffuse>0.7 0.7 0.7 0</diffuse> -->
-    <!-- <diffuse>0 0 0 1</diffuse>
-    <specular>0 0 0 0</specular>
-    <emissive>0 1 0 1</emissive> -->
   </gazebo>
   <gazebo reference="left_track">
     <material>Gazebo/Black</material>

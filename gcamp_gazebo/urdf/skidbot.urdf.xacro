@@ -175,7 +175,6 @@
     <visual name="hokuyo_visual">
       <origin xyz="0 0 0" rpy="0 0 0" />
       <geometry>
-        <!-- <mesh filename="$(find skidbot)/meshes/hokuyo.dae"/> -->
         <box size="0.05 0.05 0.05"/>
       </geometry>
     </visual>
