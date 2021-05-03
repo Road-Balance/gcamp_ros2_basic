@@ -2,14 +2,14 @@ import os
 
 from ament_index_python.packages import get_package_share_directory
 from launch import LaunchDescription
-from launch.actions import ExecuteProcess, DeclareLaunchArgument
-from launch_ros.actions import Node
-from launch.substitutions import LaunchConfiguration
+from launch.actions import ExecuteProcess, IncludeLaunchDescription
+from launch.launch_description_sources import PythonLaunchDescriptionSource
 
 # this is the function launch  system will look for
 
 def generate_launch_description():
 
+    rviz_file = 'skidbot.rviz'
     robot_file = 'skidbot.urdf'
     package_name = 'gcamp_gazebo'
     world_file_name = 'bocbot_office.world'
@@ -19,6 +19,8 @@ def generate_launch_description():
                         'worlds', world_file_name)
     urdf = os.path.join(get_package_share_directory(package_name), 
                         'urdf', robot_file)
+    rviz = os.path.join(get_package_share_directory(package_name), 
+                        'rviz', rviz_file)
     
     # read urdf contents because to spawn an entity in 
     # gazebo we need to provide entire urdf as string on  command line
@@ -43,4 +45,11 @@ def generate_launch_description():
         ExecuteProcess(
             cmd=['ros2', 'service', 'call', '/spawn_entity', 'gazebo_msgs/SpawnEntity', spwan_args],
             output='screen'),
+
+        ExecuteProcess(
+            cmd=['ros2', 'run', 'rviz2', 'rviz2', '-d', rviz],
+            output='screen'),
+
+        # ros2 launch urdf_tutorial display.launch.py model:=/path/to/your/urdf
+
     ])
