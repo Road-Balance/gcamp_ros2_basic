@@ -33,6 +33,7 @@ def generate_launch_description():
     package_name = 'gcamp_gazebo'
     world_file_name = 'bocbot_office.world'
 
+    # full  path to urdf and world file
     world = os.path.join(get_package_share_directory(package_name),
                          'worlds', world_file_name)
     urdf = os.path.join(get_package_share_directory(package_name), 
@@ -44,7 +45,7 @@ def generate_launch_description():
     xml = open(urdf, 'r').read()
     xml = xml.replace('"', '\\"')
     spwan_args = '{name: \"skidbot\", xml: \"'  +  xml + '\" }'
-
+    
     return LaunchDescription([
         IncludeLaunchDescription(
             PythonLaunchDescriptionSource(

@@ -15,7 +15,6 @@ def generate_launch_description():
     world_file_name = 'bocbot_office.world'
 
     # full  path to urdf and world file
-    
     world = os.path.join(get_package_share_directory(package_name), 
                         'worlds', world_file_name)
     urdf = os.path.join(get_package_share_directory(package_name), 
