@@ -1,0 +1,14 @@
+material flat_box/Diffuse
+{
+    receive_shadows off
+    technique
+    {
+        pass
+        {
+            texture_unit
+            {
+                texture gcamp_logo.jpg
+            }
+        }
+    }
+}

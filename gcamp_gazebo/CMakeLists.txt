@@ -55,7 +55,7 @@ install(DIRECTORY
 )
 
 install(DIRECTORY 
-  worlds  
+  worlds
   DESTINATION share/${PROJECT_NAME}
 )
 
