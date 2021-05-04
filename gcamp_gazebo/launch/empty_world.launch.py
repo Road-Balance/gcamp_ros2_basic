@@ -28,44 +28,51 @@ from launch_ros.actions import Node
 
 
 def generate_launch_description():
-    
-    robot_file = 'skidbot.urdf'
-    package_name = 'gcamp_gazebo'
-    world_file_name = 'bocbot_office.world'
+
+    robot_file = "skidbot.urdf"
+    package_name = "gcamp_gazebo"
+    world_file_name = "bocbot_office.world"
 
     # full  path to urdf and world file
-    world = os.path.join(get_package_share_directory(package_name),
-                         'worlds', world_file_name)
-    urdf = os.path.join(get_package_share_directory(package_name), 
-                         'urdf', robot_file)
-    
-    use_sim_time = LaunchConfiguration('use_sim_time', default='True')
-    pkg_gazebo_ros = get_package_share_directory('gazebo_ros')
+    world = os.path.join(
+        get_package_share_directory(package_name), "worlds", world_file_name
+    )
+    urdf = os.path.join(get_package_share_directory(package_name), "urdf", robot_file)
 
-    xml = open(urdf, 'r').read()
+    use_sim_time = LaunchConfiguration("use_sim_time", default="True")
+    pkg_gazebo_ros = get_package_share_directory("gazebo_ros")
+
+    xml = open(urdf, "r").read()
     xml = xml.replace('"', '\\"')
-    spwan_args = '{name: \"skidbot\", xml: \"'  +  xml + '\" }'
-    
-    return LaunchDescription([
-        IncludeLaunchDescription(
-            PythonLaunchDescriptionSource(
-                os.path.join(pkg_gazebo_ros, 'launch', 'gzserver.launch.py')
+    spwan_args = '{name: "skidbot", xml: "' + xml + '" }'
+
+    return LaunchDescription(
+        [
+            IncludeLaunchDescription(
+                PythonLaunchDescriptionSource(
+                    os.path.join(pkg_gazebo_ros, "launch", "gzserver.launch.py")
+                ),
+                launch_arguments={"world": world}.items(),
             ),
-            launch_arguments={'world': world}.items(),
-        ),
-
-        IncludeLaunchDescription(
-            PythonLaunchDescriptionSource(
-                os.path.join(pkg_gazebo_ros, 'launch', 'gzclient.launch.py')
+            IncludeLaunchDescription(
+                PythonLaunchDescriptionSource(
+                    os.path.join(pkg_gazebo_ros, "launch", "gzclient.launch.py")
+                ),
             ),
-        ),
-
-        ExecuteProcess(
-            cmd=['ros2', 'param', 'set', '/gazebo', 'use_sim_time', use_sim_time],
-            output='screen'),
-
-        ExecuteProcess(
-            cmd=['ros2', 'service', 'call', '/spawn_entity', 'gazebo_msgs/SpawnEntity', spwan_args],
-            output='screen'),
-
-    ])
+            ExecuteProcess(
+                cmd=["ros2", "param", "set", "/gazebo", "use_sim_time", use_sim_time],
+                output="screen",
+            ),
+            ExecuteProcess(
+                cmd=[
+                    "ros2",
+                    "service",
+                    "call",
+                    "/spawn_entity",
+                    "gazebo_msgs/SpawnEntity",
+                    spwan_args,
+                ],
+                output="screen",
+            ),
+        ]
+    )

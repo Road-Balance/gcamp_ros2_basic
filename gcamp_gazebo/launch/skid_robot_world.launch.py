@@ -15,42 +15,50 @@ import xacro
 
 def generate_launch_description():
 
-    package_name = 'gcamp_gazebo'
-    robot_file = 'skidbot.urdf.xacro'
+    package_name = "gcamp_gazebo"
+    robot_file = "skidbot.urdf.xacro"
 
     gazebo = IncludeLaunchDescription(
-                PythonLaunchDescriptionSource([os.path.join(
-                    get_package_share_directory('gazebo_ros'), 'launch'), '/gazebo.launch.py']),
-                )
+        PythonLaunchDescriptionSource(
+            [
+                os.path.join(get_package_share_directory("gazebo_ros"), "launch"),
+                "/gazebo.launch.py",
+            ]
+        ),
+    )
 
-    urdf = os.path.join(get_package_share_directory(package_name), 
-                         'urdf', 'skidbot.urdf')
-    xml = open(urdf, 'r').read()
+    urdf = os.path.join(
+        get_package_share_directory(package_name), "urdf", "skidbot.urdf"
+    )
+    xml = open(urdf, "r").read()
     xml = xml.replace('"', '\\"')
 
-    xacro_file = os.path.join(get_package_share_directory(package_name), 
-                         'urdf', robot_file)
+    xacro_file = os.path.join(
+        get_package_share_directory(package_name), "urdf", robot_file
+    )
     doc = xacro.parse(open(xacro_file))
     xacro.process_doc(doc)
 
-    params = {'robot_description': doc.toxml()}
+    params = {"robot_description": doc.toxml()}
 
     node_robot_state_publisher = Node(
-        package='robot_state_publisher',
-        executable='robot_state_publisher',
-        output='screen',
-        parameters=[params]
+        package="robot_state_publisher",
+        executable="robot_state_publisher",
+        output="screen",
+        parameters=[params],
     )
 
     spawn_entity = Node(
-        package='gazebo_ros',
-        executable='spawn_entity.py',
-        arguments=['-topic', 'robot_description',
-                    '-entity', 'cartpole'],
-        output='screen')
+        package="gazebo_ros",
+        executable="spawn_entity.py",
+        arguments=["-topic", "robot_description", "-entity", "cartpole"],
+        output="screen",
+    )
 
-    return LaunchDescription([
-        gazebo,
-        node_robot_state_publisher,
-        spawn_entity,
-    ])
+    return LaunchDescription(
+        [
+            gazebo,
+            node_robot_state_publisher,
+            spawn_entity,
+        ]
+    )
