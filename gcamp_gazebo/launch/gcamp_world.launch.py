@@ -43,14 +43,7 @@ def generate_launch_description():
             ),
             # tell gazebo to spwan your robot in the world by calling service
             ExecuteProcess(
-                cmd=[
-                    "ros2",
-                    "service",
-                    "call",
-                    "/spawn_entity",
-                    "gazebo_msgs/SpawnEntity",
-                    spwan_args,
-                ],
+                cmd=[ "ros2", "service", "call", "/spawn_entity", "gazebo_msgs/SpawnEntity", spwan_args ],
                 output="screen",
             ),
             ExecuteProcess(
