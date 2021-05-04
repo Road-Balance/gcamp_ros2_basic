@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.5)
-project(first_pkg)
+project(cpp_first_pkg)
 
 # Default to C99
 if(NOT CMAKE_C_STANDARD)
@@ -45,7 +45,7 @@ add_executable(simple_without_oop_node src/simple_without_oop)
 ament_target_dependencies(simple_without_oop_node rclcpp)
 
 install(TARGETS
-  simple_loop_node
+  simple_node
   DESTINATION lib/${PROJECT_NAME}
 )
 
