@@ -25,6 +25,7 @@ setup(
         'console_scripts': [
             'cmd_vel_pub_node = py_topic_pkg.cmd_vel_pub:main',
             'laser_sub_node   = py_topic_pkg.laser_sub:main',
+            'parking_node     = py_topic_pkg.parking:main',
         ],
     },
 )
