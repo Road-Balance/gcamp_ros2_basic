@@ -27,6 +27,8 @@ def main(args=None):
     addition_server = AdditionServer()
 
     rclpy.spin(addition_server)
+
+    addition_server.destroy_node()
     rclpy.shutdown()
 
 

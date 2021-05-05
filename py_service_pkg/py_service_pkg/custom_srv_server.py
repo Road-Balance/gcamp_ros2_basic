@@ -1,8 +1,9 @@
-from custom_interfaces.srv import AddThreeInts  # CHANGE
+#!/usr/bin/env/ python3
 
 import rclpy
 from rclpy.node import Node
 
+from custom_interfaces.srv import AddThreeInts  # CHANGE
 
 class AddThreeIntServer(Node):
     def __init__(self):
@@ -26,6 +27,8 @@ def main(args=None):
     add_three_ints_node = AddThreeIntServer()
 
     rclpy.spin(add_three_ints_node)
+    
+    add_three_ints_node.destroy_node()
     rclpy.shutdown()
 
 

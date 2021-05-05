@@ -6,16 +6,19 @@
 ros2 run teleop_twist_keyboard teleop_twist_keyboard --ros-args -r __ns:=/skidbot2
 
 ros2 launch gcamp_gazebo gcamp_world.launch.py 
+#TODO : robot state publisher
+
 ros2 run py_topic_pkg cmd_vel_pub_node 
 ros2 run py_topic_pkg laser_sub_node
 ros2 run py_topic_pkg parking_node
 
-ros2 run py_service_pkg gazebo_model_spawner
-
 ros2 interface show custom_interfaces/srv/AddThreeInts
 # "rosfoxy" required after custom msg/srv build
 
-#TODO : robot state publisher
+ros2 run py_service_pkg gazebo_model_spawner
+ros2 run py_service_pkg robot_turning_server
+ros2 service call /turn_robot custom_interfaces/srv/TurningControl "{time_duration: 5, angular_vel_z: 1.0, linear_vel_x: 0.5}"
+
 
 ros2 pkg create --build-type ament_cmake  cpp_srvcli     --dependencies rclcpp example_interfaces
 ros2 pkg create --build-type ament_cmake  custom_interfaces

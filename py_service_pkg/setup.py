@@ -24,6 +24,7 @@ setup(
             "gazebo_model_spawner = py_service_pkg.spawn_model:main",
             "custom_srv_server = py_service_pkg.custom_srv_server:main",
             "custom_srv_client = py_service_pkg.custom_srv_client:main",
+            "robot_turning_server = py_service_pkg.robot_turning_srv:main",
         ],
     },
 )

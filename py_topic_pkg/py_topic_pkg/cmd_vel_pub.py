@@ -6,8 +6,6 @@ import rclpy
 from rclpy.node import Node
 
 from geometry_msgs.msg import Twist
-from std_msgs.msg import String
-
 class CmdVelPublisher(Node):
     def __init__(self):
         super().__init__("cmd_vel_pub_node")
