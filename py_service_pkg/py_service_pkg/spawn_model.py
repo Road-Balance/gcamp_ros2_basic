@@ -12,32 +12,32 @@ def main(args=None):
     rclpy.init()
     node = rclpy.create_node("gazebo_model_spawner")
 
-    node.get_logger().info("Creating Service client to connect to `/spawn_entity`")
+    print("Creating Service client to connect to `/spawn_entity`")
     client = node.create_client(SpawnEntity, "/spawn_entity")
 
-    node.get_logger().info("Connecting to `/spawn_entity` service...")
+    print("Connecting to `/spawn_entity` service...")
     if not client.service_is_ready():
         client.wait_for_service()
-        node.get_logger().info("...connected!")
+        node.get_logger().info("...Connected!")
 
     # Get path to the turtlebot3 burgerbot
-    sdf_file_path = os.path.join(
-        get_package_share_directory("turtlebot3_gazebo"),
-        "models",
-        "turtlebot3_burger",
-        "model.sdf",
+    urdf_file_path = os.path.join(
+        get_package_share_directory("gcamp_gazebo"),
+        "urdf",
+        "skidbot2.urdf",
     )
 
     # Set data for request
     request = SpawnEntity.Request()
     request.name = "skidbot2"
-    request.xml = open(sdf_file_path, "r").read()
+    request.xml = open(urdf_file_path, "r").read()
     request.robot_namespace = "skidbot2"
-    request.initial_pose.position.x = float(argv[2])
-    request.initial_pose.position.y = float(argv[3])
-    request.initial_pose.position.z = float(argv[4])
+    request.initial_pose.position.x = 1.0
+    request.initial_pose.position.y = 1.0
+    request.initial_pose.position.z = 0.3
 
-    node.get_logger().info("Sending service request to `/spawn_entity`")
+    print("Sending service request to `/spawn_entity`")
+    
     future = client.call_async(request)
     rclpy.spin_until_future_complete(node, future)
     if future.result() is not None:
@@ -48,7 +48,6 @@ def main(args=None):
     node.get_logger().info("Done! Shutting down node.")
     node.destroy_node()
     rclpy.shutdown()
-
 
 if __name__ == "__main__":
     main()

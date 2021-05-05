@@ -3,6 +3,8 @@
 ## Create Package
 
 ```
+ros2 run teleop_twist_keyboard teleop_twist_keyboard --ros-args -r __ns:=/skidbot2
+
 ros2 launch gcamp_gazebo gcamp_world.launch.py 
 ros2 run py_topic_pkg cmd_vel_pub_node 
 ros2 run py_topic_pkg laser_sub_node
