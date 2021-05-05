@@ -18,6 +18,7 @@ ros2 interface show custom_interfaces/srv/AddThreeInts
 ros2 run py_service_pkg gazebo_model_spawner
 ros2 run py_service_pkg robot_turning_server
 ros2 service call /turn_robot custom_interfaces/srv/TurningControl "{time_duration: 5, angular_vel_z: 1.0, linear_vel_x: 0.5}"
+ros2 run py_service_pkg robot_turning_client
 
 
 ros2 pkg create --build-type ament_cmake  cpp_srvcli     --dependencies rclcpp example_interfaces

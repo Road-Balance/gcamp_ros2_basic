@@ -25,6 +25,7 @@ setup(
             "custom_srv_server = py_service_pkg.custom_srv_server:main",
             "custom_srv_client = py_service_pkg.custom_srv_client:main",
             "robot_turning_server = py_service_pkg.robot_turning_srv:main",
+            "robot_turning_client = py_service_pkg.robot_turning_client:main",
         ],
     },
 )
