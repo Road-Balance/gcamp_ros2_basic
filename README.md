@@ -8,6 +8,12 @@ ros2 run teleop_twist_keyboard teleop_twist_keyboard --ros-args -r __ns:=/skidbo
 ros2 launch gcamp_gazebo gcamp_world.launch.py 
 ros2 run py_topic_pkg cmd_vel_pub_node 
 ros2 run py_topic_pkg laser_sub_node
+ros2 run py_topic_pkg parking_node
+
+ros2 run py_service_pkg gazebo_model_spawner
+
+ros2 interface show custom_interfaces/srv/AddThreeInts
+# "rosfoxy" required after custom msg/srv build
 
 #TODO : robot state publisher
 

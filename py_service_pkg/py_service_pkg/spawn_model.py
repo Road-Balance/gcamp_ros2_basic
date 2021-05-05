@@ -43,7 +43,7 @@ class SpawnRobot(Node):
 
 def main(args=None):
 
-    rclpy.init()
+    rclpy.init(args)
 
     robot_spawn_node = SpawnRobot()
     future = robot_spawn_node.send_req()

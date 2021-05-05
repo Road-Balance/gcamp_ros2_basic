@@ -1,32 +1,31 @@
-from tutorial_interfaces.srv import AddThreeInts  # CHANGE
+from custom_interfaces.srv import AddThreeInts  # CHANGE
 
 import rclpy
 from rclpy.node import Node
 
 
-class MinimalService(Node):
+class AddThreeIntServer(Node):
     def __init__(self):
-        super().__init__("minimal_service")
+        super().__init__("custom_srv_server")
         self.srv = self.create_service(
             AddThreeInts, "add_three_ints", self.add_three_ints_callback
-        )  # CHANGE
+        )
+        self.get_logger().info("==== Addition Server Started, Waiting for Request ====")
 
     def add_three_ints_callback(self, request, response):
-        response.sum = request.a + request.b + request.c  # CHANGE
+        response.sum = request.a + request.b + request.c
         self.get_logger().info(
-            "Incoming request\na: %d b: %d c: %d" % (request.a, request.b, request.c)
-        )  # CHANGE
-
+            f"Incoming requests = a: {request.a}, b: {request.b}, c: {request.c}"
+        )
         return response
 
 
 def main(args=None):
     rclpy.init(args=args)
 
-    minimal_service = MinimalService()
+    add_three_ints_node = AddThreeIntServer()
 
-    rclpy.spin(minimal_service)
-
+    rclpy.spin(add_three_ints_node)
     rclpy.shutdown()
 
 
