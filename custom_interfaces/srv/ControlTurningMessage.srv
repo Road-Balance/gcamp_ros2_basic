@@ -1,0 +1,5 @@
+uint32 time_duration
+float64 angular_vel_z
+float64 linear_vel_x
+---
+bool success

@@ -9,10 +9,12 @@ ros2 run py_topic_pkg laser_sub_node
 
 #TODO : robot state publisher
 
-ros2 pkg create --build-type ament_cmake  cpp_srvcli   --dependencies rclcpp example_interfaces
-ros2 pkg create --build-type ament_python py_first_pkg --dependencies rclpy
-ros2 pkg create --build-type ament_python py_topic_pkg --dependencies rclpy sensor_msgs geometry_msgs
+ros2 pkg create --build-type ament_cmake  cpp_srvcli     --dependencies rclcpp example_interfaces
+ros2 pkg create --build-type ament_cmake  custom_interfaces
 
+ros2 pkg create --build-type ament_python py_first_pkg   --dependencies rclpy
+ros2 pkg create --build-type ament_python py_topic_pkg   --dependencies rclpy sensor_msgs geometry_msgs
+ros2 pkg create --build-type ament_python py_service_pkg --dependencies rclpy gazebo_msgs
 
 ros2 interface show geometry_msgs/msg/Twist
 
