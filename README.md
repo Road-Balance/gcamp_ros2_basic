@@ -20,6 +20,12 @@ ros2 run py_service_pkg robot_turning_server
 ros2 service call /turn_robot custom_interfaces/srv/TurningControl "{time_duration: 5, angular_vel_z: 1.0, linear_vel_x: 0.5}"
 ros2 run py_service_pkg robot_turning_client
 
+ros2 run py_action_pkg fibonacci_action_server 
+ros2 action send_goal fibonacci custom_interfaces/action/Fibonacci "{order: 5}"
+ros2 action send_goal --feedback fibonacci custom_interfaces/action/Fibonacci "{order: 5}"
+ros2 run py_action_pkg fibonacci_action_client 
+
+
 
 ros2 pkg create --build-type ament_cmake  cpp_srvcli     --dependencies rclcpp example_interfaces
 ros2 pkg create --build-type ament_cmake  custom_interfaces
@@ -27,6 +33,7 @@ ros2 pkg create --build-type ament_cmake  custom_interfaces
 ros2 pkg create --build-type ament_python py_first_pkg   --dependencies rclpy
 ros2 pkg create --build-type ament_python py_topic_pkg   --dependencies rclpy sensor_msgs geometry_msgs
 ros2 pkg create --build-type ament_python py_service_pkg --dependencies rclpy gazebo_msgs
+ros2 pkg create --build-type ament_python py_action_pkg --dependencies rclpy gazebo_msgs custom_interfaces
 
 ros2 interface show geometry_msgs/msg/Twist
 
