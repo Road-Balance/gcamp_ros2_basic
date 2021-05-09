@@ -29,8 +29,12 @@ def generate_launch_description():
     # double quotes need to be with escape sequence
     xml = xml.replace('"', '\\"')
 
+    # 90 degree rotation for initial robot pose
+
+    orientation = "{ orientation : { x : 0.0, y: 0.0, z: 0.707, w: 0.707 } }"
+
     # this is argument format for spwan_entity service
-    spwan_args = '{name: "skidbot", xml: "' + xml + '" }'
+    spwan_args = '{name: "skidbot", xml: "' + xml + '", initial_pose :' + orientation + '}'
 
     # create and return launch description object
     return LaunchDescription(
