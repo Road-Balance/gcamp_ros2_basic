@@ -3,6 +3,11 @@
 ## Create Package
 
 ```
+.gazebo + .xacro => .urdf
+
+```
+
+```
 rosdep install -i --from-path src --rosdistro foxy -y
 
 ros2 run teleop_twist_keyboard teleop_twist_keyboard --ros-args -r __ns:=/skidbot
