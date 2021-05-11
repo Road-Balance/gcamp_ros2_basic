@@ -24,6 +24,8 @@ find_package(xacro REQUIRED)
 # Xacro files
 file(GLOB xacro_files urdf/*.urdf.xacro)
 
+# if error occurs, comment below lines and try colcon build first
+# then, build with uncomment again
 foreach(it ${xacro_files})
   # remove .xacro extension
   string(REGEX MATCH "(.*)[.]xacro$" unused ${it})

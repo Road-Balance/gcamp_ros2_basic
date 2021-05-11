@@ -11,7 +11,7 @@ from launch.launch_description_sources import PythonLaunchDescriptionSource
 def generate_launch_description():
 
     rviz_file = "skidbot.rviz"
-    robot_file = "skidbot.urdf"
+    robot_file = "diffbot.urdf"
     package_name = "gcamp_gazebo"
     world_file_name = "maze_world.world"
 
@@ -30,11 +30,10 @@ def generate_launch_description():
     xml = xml.replace('"', '\\"')
 
     # 90 degree rotation for initial robot pose
-
     orientation = "{ orientation : { x : 0.0, y: 0.0, z: 0.707, w: 0.707 } }"
 
     # this is argument format for spwan_entity service
-    spwan_args = '{name: "skidbot", xml: "' + xml + '", initial_pose :' + orientation + '}'
+    spwan_args = '{name: "diffbot", xml: "' + xml + '", initial_pose :' + orientation + '}'
 
     # create and return launch description object
     return LaunchDescription(
@@ -50,8 +49,8 @@ def generate_launch_description():
                 cmd=[ "ros2", "service", "call", "/spawn_entity", "gazebo_msgs/SpawnEntity", spwan_args ],
                 output="screen",
             ),
-            ExecuteProcess(
-                cmd=["ros2", "run", "rviz2", "rviz2", "-d", rviz], output="screen"
-            ),
+            # ExecuteProcess(
+            #     cmd=["ros2", "run", "rviz2", "rviz2"], output="screen" # , "-d", rviz
+            # ),
         ]
     )
