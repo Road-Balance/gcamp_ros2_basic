@@ -4,6 +4,7 @@
 <!-- |    EDITING THIS FILE BY HAND IS NOT RECOMMENDED                                 | -->
 <!-- =================================================================================== -->
 <robot name="skidbot">
+  <!-- diff_drive controller -->
   <gazebo>
     <plugin filename="libgazebo_ros_diff_drive.so" name="diff_drive">
       <ros>
@@ -11,7 +12,7 @@
       </ros>
       <!-- wheels -->
       <left_joint>front_left_wheel_joint</left_joint>
-      <right_joint>back_left_wheel_joint</right_joint>
+      <right_joint>front_right_wheel_joint</right_joint>
       <!-- kinematics -->
       <wheel_separation>0.4</wheel_separation>
       <wheel_diameter>0.2</wheel_diameter>
@@ -126,6 +127,30 @@
       <origin rpy=" 0 0 0" xyz="0 0 0"/>
       <geometry>
         <box size=".4 .2 .1"/>
+      </geometry>
+    </visual>
+    <collision name="back_caster_collision">
+      <origin rpy=" 0 0 0" xyz="-0.15 0 -0.05"/>
+      <geometry>
+        <sphere radius="0.0499"/>
+      </geometry>
+    </collision>
+    <visual name="back_caster_visual">
+      <origin rpy=" 0 0 0" xyz="-0.15 0 -0.05"/>
+      <geometry>
+        <sphere radius="0.05"/>
+      </geometry>
+    </visual>
+    <collision name="front_caster_collision">
+      <origin rpy=" 0 0 0" xyz="0.15 0 -0.05"/>
+      <geometry>
+        <sphere radius="0.0499"/>
+      </geometry>
+    </collision>
+    <visual name="front_caster_visual">
+      <origin rpy=" 0 0 0" xyz="0.15 0 -0.05"/>
+      <geometry>
+        <sphere radius="0.05"/>
       </geometry>
     </visual>
   </link>

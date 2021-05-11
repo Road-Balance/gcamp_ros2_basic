@@ -10,7 +10,7 @@
         
       <!-- wheels -->
       <left_joint>front_left_wheel_joint</left_joint>
-      <right_joint>back_left_wheel_joint</right_joint>
+      <right_joint>front_right_wheel_joint</right_joint>
 
       <!-- kinematics -->
       <wheel_separation>0.4</wheel_separation>

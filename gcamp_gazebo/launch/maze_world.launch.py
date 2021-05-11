@@ -10,7 +10,7 @@ from launch.launch_description_sources import PythonLaunchDescriptionSource
 
 def generate_launch_description():
 
-    rviz_file = "skidbot.rviz"
+    rviz_file = "diffbot.rviz"
     robot_file = "diffbot.urdf"
     package_name = "gcamp_gazebo"
     world_file_name = "maze_world.world"
@@ -49,8 +49,9 @@ def generate_launch_description():
                 cmd=[ "ros2", "service", "call", "/spawn_entity", "gazebo_msgs/SpawnEntity", spwan_args ],
                 output="screen",
             ),
-            # ExecuteProcess(
-            #     cmd=["ros2", "run", "rviz2", "rviz2"], output="screen" # , "-d", rviz
-            # ),
+            ExecuteProcess(
+                cmd=["ros2", "run", "rviz2", "rviz2", "-d", rviz], 
+                output="screen"
+            ),
         ]
     )
