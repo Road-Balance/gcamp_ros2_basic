@@ -22,6 +22,7 @@ setup(
         'console_scripts': [
             'fibonacci_action_server = py_action_pkg.fibonacci_action_server:main',
             'fibonacci_action_client = py_action_pkg.fibonacci_action_client:main',
+            'img_subscriber = py_action_pkg.webcam_sub:main',
         ],
     },
 )

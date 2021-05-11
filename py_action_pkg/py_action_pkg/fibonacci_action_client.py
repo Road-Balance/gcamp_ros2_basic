@@ -8,12 +8,12 @@ from rclpy.node import Node
 
 from custom_interfaces.action import Fibonacci
 
-class FibonacciActionClient(Node):
 
+class FibonacciActionClient(Node):
     def __init__(self):
-        super().__init__('fibonacci_action_client')
-        self._action_client = ActionClient(self, Fibonacci, 'fibonacci')
-        self.get_logger().info('=== Fibonacci Action Client Started ====')
+        super().__init__("fibonacci_action_client")
+        self._action_client = ActionClient(self, Fibonacci, "fibonacci")
+        self.get_logger().info("=== Fibonacci Action Client Started ====")
 
     def send_goal(self, order):
         goal_msg = Fibonacci.Goal()
@@ -21,7 +21,9 @@ class FibonacciActionClient(Node):
 
         self._action_client.wait_for_server()
 
-        self._send_goal_future = self._action_client.send_goal_async(goal_msg, feedback_callback=self.feedback_callback)
+        self._send_goal_future = self._action_client.send_goal_async(
+            goal_msg, feedback_callback=self.feedback_callback
+        )
 
         self._send_goal_future.add_done_callback(self.goal_response_callback)
 
@@ -29,22 +31,22 @@ class FibonacciActionClient(Node):
         goal_handle = future.result()
 
         if not goal_handle.accepted:
-            self.get_logger().info('Goal rejected :(')
+            self.get_logger().info("Goal rejected :(")
             return
 
-        self.get_logger().info('Goal accepted :)')
+        self.get_logger().info("Goal accepted :)")
 
         self._get_result_future = goal_handle.get_result_async()
         self._get_result_future.add_done_callback(self.get_result_callback)
 
     def get_result_callback(self, future):
         result = future.result().result
-        self.get_logger().warn(f'Action Done !! Result: {result.sequence}')
+        self.get_logger().warn(f"Action Done !! Result: {result.sequence}")
         rclpy.shutdown()
 
     def feedback_callback(self, feedback_msg):
         feedback = feedback_msg.feedback
-        print(f'Received feedback: {feedback.partial_sequence}')
+        print(f"Received feedback: {feedback.partial_sequence}")
 
 
 def main(args=None):
@@ -57,5 +59,5 @@ def main(args=None):
     rclpy.spin(action_client)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()
