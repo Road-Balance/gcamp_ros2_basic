@@ -8,6 +8,7 @@ rosdep install -i --from-path src --rosdistro foxy -y
 ros2 run teleop_twist_keyboard teleop_twist_keyboard --ros-args -r __ns:=/skidbot
 
 ros2 bag record -a -o skidbot_record 
+ros2 bag play skidbot_record
 
 ros2 launch gcamp_gazebo gcamp_world.launch.py 
 ros2 launch gcamp_gazebo maze_world.launch.py 
