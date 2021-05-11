@@ -24,7 +24,7 @@ class ImageSubscriber(Node):
         self.sub_period = 10  # Hz
 
         # Create the subscriber. This subscriber will receive an Image
-        # from the video_frames topic. The queue size is 10 messages.
+        # from the /skidbot/camera_sensor/image_raw topic. The queue size is 10 messages.
         self.subscription = self.create_subscription(
             Image,
             "/skidbot/camera_sensor/image_raw",

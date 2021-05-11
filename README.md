@@ -30,6 +30,8 @@ ros2 action send_goal --feedback fibonacci custom_interfaces/action/Fibonacci "{
 ros2 run py_action_pkg fibonacci_action_client 
 
 ros2 run image_view image_view --ros-args --remap /image:=/skidbot/camera_sensor/image_raw
+ros2 run py_action_pkg img_subscriber_node 
+
 
 
 ros2 pkg create --build-type ament_cmake  cpp_srvcli     --dependencies rclcpp example_interfaces
@@ -39,7 +41,6 @@ ros2 pkg create --build-type ament_python py_first_pkg   --dependencies rclpy
 ros2 pkg create --build-type ament_python py_topic_pkg   --dependencies rclpy sensor_msgs geometry_msgs
 ros2 pkg create --build-type ament_python py_service_pkg --dependencies rclpy gazebo_msgs
 ros2 pkg create --build-type ament_python py_action_pkg --dependencies rclpy gazebo_msgs custom_interfaces image_transport cv_bridge sensor_msgs std_msgs opencv2
-
 
 ros2 interface show geometry_msgs/msg/Twist
 
