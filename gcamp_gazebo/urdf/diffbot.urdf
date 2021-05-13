@@ -167,8 +167,7 @@
       </geometry>
     </collision>
   </link>
-  <link name="back_left_wheel">
-  </link>
+
   <link name="left_track">
     <visual name="left_track_visual">
       <origin rpy="1.5708 0 1.5708" xyz="0 0 0"/>
@@ -202,8 +201,7 @@
       </geometry>
     </collision>
   </link>
-  <link name="back_right_wheel">
-  </link>
+
   <link name="right_track">
     <visual name="right_track_visual">
       <origin rpy="1.5708 0 1.5708" xyz="0 0 0"/>
@@ -278,22 +276,8 @@
     <limit effort="10000" velocity="1000"/>
     <dynamics damping="1.0" friction="1.0"/>
   </joint>
-  <joint name="back_left_wheel_joint" type="continuous">
-    <origin rpy="0 0 0" xyz="-0.13 0.15 0"/>
-    <child link="back_left_wheel"/>
-    <parent link="chassis"/>
-    <axis rpy="0 0 0" xyz="0 1 0"/>
-    <limit effort="10000" velocity="1000"/>
-    <dynamics damping="1.0" friction="1.0"/>
-  </joint>
-  <joint name="back_right_wheel_joint" type="continuous">
-    <origin rpy="0 0 0" xyz="-0.13 -0.15 0"/>
-    <child link="back_right_wheel"/>
-    <parent link="chassis"/>
-    <axis rpy="0 0 0" xyz="0 1 0"/>
-    <limit effort="10000" velocity="1000"/>
-    <dynamics damping="1.0" friction="1.0"/>
-  </joint>
+
+
   <joint name="right_track_j" type="fixed">
     <origin rpy="0 0 0" xyz="0 -0.15 0"/>
     <child link="right_track"/>

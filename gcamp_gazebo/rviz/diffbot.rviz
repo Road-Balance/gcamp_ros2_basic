@@ -6,6 +6,7 @@ Panels:
       Expanded:
         - /Global Options1
         - /Status1
+        - /RobotModel1
         - /TF1
       Splitter Ratio: 0.5
     Tree Height: 261
@@ -53,14 +54,53 @@ Visualization Manager:
         Durability Policy: Volatile
         History Policy: Keep Last
         Reliability Policy: Reliable
-        Value: ""
+        Value: /robot_description
       Enabled: true
       Links:
         All Links Enabled: true
         Expand Joint Details: false
         Expand Link Details: false
         Expand Tree: false
-        Link Tree Style: ""
+        Link Tree Style: Links in Alphabetic Order
+        camera:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        chassis:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        front_left_wheel:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        front_right_wheel:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        hokuyo:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        left_track:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        right_track:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        robot_footprint:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
       Name: RobotModel
       TF Prefix: ""
       Update Interval: 0
@@ -175,7 +215,7 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz_default_plugins/Orbit
-      Distance: 3.988903522491455
+      Distance: 4.721634387969971
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.05999999865889549
         Stereo Focal Distance: 1
@@ -211,5 +251,5 @@ Window Geometry:
   Views:
     collapsed: false
   Width: 1200
-  X: 548
-  Y: 118
+  X: 228
+  Y: 111
