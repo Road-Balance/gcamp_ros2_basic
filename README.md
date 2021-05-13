@@ -20,7 +20,9 @@ ros2 bag play skidbot_record
 
 ros2 launch gcamp_gazebo gcamp_world.launch.py 
 ros2 launch gcamp_gazebo maze_world.launch.py 
-#TODO : robot state publisher
+
+ros2 launch gcamp_gazebo skidbot_description.launch.py
+ros2 launch gcamp_gazebo diffbot_description.launch.py
 
 ros2 run py_topic_pkg cmd_vel_pub_node 
 ros2 run py_topic_pkg laser_sub_node
