@@ -24,6 +24,7 @@ setup(
     entry_points={
         'console_scripts': [
             'cmd_vel_pub_node = py_topic_pkg.cmd_vel_pub:main',
+            'endless_cmd_vel_pub_node = py_topic_pkg.endless_cmd_vel_pub:main',
             'laser_sub_node   = py_topic_pkg.laser_sub:main',
             'laser_icp_node   = py_topic_pkg.laser_icp:main',
             'parking_node     = py_topic_pkg.parking:main',

@@ -30,21 +30,13 @@ def main(args=None):
     rclpy.init(args=args)
 
     cmd_vel_publisher = CmdVelPublisher()
-    start_time = cmd_vel_publisher.get_clock().now().to_msg().sec
-    clock_now  = start_time
 
-    while (clock_now - start_time) < 5:
-        rclpy.spin_once(cmd_vel_publisher)
-        clock_now = cmd_vel_publisher.get_clock().now().to_msg().sec
-
-        time_delta = clock_now - start_time
-        print(f'{time_delta} seconds passed')
+    rclpy.spin(cmd_vel_publisher)
 
     cmd_vel_publisher.stop_robot()
-
     cmd_vel_publisher.get_logger().info('\n==== Stop Publishing ====')
-    cmd_vel_publisher.destroy_node()
 
+    cmd_vel_publisher.destroy_node()
     rclpy.shutdown()
 
 
