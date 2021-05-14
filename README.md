@@ -36,6 +36,7 @@ ros2 interface show custom_interfaces/srv/AddThreeInts
 ros2 run py_service_pkg gazebo_model_spawner
 ros2 run py_service_pkg robot_turning_server
 ros2 service call /turn_robot custom_interfaces/srv/TurningControl "{time_duration: 5, angular_vel_z: 1.0, linear_vel_x: 0.5}"
+ros2 service call /delete_entity gazebo_msgs/srv/DeleteEntity "{name: 'skidbot'}"
 ros2 run py_service_pkg robot_turning_client
 
 ros2 run py_action_pkg fibonacci_action_server 

@@ -4,15 +4,17 @@ import sys
 import rclpy
 from rclpy.node import Node
 
-from custom_interfaces.srv import TurningControl 
+from custom_interfaces.srv import TurningControl
+
+
 class RobotTurnClient(Node):
     def __init__(self):
         super().__init__("robot_turn_client")
         self.client = self.create_client(TurningControl, "turn_robot")  # CHANGE
-        
+
         while not self.client.wait_for_service(timeout_sec=1.0):
             self.get_logger().info("service not available, waiting again...")
-        
+
         self.req = TurningControl.Request()
         print("==== Robot Turn Service Client ====")
 
@@ -28,7 +30,7 @@ class RobotTurnClient(Node):
                     raise ArithmeticError("Velocity too high !!")
 
                 self.req.time_duration = int(td)
-                
+
                 self.req.linear_vel_x = float(vel_x)
                 self.req.angular_vel_z = float(vel_z)
                 break
@@ -39,8 +41,12 @@ class RobotTurnClient(Node):
                 print("Not a number, PLZ Type number Again")
 
         self.future = self.client.call_async(self.req)
+        print(
+            f"linear_x : {self.req.linear_vel_x} / angular_z : {self.req.angular_vel_z}"
+        )
         self.get_logger().info(" Request Sended ")
         return self.future
+
 
 def main(args=None):
     rclpy.init(args=args)
@@ -59,11 +65,14 @@ def main(args=None):
             )
         else:
             print("==== Service Call Done ====")
-            print(f"Result Message : {'Success' if response.success == True else 'Fail'}")
+            print(
+                f"Result Message : {'Success' if response.success == True else 'Fail'}"
+            )
         finally:
             robot_turn_client.get_logger().warn("==== Shutting down node ====")
             robot_turn_client.destroy_node()
             rclpy.shutdown()
+
 
 if __name__ == "__main__":
     main()
