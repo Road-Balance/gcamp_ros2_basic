@@ -10,7 +10,6 @@ from rclpy.node import Node
 
 from custom_interfaces.action import Fibonacci
 
-
 class FibonacciActionServer(Node):
     def __init__(self):
         super().__init__("fibonacci_action_server")

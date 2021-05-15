@@ -32,7 +32,6 @@ ros2 run py_topic_pkg parking_node
 ros2 interface show custom_interfaces/srv/AddThreeInts
 # "rosfoxy" required after custom msg/srv build
 
-
 ros2 run py_service_pkg gazebo_model_spawner
 ros2 run py_service_pkg robot_turning_server
 ros2 service call /turn_robot custom_interfaces/srv/TurningControl "{time_duration: 5, angular_vel_z: 1.0, linear_vel_x: 0.5}"
@@ -46,6 +45,9 @@ ros2 run py_action_pkg fibonacci_action_client
 
 ros2 run image_view image_view --ros-args --remap /image:=/skidbot/camera_sensor/image_raw
 ros2 run py_action_pkg img_subscriber_node 
+ros2 run py_action_pkg odome_sub_node 
+ros2 run py_action_pkg maze_action_server 
+ros2 action send_goal --feedback maze_action custom_interfaces/action/Maze "{turning_sequence: [1,2,3,4,5]}"
 
 
 

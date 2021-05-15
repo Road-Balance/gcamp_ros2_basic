@@ -22,8 +22,10 @@ setup(
         'console_scripts': [
             'fibonacci_action_server = py_action_pkg.fibonacci_action_server:main',
             'fibonacci_action_client = py_action_pkg.fibonacci_action_client:main',
+            'maze_action_server      = py_action_pkg.maze_action_server:main',
             'img_subscriber_node     = py_action_pkg.webcam_sub:main',
             'odome_sub_node          = py_action_pkg.odom_sub:main',
+            'robot_controller        = py_action_pkg.robot_controller:main',
         ],
     },
 )

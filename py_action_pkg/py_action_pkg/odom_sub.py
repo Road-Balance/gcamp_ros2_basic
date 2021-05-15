@@ -48,7 +48,7 @@ class OdometrySubscriber(Node):
         # from the /skidbot/odom topic. The queue size is 10 messages.
         self.subscription = self.create_subscription(
             Odometry,
-            "/skidbot/odom",
+            "/diffbot/odom",
             self.listener_callback,
             self.sub_period,
         )
