@@ -76,40 +76,27 @@ class RobotController(Node):
     def odom_sub_cb(self, data):
         orientation = data.pose.pose.orientation
         _, _, self.yaw = self.euler_from_quaternion(orientation)
-
-        print(f"yaw : {self.yaw}")
+        # print(f"yaw : {self.yaw}")
     
     def laser_sub_cb(self, data):
         self.forward_distance = data.ranges[360]
         # print(f"Distance : {self.forward_distance}")
 
+    def move_robot(self, linear_vel=0.0):
+        self.twist_msg.linear.x   = linear_vel
+        self.twist_msg.angular.z  = 0.0
+        self.cmd_vel_pub.publish(self.twist_msg)
+
     def stop_robot(self):
+        print("==== Stop Robot ====")
         self.twist_msg.linear.x  = 0.0
         self.twist_msg.angular.z  = 0.0
         self.cmd_vel_pub.publish(self.twist_msg)
 
-    def turn_robot(self, euler_angle):
-        # target_rad = euler_angle * 3.1415 / 180
-
-        turn_offset = 0.7 * (euler_angle - self.yaw)
-
-        if abs(turn_offset) > 0.005:
-            print(f"{euler_angle} {self.yaw} {turn_offset}")
-
-            self.twist_msg.angular.z = turn_offset
-            self.cmd_vel_pub.publish(self.twist_msg)
-        else:
-            self.stop_robot()
-            self.ok = True 
-
-    def move_forward_smart(self):
-        if self.forward_distance > 0.8:
-            # print(f'Distance from Front Object : {self.forward_distance}')
-            self.twist_msg.linear.x  = 0.5
-            self.cmd_vel_pub.publish(self.twist_msg)
-        else:
-            self.stop_robot()
-            self.ok = True
+    def turn_robot(self, angular_vel=0.0):
+        self.twist_msg.linear.x  = 0.0
+        self.twist_msg.angular.z  = angular_vel
+        self.cmd_vel_pub.publish(self.twist_msg)
 
     #    https://gist.github.com/salmagro/2e698ad4fbf9dae40244769c5ab74434
     def euler_from_quaternion(self, quaternion):
@@ -136,25 +123,39 @@ class RobotController(Node):
 
         return roll, pitch, yaw 
 
+
+def turn_robot(rclpy, controller, euler_angle):
+    print("Robot Turns to Object Angle")
+
+    while rclpy.ok():
+        rclpy.spin_once(controller)
+        turn_offset = 0.7 * (euler_angle - controller.yaw)
+        controller.turn_robot(turn_offset)
+
+        if abs(turn_offset) < 0.005:
+            break
+
+    controller.stop_robot()
+
+def parking_robot(rclpy, controller):
+    print("Going Forward Until 0.8m Obstacle Detection")
+    while rclpy.ok():
+        rclpy.spin_once(controller)
+        controller.move_robot(0.5)
+
+        if controller.forward_distance < 0.8:
+            break
+
+    controller.stop_robot()
+
 def main(args=None):
     rclpy.init(args=args)
 
     robot_controller = RobotController()
 
-    while robot_controller.is_ok():
-        rclpy.spin_once(robot_controller)
-        # robot_controller.move_forward_smart()
-        robot_controller.turn_robot(3.141592)
-        # try:
-        #     rclpy.spin_once(robot_controller)
-        # except KeyboardInterrupt:
-        #     print('==== Server stopped cleanly ====')
-        # except BaseException:
-        #     print('!! Exception in server:', file=sys.stderr)
-        #     raise
-        # finally:
-        #     # (optional - Done automatically when node is garbage collected)
-        #     rclpy.shutdown() 
+    parking_robot(rclpy, robot_controller)
+
+    turn_robot(rclpy, robot_controller, 0.0)
 
     robot_controller.destroy_node()
     rclpy.shutdown()
