@@ -15,10 +15,12 @@ from nav_msgs.msg import Odometry
 
 from custom_interfaces.action import Maze
 from py_action_pkg.robot_controller import euler_from_quaternion
+from py_action_pkg.image_sub import ImageSubscriber
 
 from rclpy.executors import MultiThreadedExecutor
 
 direction_dict = {0: (-1 * math.pi / 2), 1: math.pi, 2: math.pi / 2, 3: 0.0}
+direction_str_dict = {0: "Up", 1: "Right", 2: "Down", 3: "Left"}
 
 """
 Maze.action structure
@@ -29,9 +31,6 @@ Maze.action structure
     ---
     string feedback_msg
 """
-
-
-
 class MazeActionServer(Node):
     def __init__(self):
         super().__init__("maze_action_server")
@@ -94,7 +93,6 @@ class MazeActionServer(Node):
         print(f"Going Forward Until {self.parking_distance}m Obstacle Detection")
 
         while self.forward_distance > self.parking_distance:
-            print(f"{self.left_distance}")
             self.twist_msg.linear.x = 0.5
             self.twist_msg.angular.z = 0.0
             
@@ -134,6 +132,8 @@ class MazeActionServer(Node):
         for i, val in enumerate(goal_handle.request.turning_sequence):
             print(f"Current Cmd: {val}")
 
+            feedback.feedback_msg = f"Turning {direction_str_dict[val]}"
+
             self.turn_robot(direction_dict[val])
             self.stop_robot()
 
@@ -143,11 +143,21 @@ class MazeActionServer(Node):
             self.loop_rate.sleep()
             goal_handle.publish_feedback(feedback)
 
-        goal_handle.succeed()
-        self.get_logger().warn("==== Succeed ====")
 
-        result = Maze.Result()
-        result.success = True
+        image_sub_node = ImageSubscriber()
+        self.loop_rate.sleep()
+        center_pixel = image_sub_node.center_pixel
+        if sum(center_pixel) < 300 and center_pixel[1] > 100:
+            goal_handle.succeed()
+            self.get_logger().warn("==== Succeed ====")
+            result = Maze.Result()
+            result.success = True
+        else:
+            goal_handle.abort()
+            self.get_logger().warn("==== Succeed ====")
+            result = Maze.Result()
+            result.success = False
+
         return result
 
 

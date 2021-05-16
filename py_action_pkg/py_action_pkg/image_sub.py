@@ -7,7 +7,7 @@ import rclpy
 
 from rclpy.node import Node
 from sensor_msgs.msg import Image  # Image is the message type
-from cv_bridge import CvBridge  # Package to convert between ROS and OpenCV Images
+from cv_bridge import CvBridge, CvBridgeError  # Package to convert between ROS and OpenCV Images
 
 
 class ImageSubscriber(Node):
@@ -27,7 +27,7 @@ class ImageSubscriber(Node):
         # from the /skidbot/camera_sensor/image_raw topic. The queue size is 10 messages.
         self.subscription = self.create_subscription(
             Image,
-            "/skidbot/camera_sensor/image_raw",
+            "/tinybot/camera_sensor/image_raw",
             self.listener_callback,
             self.sub_period,
         )
@@ -39,12 +39,16 @@ class ImageSubscriber(Node):
     def listener_callback(self, data):
 
         # Convert ROS Image message to OpenCV image
-        current_frame = self.cv_bridge.imgmsg_to_cv2(data, "bgr8")
+        try:
+            current_frame = self.cv_bridge.imgmsg_to_cv2(data, "bgr8")  
+        except CvBridgeError as e:
+            print(e)
 
         # Display image
-        cv2.imshow("camera", current_frame)
-        cv2.waitKey(1)
+        # cv2.imshow("camera", current_frame)
+        # cv2.waitKey(1)
 
+        self.center_pixel = current_frame[400, 400]
 
 def main(args=None):
 

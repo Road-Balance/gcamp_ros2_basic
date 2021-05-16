@@ -167,6 +167,9 @@
       </geometry>
     </collision>
   </link>
+  <!-- <link name="back_left_wheel"> -->
+  <!-- Dummy -->
+  <!-- </link> -->
   <link name="left_track">
     <visual name="left_track_visual">
       <origin rpy="1.5708 0 1.5708" xyz="0 0 0"/>
@@ -200,6 +203,9 @@
       </geometry>
     </collision>
   </link>
+  <!-- <link name="back_right_wheel"> -->
+  <!-- Dummy -->
+  <!-- </link> -->
   <link name="right_track">
     <visual name="right_track_visual">
       <origin rpy="1.5708 0 1.5708" xyz="0 0 0"/>
