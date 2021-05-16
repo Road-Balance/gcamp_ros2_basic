@@ -56,21 +56,21 @@ class MazeActionServer(Node):
         
         self.laser_sub = self.create_subscription(
             LaserScan,
-            '/diffbot/scan',
+            '/tinybot/scan',
             self.laser_sub_cb,
             self.sub_period
         )
 
         self.odom_sub = self.create_subscription(
             Odometry,
-            "/diffbot/odom",
+            "/tinybot/odom",
             self.odom_sub_cb,
             self.sub_period,
         )
 
         self.cmd_vel_pub = self.create_publisher(
             Twist,
-            "/diffbot/cmd_vel",
+            "/tinybot/cmd_vel",
             self.pub_period
         )
 
@@ -109,7 +109,7 @@ class MazeActionServer(Node):
 
         turn_offset = 100
 
-        while abs(turn_offset) > 0.005:
+        while abs(turn_offset) > 0.087:
             turn_offset = 0.7 * (euler_angle - self.yaw)
             self.twist_msg.linear.x = 0.0
             self.twist_msg.angular.z = turn_offset

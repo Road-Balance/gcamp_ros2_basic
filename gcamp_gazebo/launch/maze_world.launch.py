@@ -13,7 +13,7 @@ from launch_ros.actions import Node
 def generate_launch_description():
     use_sim_time = LaunchConfiguration('use_sim_time', default='false')
 
-    rviz_file = "diffbot.rviz"
+    rviz_file = "tinybot.rviz"
     robot_file = "tinybot_diff.urdf"
     package_name = "gcamp_gazebo"
     world_file_name = "maze_world.world"
