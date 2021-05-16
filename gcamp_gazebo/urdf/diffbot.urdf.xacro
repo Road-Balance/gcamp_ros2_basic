@@ -80,9 +80,9 @@
     </collision>
   </link>
 
-  <link name="back_left_wheel">
+  <!-- <link name="back_left_wheel"> -->
     <!-- Dummy -->
-  </link>
+  <!-- </link> -->
 
   <link name="left_track">
     <visual name="left_track_visual">
@@ -122,9 +122,9 @@
     </collision>
   </link>
 
-  <link name="back_right_wheel">
+  <!-- <link name="back_right_wheel"> -->
     <!-- Dummy -->
-  </link>
+  <!-- </link> -->
 
   <link name="right_track">
     <visual name="right_track_visual">
