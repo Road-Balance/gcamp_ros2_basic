@@ -129,6 +129,7 @@ class MazeActionServer(Node):
         feedback = Maze.Feedback()
         feedback.feedback_msg = ""
 
+
         for i, val in enumerate(goal_handle.request.turning_sequence):
             print(f"Current Cmd: {val}")
 
@@ -143,10 +144,10 @@ class MazeActionServer(Node):
             self.loop_rate.sleep()
             goal_handle.publish_feedback(feedback)
 
-
         image_sub_node = ImageSubscriber()
-        self.loop_rate.sleep()
+        rclpy.spin_once(image_sub_node)
         center_pixel = image_sub_node.center_pixel
+        
         if sum(center_pixel) < 300 and center_pixel[1] > 100:
             goal_handle.succeed()
             self.get_logger().warn("==== Succeed ====")
