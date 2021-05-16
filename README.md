@@ -46,9 +46,9 @@ ros2 run py_action_pkg fibonacci_action_client
 ros2 run image_view image_view --ros-args --remap /image:=/skidbot/camera_sensor/image_raw
 ros2 run py_action_pkg img_subscriber_node 
 ros2 run py_action_pkg odome_sub_node 
-ros2 run py_action_pkg maze_action_server 
-ros2 action send_goal --feedback maze_action custom_interfaces/action/Maze "{turning_sequence: [1,2,3,4,5]}"
-
+ros2 run py_action_pkg robot_controller
+ros2 run py_action_pkg maze_action_server
+ros2 action send_goal --feedback maze_action custom_interfaces/action/Maze "{turning_sequence: [2,1,0,1,2]}"
 
 
 ros2 pkg create --build-type ament_cmake  cpp_srvcli     --dependencies rclcpp example_interfaces

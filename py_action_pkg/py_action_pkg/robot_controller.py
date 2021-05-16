@@ -2,6 +2,7 @@
 
 import sys
 import time
+import math
 import rclpy
 import numpy as np
 
@@ -10,6 +11,32 @@ from rclpy.node import Node
 from sensor_msgs.msg import LaserScan
 from geometry_msgs.msg import Twist
 from nav_msgs.msg import Odometry 
+
+
+#    https://gist.github.com/salmagro/2e698ad4fbf9dae40244769c5ab74434
+def euler_from_quaternion(quaternion):
+    """
+    Converts quaternion (w in last place) to euler roll, pitch, yaw
+    quaternion = [x, y, z, w]
+    Bellow should be replaced when porting for ROS 2 Python tf_conversions is done.
+    """
+    x = quaternion.x
+    y = quaternion.y
+    z = quaternion.z
+    w = quaternion.w
+
+    sinr_cosp = 2 * (w * x + y * z)
+    cosr_cosp = 1 - 2 * (x * x + y * y)
+    roll = np.arctan2(sinr_cosp, cosr_cosp)
+
+    sinp = 2 * (w * y - z * x)
+    pitch = np.arcsin(sinp)
+
+    siny_cosp = 2 * (w * z + x * y)
+    cosy_cosp = 1 - 2 * (y * y + z * z)
+    yaw = np.arctan2(siny_cosp, cosy_cosp)
+
+    return roll, pitch, yaw 
 
 class RobotController(Node):
     """
@@ -75,7 +102,7 @@ class RobotController(Node):
 
     def odom_sub_cb(self, data):
         orientation = data.pose.pose.orientation
-        _, _, self.yaw = self.euler_from_quaternion(orientation)
+        _, _, self.yaw = euler_from_quaternion(orientation)
         # print(f"yaw : {self.yaw}")
     
     def laser_sub_cb(self, data):
@@ -83,7 +110,6 @@ class RobotController(Node):
         # print(f"Distance : {self.forward_distance}")
 
     def move_robot(self, linear_vel=0.0):
-        print("==== Move Robot ====")
         self.twist_msg.linear.x = linear_vel
         self.twist_msg.angular.z = 0.0
         self.cmd_vel_pub.publish(self.twist_msg)
@@ -99,34 +125,11 @@ class RobotController(Node):
         self.twist_msg.angular.z  = angular_vel
         self.cmd_vel_pub.publish(self.twist_msg)
 
-    #    https://gist.github.com/salmagro/2e698ad4fbf9dae40244769c5ab74434
-    def euler_from_quaternion(self, quaternion):
-        """
-        Converts quaternion (w in last place) to euler roll, pitch, yaw
-        quaternion = [x, y, z, w]
-        Bellow should be replaced when porting for ROS 2 Python tf_conversions is done.
-        """
-        x = quaternion.x
-        y = quaternion.y
-        z = quaternion.z
-        w = quaternion.w
-
-        sinr_cosp = 2 * (w * x + y * z)
-        cosr_cosp = 1 - 2 * (x * x + y * y)
-        roll = np.arctan2(sinr_cosp, cosr_cosp)
-
-        sinp = 2 * (w * y - z * x)
-        pitch = np.arcsin(sinp)
-
-        siny_cosp = 2 * (w * z + x * y)
-        cosy_cosp = 1 - 2 * (y * y + z * z)
-        yaw = np.arctan2(siny_cosp, cosy_cosp)
-
-        return roll, pitch, yaw 
-
 
 def turn_robot(rclpy, controller, euler_angle):
     print("Robot Turns to Object Angle")
+
+    controller.stop_robot()
 
     while rclpy.ok():
         rclpy.spin_once(controller)
@@ -134,29 +137,46 @@ def turn_robot(rclpy, controller, euler_angle):
         controller.turn_robot(turn_offset)
 
         if abs(turn_offset) < 0.005:
+            rclpy.spin_once(controller)
+            controller.stop_robot()
+            rclpy.spin_once(controller)
             break
 
     controller.stop_robot()
 
 def parking_robot(rclpy, controller):
     print("Going Forward Until 0.8m Obstacle Detection")
+
+    controller.stop_robot()
+
     while rclpy.ok():
         rclpy.spin_once(controller)
         controller.move_robot(0.5)
 
         if controller.forward_distance < 0.8:
+            rclpy.spin_once(controller)
+            controller.stop_robot()
+            rclpy.spin_once(controller)
             break
-
-    controller.stop_robot()
 
 def main(args=None):
     rclpy.init(args=args)
 
     robot_controller = RobotController()
 
-    parking_robot(rclpy, robot_controller)
+    while True:    
+        robot_controller.move_robot(1.0)
+        print(f"{robot_controller.forward_distance}")
 
-    turn_robot(rclpy, robot_controller, 0.0)
+
+    # parking_robot(rclpy, robot_controller)
+    # turn_robot(rclpy, robot_controller, math.pi)
+
+    # parking_robot(rclpy, robot_controller)
+    # turn_robot(rclpy, robot_controller, math.pi)
+
+    # parking_robot(rclpy, robot_controller)
+
 
     robot_controller.destroy_node()
     rclpy.shutdown()

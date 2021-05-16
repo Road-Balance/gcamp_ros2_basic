@@ -14,7 +14,7 @@ def generate_launch_description():
     use_sim_time = LaunchConfiguration('use_sim_time', default='false')
 
     rviz_file = "diffbot.rviz"
-    robot_file = "diffbot.urdf"
+    robot_file = "tinybot_diff.urdf"
     package_name = "gcamp_gazebo"
     world_file_name = "maze_world.world"
 
@@ -46,11 +46,18 @@ def generate_launch_description():
         arguments=[urdf],
     )
 
+    joint_state_publisher_node = Node(
+        package='joint_state_publisher',
+        executable='joint_state_publisher',
+        name='joint_state_publisher',
+    )
+
     # create and return launch description object
     return LaunchDescription(
         [
             # robot state publisher allows robot model spawn in RVIZ
             robot_state_publisher_node,
+            joint_state_publisher_node,
             # start gazebo, notice we are using libgazebo_ros_factory.so instead of libgazebo_ros_init.so
             # That is because only libgazebo_ros_factory.so contains the service call to /spawn_entity
             ExecuteProcess(
