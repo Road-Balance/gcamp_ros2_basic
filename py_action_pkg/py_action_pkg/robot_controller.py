@@ -83,8 +83,9 @@ class RobotController(Node):
         # print(f"Distance : {self.forward_distance}")
 
     def move_robot(self, linear_vel=0.0):
-        self.twist_msg.linear.x   = linear_vel
-        self.twist_msg.angular.z  = 0.0
+        print("==== Move Robot ====")
+        self.twist_msg.linear.x = linear_vel
+        self.twist_msg.angular.z = 0.0
         self.cmd_vel_pub.publish(self.twist_msg)
 
     def stop_robot(self):
