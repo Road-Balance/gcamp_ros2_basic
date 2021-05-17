@@ -8,7 +8,8 @@ private:
 
   void timer_callback()
   {
-    RCLCPP_INFO(this->get_logger(), "I am Simple OOP Example");
+    m_count++;
+    RCLCPP_INFO(this->get_logger(), "I am Simple OOP Example, count : %d", m_count);
   }
 
 public:
@@ -18,7 +19,7 @@ public:
   }
 };
 
-int main(int argc, char** argv)
+int main(int argc, char **argv)
 {
   rclcpp::init(argc, argv);
   rclcpp::spin(std::make_shared<Talker>());

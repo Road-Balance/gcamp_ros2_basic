@@ -2,7 +2,6 @@
 
 # https://docs.ros.org/en/foxy/Tutorials/Actions/Writing-a-Py-Action-Server-Client.html#id4
 
-import time
 import math
 
 import rclpy
@@ -129,7 +128,6 @@ class MazeActionServer(Node):
         feedback = Maze.Feedback()
         feedback.feedback_msg = ""
 
-
         for i, val in enumerate(goal_handle.request.turning_sequence):
             print(f"Current Cmd: {val}")
 
@@ -147,7 +145,7 @@ class MazeActionServer(Node):
         image_sub_node = ImageSubscriber()
         rclpy.spin_once(image_sub_node)
         center_pixel = image_sub_node.center_pixel
-        
+
         if sum(center_pixel) < 300 and center_pixel[1] > 100:
             goal_handle.succeed()
             self.get_logger().warn("==== Succeed ====")
@@ -160,7 +158,6 @@ class MazeActionServer(Node):
             result.success = False
 
         return result
-
 
 def main(args=None):
     rclpy.init(args=args)

@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.5)
-project(cpp_topic_tutorial)
+project(cpp_topic_pkg)
 
 # Default to C99
 if(NOT CMAKE_C_STANDARD)
@@ -18,13 +18,11 @@ endif()
 # find dependencies
 find_package(ament_cmake REQUIRED)
 find_package(rclcpp REQUIRED)
-find_package(std_msgs REQUIRED)
-find_package(builtin_interfaces REQUIRED)
-find_package(rosidl_default_generators REQUIRED)
+find_package(sensor_msgs REQUIRED)
+find_package(geometry_msgs REQUIRED)
 
-# for custom msg
-find_package(builtin_interfaces REQUIRED)
-find_package(rosidl_default_generators REQUIRED)
+# add an abstract target to actually trigger the builds
+# add_custom_target(media_files ALL DEPENDS ${urdf_files})
 
 if(BUILD_TESTING)
   find_package(ament_lint_auto REQUIRED)
@@ -37,24 +35,52 @@ if(BUILD_TESTING)
   ament_lint_auto_find_test_dependencies()
 endif()
 
-rosidl_generate_interfaces(${PROJECT_NAME}
-  "msg/Age.msg"
-  DEPENDENCIES builtin_interfaces
-)
+# file(GLOB cpp_files src/*.cpp)
 
 
-function(custom_executable target)
-  add_executable(${target}_node src/${target}.cpp)
-  ament_target_dependencies(${target}_node
-    "rclcpp"
-    "std_msgs")
-  install(TARGETS ${target}_node
-  DESTINATION lib/${PROJECT_NAME})
-endfunction()
+# # if error occurs, comment below lines and try colcon build first
+# # then, build with uncomment again
+# foreach(it ${cpp_files})
+#   # # remove .xacro extension
+#   string(REGEX MATCH "(.*)[.]cpp$" unused ${it})
+#   set(output_filename ${CMAKE_MATCH_1})
+#   message(${output_filename})
+
+#   add_executable(${output_filename} src/${output_filename})
+#   ament_target_dependencies(${output_filename}_node rclcpp)
+
+#   install(TARGETS
+#     ${output_filename}_node
+#     DESTINATION lib/${PROJECT_NAME}
+#   ) 
+
+#   # # create a rule to generate ${output_filename} from {it}
+#   # xacro_add_xacro_file(${it} ${output_filename})
+
+#   # list(APPEND urdf_files ${output_filename})
+# endforeach(it)
+
+file(GLOB CPP_FILES src/*.cpp)
+
+# https://4whomtbts.tistory.com/74
+foreach( FILE_PATH ${CPP_FILES} )
+    # I used a simple string replace, to cut off .cpp.
+    get_filename_component(FILE_NAME ${FILE_PATH} NAME_WE)
+    
+    add_executable( ${FILE_NAME}_node ${FILE_PATH} )
+
+    # Make sure YourLib is linked to each app
+    ament_target_dependencies(${FILE_NAME}_node rclcpp sensor_msgs geometry_msgs )
+
+    install(TARGETS
+      ${FILE_NAME}_node
+      DESTINATION lib/${PROJECT_NAME}
+    )
+
+endforeach( FILE_PATH ${APP_SOURCES} )
 
 # add_executable(topic_pub_node src/topic_pub)
 # ament_target_dependencies(topic_pub_node rclcpp)
-
 
 # add_executable(topic_pub_oop_node src/topic_pub_oop)
 # ament_target_dependencies(topic_pub_oop_node rclcpp std_msgs)

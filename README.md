@@ -50,7 +50,10 @@ ros2 run py_action_pkg robot_controller
 ros2 run py_action_pkg maze_action_server
 ros2 action send_goal --feedback maze_action custom_interfaces/action/Maze "{turning_sequence: [2,1,0,1,2]}"
 
+ros2 run cpp_topic_pkg cmd_vel_pub_node
 
+
+ros2 pkg create --build-type ament_cmake  cpp_topic_pkg     --dependencies rclcpp sensor_msgs geometry_msgs
 ros2 pkg create --build-type ament_cmake  cpp_srvcli     --dependencies rclcpp example_interfaces
 ros2 pkg create --build-type ament_cmake  custom_interfaces
 
