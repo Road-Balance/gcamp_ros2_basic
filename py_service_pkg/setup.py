@@ -19,6 +19,7 @@ setup(
     tests_require=["pytest"],
     entry_points={
         "console_scripts": [
+            "spawn_skidbot = py_service_pkg.spawn_skidbot:main",
             "basic_client = py_service_pkg.basic_srv_client:main",
             "basic_server = py_service_pkg.basic_srv_server:main",
             "gazebo_model_spawner = py_service_pkg.spawn_model:main",

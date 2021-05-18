@@ -69,3 +69,13 @@ $ ros2 pkg create my_cpp_py_pkg --build-type ament_cmake
 ```
 
 https://answers.ros.org/question/302037/ros2-how-to-call-a-service-from-the-callback-function-of-a-subscriber/
+
+
+## windows 
+
+```
+colcon build --symlink-install --packages-select gcamp_gazebo
+install\setup.bat
+ros2 launch gcamp_gazebo empty_world.launch.py
+
+```
