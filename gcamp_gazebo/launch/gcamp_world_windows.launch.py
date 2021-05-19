@@ -28,14 +28,15 @@ from launch_ros.actions import Node
 
 def generate_launch_description():
 
+    robot_file = "skidbot.urdf"
     package_name = "gcamp_gazebo"
-    # world_file_name = "gcamp_world.world"
-    world_file_name = "botbot_office.world"
+    world_file_name = "bocbot_office.world"
 
     # full  path to urdf and world file
     world = os.path.join(
         get_package_share_directory(package_name), "worlds", world_file_name
     )
+    urdf = os.path.join(get_package_share_directory(package_name), "urdf", robot_file)
 
     use_sim_time = LaunchConfiguration("use_sim_time", default="True")
     pkg_gazebo_ros = get_package_share_directory("gazebo_ros")
