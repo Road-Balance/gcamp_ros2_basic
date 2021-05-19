@@ -64,6 +64,7 @@ $ ros2 pkg create my_cpp_py_pkg --build-type ament_cmake
 
 ```
 ros2 run cpp_topic_pkg cmd_vel_pub_node
+ros2 run cpp_topic_pkg laser_sub_node 
 
 
 ros2 pkg create --build-type ament_cmake  cpp_topic_pkg     --dependencies rclcpp sensor_msgs geometry_msgs
