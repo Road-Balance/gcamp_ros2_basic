@@ -30,6 +30,25 @@ if(BUILD_TESTING)
   ament_lint_auto_find_test_dependencies()
 endif()
 
+file(GLOB CPP_FILES src/*.cpp)
+
+# https://4whomtbts.tistory.com/74
+foreach( FILE_PATH ${CPP_FILES} )
+    # I used a simple string replace, to cut off .cpp.
+    get_filename_component(FILE_NAME ${FILE_PATH} NAME_WE)
+    
+    add_executable( ${FILE_NAME}_node ${FILE_PATH} )
+
+    # Make sure YourLib is linked to each app
+    ament_target_dependencies(${FILE_NAME}_node rclcpp )
+
+    install(TARGETS
+      ${FILE_NAME}_node
+      DESTINATION lib/${PROJECT_NAME}
+    )
+
+endforeach( FILE_PATH ${APP_SOURCES} )
+
 ament_package()
 
 # add_executable(simple_node src/simple.cpp)
@@ -64,24 +83,6 @@ ament_package()
 #   DESTINATION lib/${PROJECT_NAME}
 # )
 
-# file(GLOB CPP_FILES src/*.cpp)
-
-# # https://4whomtbts.tistory.com/74
-# foreach( FILE_PATH ${CPP_FILES} )
-#     # I used a simple string replace, to cut off .cpp.
-#     get_filename_component(FILE_NAME ${FILE_PATH} NAME_WE)
-    
-#     add_executable( ${FILE_NAME}_node ${FILE_PATH} )
-
-#     # Make sure YourLib is linked to each app
-#     ament_target_dependencies(${FILE_NAME}_node rclcpp )
-
-#     install(TARGETS
-#       ${FILE_NAME}_node
-#       DESTINATION lib/${PROJECT_NAME}
-#     ) 
-
-# endforeach( FILE_PATH ${APP_SOURCES} )
 
 install(DIRECTORY
   launch
