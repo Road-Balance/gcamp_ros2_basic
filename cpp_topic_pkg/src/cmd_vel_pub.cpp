@@ -60,6 +60,7 @@ int main(int argc, char** argv)
     rclcpp::spin_some(twist_pub);
   }
 
+  // publish doesn't require spin
   twist_pub->stop_robot();
 
   rclcpp::shutdown();
