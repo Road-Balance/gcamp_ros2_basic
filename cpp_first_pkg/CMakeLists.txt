@@ -30,24 +30,35 @@ if(BUILD_TESTING)
   ament_lint_auto_find_test_dependencies()
 endif()
 
-file(GLOB CPP_FILES src/*.cpp)
+# file(GLOB CPP_FILES src/*.cpp)
+# # https://4whomtbts.tistory.com/74
+# foreach( FILE_PATH ${CPP_FILES} )
+#     # I used a simple string replace, to cut off .cpp.
+#     get_filename_component(FILE_NAME ${FILE_PATH} NAME_WE)
+#     add_executable( ${FILE_NAME}_node ${FILE_PATH} )
 
-# https://4whomtbts.tistory.com/74
-foreach( FILE_PATH ${CPP_FILES} )
-    # I used a simple string replace, to cut off .cpp.
-    get_filename_component(FILE_NAME ${FILE_PATH} NAME_WE)
-    
-    add_executable( ${FILE_NAME}_node ${FILE_PATH} )
+#     # Make sure YourLib is linked to each app
+#     ament_target_dependencies(${FILE_NAME}_node rclcpp )
 
-    # Make sure YourLib is linked to each app
-    ament_target_dependencies(${FILE_NAME}_node rclcpp )
+#     install(TARGETS
+#       ${FILE_NAME}_node
+#       DESTINATION lib/${PROJECT_NAME}
+#     )
+# endforeach( FILE_PATH ${APP_SOURCES} )
 
-    install(TARGETS
-      ${FILE_NAME}_node
-      DESTINATION lib/${PROJECT_NAME}
-    )
+function(custom_executable target)
+  add_executable(${target}_node src/${target}.cpp)
+  ament_target_dependencies(${target}_node
+    "rclcpp")
+  install(TARGETS ${target}_node
+  DESTINATION lib/${PROJECT_NAME})
+endfunction()
 
-endforeach( FILE_PATH ${APP_SOURCES} )
+custom_executable(lifecycle)
+custom_executable(simple_loop)
+custom_executable(simple_oop)
+custom_executable(simple_without_oop)
+custom_executable(simple)
 
 ament_package()
 

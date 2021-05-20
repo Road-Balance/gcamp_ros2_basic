@@ -65,10 +65,16 @@ $ ros2 pkg create my_cpp_py_pkg --build-type ament_cmake
 ```
 ros2 run cpp_topic_pkg cmd_vel_pub_node
 ros2 run cpp_topic_pkg laser_sub_node 
+ros2 run cpp_topic_pkg parking_node
+
+ros2 run cpp_service_pkg basic_server 
+ros2 run cpp_service_pkg basic_client 1 3
 
 
 ros2 pkg create --build-type ament_cmake  cpp_topic_pkg     --dependencies rclcpp sensor_msgs geometry_msgs
-ros2 pkg create --build-type ament_cmake  cpp_srvcli     --dependencies rclcpp example_interfaces
+ros2 pkg create --build-type ament_cmake  cpp_service_pkg     --dependencies rclcpp gazebo_msgs geometry_msgs custom_interfaces
+
+ros2 pkg create --build-type ament_cmake  cpp_srvcli --dependencies rclcpp example_interfaces
 ros2 pkg create --build-type ament_cmake  custom_interfaces
 
 

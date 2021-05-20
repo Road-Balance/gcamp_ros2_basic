@@ -60,60 +60,22 @@ endif()
 #   # list(APPEND urdf_files ${output_filename})
 # endforeach(it)
 
+# auto build
+# https://4whomtbts.tistory.com/74
 file(GLOB CPP_FILES src/*.cpp)
 
-# https://4whomtbts.tistory.com/74
 foreach( FILE_PATH ${CPP_FILES} )
     # I used a simple string replace, to cut off .cpp.
     get_filename_component(FILE_NAME ${FILE_PATH} NAME_WE)
-    
     add_executable( ${FILE_NAME}_node ${FILE_PATH} )
 
     # Make sure YourLib is linked to each app
-    ament_target_dependencies(${FILE_NAME}_node rclcpp sensor_msgs geometry_msgs )
-
-    install(TARGETS
-      ${FILE_NAME}_node
-      DESTINATION lib/${PROJECT_NAME}
-    )
-
+    ament_target_dependencies(${FILE_NAME}_node 
+      "rclcpp"
+      "sensor_msgs" 
+      "geometry_msgs")
+    install(TARGETS ${FILE_NAME}_node
+      DESTINATION lib/${PROJECT_NAME})
 endforeach( FILE_PATH ${APP_SOURCES} )
-
-# add_executable(topic_pub_node src/topic_pub)
-# ament_target_dependencies(topic_pub_node rclcpp)
-
-# add_executable(topic_pub_oop_node src/topic_pub_oop)
-# ament_target_dependencies(topic_pub_oop_node rclcpp std_msgs)
-
-# add_executable(topic_sub_node src/topic_sub)
-# ament_target_dependencies(topic_sub_node rclcpp)
-
-# add_executable(topic_sub_oop_node src/topic_sub_oop)
-# ament_target_dependencies(topic_sub_oop_node rclcpp)
-
-# install(TARGETS
-#   topic_pub_node
-#   DESTINATION lib/${PROJECT_NAME}
-# )
-
-# install(TARGETS
-#   topic_pub_oop_node
-#   DESTINATION lib/${PROJECT_NAME}
-# )
-
-# install(TARGETS
-#   topic_sub_node
-#   DESTINATION lib/${PROJECT_NAME}
-# )
-
-# install(TARGETS
-#   topic_sub_oop_node
-#   DESTINATION lib/${PROJECT_NAME}
-# )
-
-# install(DIRECTORY
-#   launch
-#   DESTINATION share/${PROJECT_NAME}/
-# )
 
 ament_package()
