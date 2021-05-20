@@ -7,9 +7,47 @@
 
 using namespace std::chrono_literals;
 
+using AddTwoInts = example_interfaces::srv::AddTwoInts;
+
+class BasicClient : public rclcpp::Node
+{
+private:
+  rclcpp::Client<AddTwoInts>::SharedPtr m_client;
+  std::shared_ptr<AddTwoInts::Request> m_request;
+
+public:
+  BasicClient() : Node("add_two_ints_client")
+  {
+    m_client = create_client<AddTwoInts>("add_two_ints");
+
+    while (!m_client->wait_for_service(1s))
+      RCLCPP_INFO(get_logger(), "service not available, waiting again...");
+
+    RCLCPP_INFO(get_logger(), "service available, waiting serice call");
+  }
+
+  void setup_request(long long a, long long b)
+  {
+    auto m_request = std::make_shared<AddTwoInts::Request>();
+    m_request->a = a;
+    m_request->b = b;
+  }
+
+  auto get_result_future(long long a, long long b)
+  {
+    auto m_request = std::make_shared<AddTwoInts::Request>();
+    m_request->a = a;
+    m_request->b = b;
+
+    return m_client->async_send_request(m_request);
+  }
+};
+
 int main(int argc, char **argv)
 {
   rclcpp::init(argc, argv);
+
+  std::cout << "Flag" << std::endl;
 
   if (argc != 3)
   {
@@ -17,27 +55,35 @@ int main(int argc, char **argv)
     return 1;
   }
 
-  std::shared_ptr<rclcpp::Node> node = rclcpp::Node::make_shared("add_two_ints_client");
-  rclcpp::Client<example_interfaces::srv::AddTwoInts>::SharedPtr client =
-      node->create_client<example_interfaces::srv::AddTwoInts>("add_two_ints");
+  auto basic_service_client = std::make_shared<BasicClient>();
 
-  auto request = std::make_shared<example_interfaces::srv::AddTwoInts::Request>();
-  request->a = atoll(argv[1]);
-  request->b = atoll(argv[2]);
+  // basic_service_client->setup_request(atoll(argv[1]), atoll(argv[2]));
 
-  while (!client->wait_for_service(1s))
-  {
-    if (!rclcpp::ok())
-    {
-      RCLCPP_ERROR(rclcpp::get_logger("rclcpp"), "Interrupted while waiting for the service. Exiting.");
-      return 0;
-    }
-    RCLCPP_INFO(rclcpp::get_logger("rclcpp"), "service not available, waiting again...");
-  }
+  std::cout << "Flag" << std::endl;
 
-  auto result = client->async_send_request(request);
+  // std::shared_ptr<rclcpp::Node> node = rclcpp::Node::make_shared("add_two_ints_client");
+  // rclcpp::Client<AddTwoInts>::SharedPtr client = node->create_client<AddTwoInts>("add_two_ints");
+
+  // auto request = std::make_shared<AddTwoInts::Request>();
+  // request->a = atoll(argv[1]);
+  // request->b = atoll(argv[2]);
+
+  // while (!client->wait_for_service(1s))
+  // {
+  //   if (!rclcpp::ok())
+  //   {
+  //     RCLCPP_ERROR(rclcpp::get_logger("rclcpp"), "Interrupted while waiting for the service. Exiting.");
+  //     return 0;
+  //   }
+  //   RCLCPP_INFO(rclcpp::get_logger("rclcpp"), "service not available, waiting again...");
+  // }
+
+  // auto result = client->async_send_request(request);
+
+  auto result = basic_service_client->get_result_future(atoll(argv[1]), atoll(argv[2]));
+
   // Wait for the result.
-  if (rclcpp::spin_until_future_complete(node, result) == rclcpp::executor::FutureReturnCode::SUCCESS)
+  if (rclcpp::spin_until_future_complete(basic_service_client, result) == rclcpp::executor::FutureReturnCode::SUCCESS)
   {
     RCLCPP_INFO(rclcpp::get_logger("rclcpp"), "Sum: %ld", result.get()->sum);
   }

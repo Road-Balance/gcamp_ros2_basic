@@ -7,7 +7,7 @@ private:
   rclcpp::Publisher<geometry_msgs::msg::Twist>::SharedPtr m_pub;
   rclcpp::TimerBase::SharedPtr m_timer;
 
-  geometry_msgs::msg::Twist m_twist_msg = geometry_msgs::msg::Twist();
+  geometry_msgs::msg::Twist m_twist_msg;
 
   void timer_callback()
   {

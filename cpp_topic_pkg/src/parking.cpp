@@ -11,7 +11,7 @@ private:
   rclcpp::Subscription<LaserScan>::SharedPtr m_sub;
 
   rclcpp::TimerBase::SharedPtr m_timer;
-  Twist m_twist_msg = Twist();
+  Twist m_twist_msg;
 
 public:
   ParkingNode() : Node("robot_parking_node")
