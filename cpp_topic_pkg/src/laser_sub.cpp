@@ -17,7 +17,7 @@ public:
 
   void sub_callback(const sensor_msgs::msg::LaserScan::SharedPtr msg)
   {
-    // std::cout << (msg->ranges).size() << std::endl;    
+    // std::cout << (msg->ranges).size() << std::endl;
     // for (auto e : msg->ranges)
     //   std::cout << e << std::endl;
     RCLCPP_INFO(this->get_logger(), "I got %f", (msg->ranges)[360]);

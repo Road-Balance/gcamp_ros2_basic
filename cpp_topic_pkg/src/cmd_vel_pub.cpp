@@ -23,12 +23,14 @@ public:
     m_timer = create_wall_timer(std::chrono::milliseconds(100), std::bind(&TwistPub::timer_callback, this));
   }
 
-  ~TwistPub(){
+  ~TwistPub()
+  {
     stop_robot();
     RCLCPP_INFO(get_logger(), "Node Destructor");
   }
 
-  void move_robot(){
+  void move_robot()
+  {
     m_twist_msg.linear.x = 0.5;
     m_twist_msg.angular.z = 1.0;
     m_pub->publish(m_twist_msg);
@@ -36,7 +38,8 @@ public:
     std::cout << "==== Move Robot ====" << std::endl;
   }
 
-  void stop_robot(){
+  void stop_robot()
+  {
     m_twist_msg.linear.x = 0.0;
     m_twist_msg.angular.z = 0.0;
     m_pub->publish(m_twist_msg);
@@ -45,17 +48,18 @@ public:
   }
 };
 
-int main(int argc, char** argv)
+int main(int argc, char **argv)
 {
   rclcpp::init(argc, argv);
 
   auto twist_pub = std::make_shared<TwistPub>();
-  
+
   auto t_start = twist_pub->now();
   auto t_now = twist_pub->now();
   auto t_delta = 5 * 1e9;
-  
-  while ( (t_now - t_start).nanoseconds() <  t_delta){
+
+  while ((t_now - t_start).nanoseconds() < t_delta)
+  {
     t_now = twist_pub->now();
     rclcpp::spin_some(twist_pub);
   }
