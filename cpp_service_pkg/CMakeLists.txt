@@ -53,4 +53,13 @@ ament_target_dependencies(robot_turning_server
 install(TARGETS robot_turning_server
   DESTINATION lib/${PROJECT_NAME})
 
+  add_executable(robot_turning_client src/robot_turning_client.cpp)
+  ament_target_dependencies(robot_turning_client 
+    rclcpp 
+    example_interfaces
+    geometry_msgs 
+    custom_interfaces)
+  install(TARGETS robot_turning_client
+    DESTINATION lib/${PROJECT_NAME})
+
 ament_package()

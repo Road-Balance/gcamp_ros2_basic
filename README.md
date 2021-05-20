@@ -71,8 +71,9 @@ ros2 run cpp_service_pkg basic_server
 ros2 run cpp_service_pkg basic_client 1 3
 
 ros2 run cpp_service_pkg robot_turning_server
-ros2 service call /turn_robot custom_interfaces/srv/TurningControl "{time_duration: 5, angular_vel_z: 1.0, linear_vel_x: 0.5}"
+ros2 run cpp_service_pkg robot_turning_client 5 0.5 1.0
 
+ros2 service call /turn_robot custom_interfaces/srv/TurningControl "{time_duration: 5, angular_vel_z: 1.0, linear_vel_x: 0.5}"
 
 ros2 interface show example_interfaces/srv/AddTwoInts
 ros2 interface show custom_interfaces/srv/TurningControl

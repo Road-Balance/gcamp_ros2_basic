@@ -49,7 +49,7 @@ public:
     }
     stop_robot();
 
-    RCLCPP_INFO(get_logger(), "Request Done Wating for next request...");
+    RCLCPP_WARN(get_logger(), "Request Done Wating for next request...");
     response->success = true;
   }
 
