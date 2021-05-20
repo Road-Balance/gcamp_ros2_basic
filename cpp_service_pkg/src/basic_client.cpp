@@ -1,24 +1,25 @@
-#include "example_interfaces/srv/add_two_ints.hpp"
-#include "rclcpp/rclcpp.hpp"
-
 #include <chrono>
 #include <cstdlib>
 #include <memory>
 
+#include "example_interfaces/srv/add_two_ints.hpp"
+#include "rclcpp/rclcpp.hpp"
+
 using namespace std::chrono_literals;
 
 using AddTwoInts = example_interfaces::srv::AddTwoInts;
+std::shared_ptr<AddTwoInts::Request> m_request;
 
 class BasicClient : public rclcpp::Node
 {
 private:
   rclcpp::Client<AddTwoInts>::SharedPtr m_client;
-  std::shared_ptr<AddTwoInts::Request> m_request;
 
 public:
   BasicClient() : Node("add_two_ints_client")
   {
     m_client = create_client<AddTwoInts>("add_two_ints");
+    m_request = std::make_shared<AddTwoInts::Request>();
 
     while (!m_client->wait_for_service(1s))
       RCLCPP_INFO(get_logger(), "service not available, waiting again...");
@@ -26,16 +27,8 @@ public:
     RCLCPP_INFO(get_logger(), "service available, waiting serice call");
   }
 
-  void setup_request(long long a, long long b)
-  {
-    auto m_request = std::make_shared<AddTwoInts::Request>();
-    m_request->a = a;
-    m_request->b = b;
-  }
-
   auto get_result_future(long long a, long long b)
   {
-    auto m_request = std::make_shared<AddTwoInts::Request>();
     m_request->a = a;
     m_request->b = b;
 
@@ -47,8 +40,6 @@ int main(int argc, char **argv)
 {
   rclcpp::init(argc, argv);
 
-  std::cout << "Flag" << std::endl;
-
   if (argc != 3)
   {
     RCLCPP_INFO(rclcpp::get_logger("rclcpp"), "usage: add_two_ints_client X Y");
@@ -56,31 +47,7 @@ int main(int argc, char **argv)
   }
 
   auto basic_service_client = std::make_shared<BasicClient>();
-
-  // basic_service_client->setup_request(atoll(argv[1]), atoll(argv[2]));
-
-  std::cout << "Flag" << std::endl;
-
-  // std::shared_ptr<rclcpp::Node> node = rclcpp::Node::make_shared("add_two_ints_client");
-  // rclcpp::Client<AddTwoInts>::SharedPtr client = node->create_client<AddTwoInts>("add_two_ints");
-
-  // auto request = std::make_shared<AddTwoInts::Request>();
-  // request->a = atoll(argv[1]);
-  // request->b = atoll(argv[2]);
-
-  // while (!client->wait_for_service(1s))
-  // {
-  //   if (!rclcpp::ok())
-  //   {
-  //     RCLCPP_ERROR(rclcpp::get_logger("rclcpp"), "Interrupted while waiting for the service. Exiting.");
-  //     return 0;
-  //   }
-  //   RCLCPP_INFO(rclcpp::get_logger("rclcpp"), "service not available, waiting again...");
-  // }
-
-  // auto result = client->async_send_request(request);
-
-  auto result = basic_service_client->get_result_future(atoll(argv[1]), atoll(argv[2]));
+  auto result = basic_service_client->get_result_future(atoi(argv[1]), atoi(argv[2]));
 
   // Wait for the result.
   if (rclcpp::spin_until_future_complete(basic_service_client, result) == rclcpp::executor::FutureReturnCode::SUCCESS)

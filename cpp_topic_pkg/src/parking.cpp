@@ -28,18 +28,20 @@ public:
     auto forward_distance = (msg->ranges)[360];
 
     if (forward_distance > 0.8)
-      move_robot();
-    else
+      move_robot(forward_distance);
+    else{
       stop_robot();
+      rclcpp::shutdown();
+    }
   }
 
-  void move_robot()
+  void move_robot(const float &forward_distance)
   {
     m_twist_msg.linear.x = 0.5;
-    m_twist_msg.angular.z = 1.0;
+    m_twist_msg.angular.z = 0.0;
     m_pub->publish(m_twist_msg);
 
-    std::cout << "==== Move Robot ====" << std::endl;
+    std::cout << "Distance from Obstacle ahead : " << forward_distance << std::endl;
   }
 
   void stop_robot()
@@ -48,7 +50,7 @@ public:
     m_twist_msg.angular.z = 0.0;
     m_pub->publish(m_twist_msg);
 
-    std::cout << "==== Stop Robot ====" << std::endl;
+    RCLCPP_WARN(get_logger(), "Stop Robot and make Node FREE!");
   }
 };
 

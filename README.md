@@ -70,6 +70,8 @@ ros2 run cpp_topic_pkg parking_node
 ros2 run cpp_service_pkg basic_server 
 ros2 run cpp_service_pkg basic_client 1 3
 
+ros2 interface show example_interfaces/srv/AddTwoInts
+
 
 ros2 pkg create --build-type ament_cmake  cpp_topic_pkg     --dependencies rclcpp sensor_msgs geometry_msgs
 ros2 pkg create --build-type ament_cmake  cpp_service_pkg     --dependencies rclcpp gazebo_msgs geometry_msgs custom_interfaces
