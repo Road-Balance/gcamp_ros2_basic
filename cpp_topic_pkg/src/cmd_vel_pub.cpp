@@ -23,12 +23,6 @@ public:
     m_timer = create_wall_timer(std::chrono::milliseconds(100), std::bind(&TwistPub::timer_callback, this));
   }
 
-  ~TwistPub()
-  {
-    stop_robot();
-    RCLCPP_INFO(get_logger(), "Node Destructor");
-  }
-
   void move_robot()
   {
     m_twist_msg.linear.x = 0.5;
@@ -61,6 +55,7 @@ int main(int argc, char **argv)
   while ((t_now - t_start).nanoseconds() < t_delta)
   {
     t_now = twist_pub->now();
+    // twist_pub->move_robot();
     rclcpp::spin_some(twist_pub);
   }
 
