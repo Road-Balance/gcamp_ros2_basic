@@ -13,7 +13,7 @@ private:
   }
 
 public:
-  Talker() : Node("simple_oop_node")
+  Talker() : Node("simple_oop_node"), m_count(0)
   {
     RCLCPP_WARN(this->get_logger(), "Node Constructor");
 
