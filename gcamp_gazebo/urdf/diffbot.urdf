@@ -17,7 +17,7 @@
       <wheel_separation>0.4</wheel_separation>
       <wheel_diameter>0.2</wheel_diameter>
       <!-- limits -->
-      <max_wheel_torque>20</max_wheel_torque>
+      <max_wheel_torque>10</max_wheel_torque>
       <max_wheel_acceleration>1.0</max_wheel_acceleration>
       <!-- output -->
       <publish_odom>true</publish_odom>
@@ -265,7 +265,7 @@
     </collision>
   </link>
   <joint name="front_left_wheel_joint" type="continuous">
-    <origin rpy="0 0 0" xyz="0.13 0.15 0"/>
+    <origin rpy="0 0 0" xyz="0.0 0.15 0"/>
     <child link="front_left_wheel"/>
     <parent link="chassis"/>
     <axis rpy="0 0 0" xyz="0 1 0"/>
@@ -273,7 +273,7 @@
     <dynamics damping="1.0" friction="1.0"/>
   </joint>
   <joint name="front_right_wheel_joint" type="continuous">
-    <origin rpy="0 0 0" xyz="0.13 -0.15 0"/>
+    <origin rpy="0 0 0" xyz="0.0 -0.15 0"/>
     <child link="front_right_wheel"/>
     <parent link="chassis"/>
     <axis rpy="0 0 0" xyz="0 1 0"/>

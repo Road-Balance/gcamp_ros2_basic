@@ -14,7 +14,7 @@ def generate_launch_description():
     use_sim_time = LaunchConfiguration('use_sim_time', default='false')
 
     rviz_file = "tinybot.rviz"
-    robot_file = "tinybot_diff.urdf"
+    robot_file = "diffbot.urdf"
     package_name = "gcamp_gazebo"
     world_file_name = "maze_world.world"
 
@@ -69,9 +69,9 @@ def generate_launch_description():
                 cmd=[ "ros2", "service", "call", "/spawn_entity", "gazebo_msgs/SpawnEntity", spwan_args ],
                 output="screen",
             ),
-            ExecuteProcess(
-                cmd=["ros2", "run", "rviz2", "rviz2", "-d", rviz], 
-                output="screen"
-            ),
+            # ExecuteProcess(
+            #     cmd=["ros2", "run", "rviz2", "rviz2", "-d", rviz], 
+            #     output="screen"
+            # ),
         ]
     )

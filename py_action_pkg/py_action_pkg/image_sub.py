@@ -27,7 +27,7 @@ class ImageSubscriber(Node):
         # from the /skidbot/camera_sensor/image_raw topic. The queue size is 10 messages.
         self.subscription = self.create_subscription(
             Image,
-            "/tinybot/camera_sensor/image_raw",
+            "/diffbot/camera_sensor/image_raw",
             self.listener_callback,
             self.sub_period,
         )
