@@ -10,7 +10,6 @@ private:
   rclcpp::Publisher<Twist>::SharedPtr m_pub;
   rclcpp::Subscription<LaserScan>::SharedPtr m_sub;
 
-  rclcpp::TimerBase::SharedPtr m_timer;
   Twist m_twist_msg;
 
 public:
