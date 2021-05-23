@@ -17,12 +17,6 @@ bool success
 string feedback_msg
 """
 
-# int32 order
-# ---
-# int32[] sequence
-# ---
-# int32[] partial_sequence
-
 class MazeActionClient(Node):
     def __init__(self):
         super().__init__("fibonacci_action_client")
