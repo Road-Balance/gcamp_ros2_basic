@@ -48,6 +48,7 @@ ros2 run py_action_pkg img_subscriber_node
 ros2 run py_action_pkg odome_sub_node 
 ros2 run py_action_pkg robot_controller
 ros2 run py_action_pkg maze_action_server
+ros2 run py_action_pkg maze_action_client
 ros2 action send_goal --feedback maze_action custom_interfaces/action/Maze "{turning_sequence: [2,1,0,1,2]}"
 
 ros2 pkg create --build-type ament_python py_first_pkg   --dependencies rclpy

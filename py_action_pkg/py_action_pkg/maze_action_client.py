@@ -72,6 +72,7 @@ def main(args=None):
     except:
         print("Your sequence list : ", user_inputs)
 
+    print(f"==== Sending Goal ====")
     future = action_client.send_goal(user_inputs)
 
     rclpy.spin(action_client)

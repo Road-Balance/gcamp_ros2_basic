@@ -34,32 +34,31 @@ if(BUILD_TESTING)
   ament_lint_auto_find_test_dependencies()
 endif()
 
-add_executable(basic_server src/basic_server.cpp)
-ament_target_dependencies(basic_server rclcpp example_interfaces)
-install(TARGETS basic_server
-  DESTINATION lib/${PROJECT_NAME})
 
-add_executable(basic_client src/basic_client.cpp)
-ament_target_dependencies(basic_client rclcpp example_interfaces)
-install(TARGETS basic_client
+function(basic_custom_executable target)
+  add_executable(${target}_node src/${target}.cpp)
+  ament_target_dependencies(${target}_node
+    "rclcpp"
+    "example_interfaces")
+  install(TARGETS ${target}_node
   DESTINATION lib/${PROJECT_NAME})
+endfunction()
 
-add_executable(robot_turning_server src/robot_turning_server.cpp)
-ament_target_dependencies(robot_turning_server 
-  rclcpp 
-  example_interfaces
-  geometry_msgs 
-  custom_interfaces)
-install(TARGETS robot_turning_server
+function(advanced_custom_executable target)
+  add_executable(${target}_node src/${target}.cpp)
+  ament_target_dependencies(${target}_node
+    "rclcpp"
+    "example_interfaces"
+    "geometry_msgs"
+    "custom_interfaces")
+  install(TARGETS ${target}_node
   DESTINATION lib/${PROJECT_NAME})
+endfunction()
 
-  add_executable(robot_turning_client src/robot_turning_client.cpp)
-  ament_target_dependencies(robot_turning_client 
-    rclcpp 
-    example_interfaces
-    geometry_msgs 
-    custom_interfaces)
-  install(TARGETS robot_turning_client
-    DESTINATION lib/${PROJECT_NAME})
+basic_custom_executable(basic_server)
+basic_custom_executable(basic_client)
+
+advanced_custom_executable(robot_turning_server)
+advanced_custom_executable(robot_turning_client)
 
 ament_package()

@@ -33,42 +33,19 @@ if(BUILD_TESTING)
   ament_lint_auto_find_test_dependencies()
 endif()
 
-add_library(action_server SHARED
-  src/fibonacci_action_server.cpp)
-target_include_directories(action_server PRIVATE
-  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
-  $<INSTALL_INTERFACE:include>)
-target_compile_definitions(action_server
-  PRIVATE "ACTION_TUTORIALS_CPP_BUILDING_DLL")
-ament_target_dependencies(action_server
-  "custom_interfaces"
-  "rclcpp"
-  "rclcpp_action"
-  "rclcpp_components")
-rclcpp_components_register_node(action_server PLUGIN "action_tutorials_cpp::FibonacciActionServer" EXECUTABLE fibonacci_action_server)
-install(TARGETS
-  action_server
-  ARCHIVE DESTINATION lib
-  LIBRARY DESTINATION lib
-  RUNTIME DESTINATION bin)
+file(GLOB CPP_FILES src/*.cpp)
+foreach( FILE_PATH ${CPP_FILES} )
+    # I used a simple string replace, to cut off .cpp.
+    get_filename_component(FILE_NAME ${FILE_PATH} NAME_WE)
+    add_executable( ${FILE_NAME}_node ${FILE_PATH} )
 
-add_library(action_client SHARED
-  src/fibonacci_action_client.cpp)
-target_include_directories(action_client PRIVATE
-  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
-  $<INSTALL_INTERFACE:include>)
-target_compile_definitions(action_client
-  PRIVATE "ACTION_TUTORIALS_CPP_BUILDING_DLL")
-ament_target_dependencies(action_client
-  "custom_interfaces"
-  "rclcpp"
-  "rclcpp_action"
-  "rclcpp_components")
-rclcpp_components_register_node(action_client PLUGIN "action_tutorials_cpp::FibonacciActionClient" EXECUTABLE fibonacci_action_client)
-install(TARGETS
-  action_client
-  ARCHIVE DESTINATION lib
-  LIBRARY DESTINATION lib
-  RUNTIME DESTINATION bin)
+    # Make sure YourLib is linked to each app
+    ament_target_dependencies(${FILE_NAME}_node 
+      "custom_interfaces"
+      "rclcpp" 
+      "rclcpp_action")
+    install(TARGETS ${FILE_NAME}_node
+      DESTINATION lib/${PROJECT_NAME})
+endforeach( FILE_PATH ${APP_SOURCES} )
 
 ament_package()
