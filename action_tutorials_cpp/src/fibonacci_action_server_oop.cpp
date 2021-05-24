@@ -25,6 +25,8 @@ public:
     m_action_server = rclcpp_action::create_server<Fibonacci>(
         this, "fibonacci", std::bind(&FBActionServer::handle_goal, this, _1, _2),
         std::bind(&FBActionServer::handle_cancel, this, _1), std::bind(&FBActionServer::handle_accepted, this, _1));
+
+    RCLCPP_INFO(get_logger(), "FB Action Server Created Waiting for client... ");
   }
 
   rclcpp_action::GoalResponse handle_goal(const rclcpp_action::GoalUUID &uuid,
@@ -98,8 +100,8 @@ int main(int argc, char **argv)
 {
   rclcpp::init(argc, argv);
 
-  auto node = std::make_shared<FBActionServer>();
-  rclcpp::spin(node);
+  auto server_node = std::make_shared<FBActionServer>();
+  rclcpp::spin(server_node);
 
   rclcpp::shutdown();
   return 0;

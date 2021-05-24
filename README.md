@@ -43,7 +43,7 @@ ros2 action send_goal fibonacci custom_interfaces/action/Fibonacci "{order: 5}"
 ros2 action send_goal --feedback fibonacci custom_interfaces/action/Fibonacci "{order: 5}"
 ros2 run py_action_pkg fibonacci_action_client 
 
-ros2 run image_view image_view --ros-args --remap /image:=/skidbot/camera_sensor/image_raw
+ros2 run image_view image_view --ros-args --remap /image:=/diffbot/camera_sensor/image_raw
 ros2 run py_action_pkg img_subscriber_node 
 ros2 run py_action_pkg odome_sub_node 
 ros2 run py_action_pkg robot_controller
@@ -78,6 +78,8 @@ ros2 service call /turn_robot custom_interfaces/srv/TurningControl "{time_durati
 
 ros2 run action_tutorials_cpp fibonacci_action_server
 ros2 run action_tutorials_cpp fibonacci_action_client
+ros2 run action_tutorials_cpp fibonacci_action_server_oop_node 
+ros2 run action_tutorials_cpp fibonacci_action_client_oop_node 
 
 ros2 interface show example_interfaces/srv/AddTwoInts
 ros2 interface show custom_interfaces/srv/TurningControl

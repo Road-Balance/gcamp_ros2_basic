@@ -3,6 +3,7 @@
 # https://docs.ros.org/en/foxy/Tutorials/Actions/Writing-a-Py-Action-Server-Client.html#id4
 
 import math
+import time
 
 import rclpy
 from rclpy.action import ActionServer
@@ -36,41 +37,32 @@ class MazeActionServer(Node):
 
         self.yaw = 0.0
         self.forward_distance = 0.0
-        self.left_distance = 0.0
-        self.right_distance = 0.0
 
-        self.parking_distance = 0.8
-        
         self.twist_msg = Twist()
-
-        self.stop_msg = Twist()
-        self.stop_msg.linear.x = 0.0
-        self.stop_msg.angular.z = 0.0
-
-        self.sub_period = 10  # Hz
-        self.pub_period = 5  # Hz
-
         self.loop_rate = self.create_rate(5, self.get_clock())
         
         self.laser_sub = self.create_subscription(
             LaserScan,
-            '/tinybot/scan',
+            '/diffbot/scan',
             self.laser_sub_cb,
-            self.sub_period
+            10
         )
 
         self.odom_sub = self.create_subscription(
             Odometry,
-            "/tinybot/odom",
+            "/diffbot/odom",
             self.odom_sub_cb,
-            self.sub_period,
+            10
         )
 
         self.cmd_vel_pub = self.create_publisher(
             Twist,
-            "/tinybot/cmd_vel",
-            self.pub_period
+            "/diffbot/cmd_vel",
+            10
         )
+
+        timer_period = 0.1  # seconds
+        self.timer = self.create_timer(timer_period, self.publish_callback)
 
         self._action_server = ActionServer(
             self, Maze, "maze_action", self.execute_callback
@@ -78,28 +70,16 @@ class MazeActionServer(Node):
         self.get_logger().info("=== Maze Action Server Started ====")
     
     def laser_sub_cb(self, data):
-        self.right_distance = data.ranges[1]
         self.forward_distance = data.ranges[360]
-        self.left_distance = data.ranges[719]
-        # print(f"Distance : {self.forward_distance}")
+        # print(self.forward_distance)
 
     def odom_sub_cb(self, data):
         orientation = data.pose.pose.orientation
         _, _, self.yaw = euler_from_quaternion(orientation)
         # print(f"yaw : {self.yaw}")
 
-    def parking_robot(self):
-        print(f"Going Forward Until {self.parking_distance}m Obstacle Detection")
-
-        while self.forward_distance > self.parking_distance:
-            self.twist_msg.linear.x = 0.5
-            self.twist_msg.angular.z = 0.0
-            
-            if self.left_distance < 0.8:
-                self.twist_msg.angular.z = 0.7 * (self.left_distance - 0.8)
-
-            self.cmd_vel_pub.publish(self.twist_msg)
-            self.loop_rate.sleep()
+    def publish_callback(self):
+        self.cmd_vel_pub.publish(self.twist_msg)
 
     def turn_robot(self, euler_angle):
         print(f"Robot Turns to {euler_angle}")
@@ -111,16 +91,25 @@ class MazeActionServer(Node):
             self.twist_msg.linear.x = 0.0
             self.twist_msg.angular.z = turn_offset
             self.cmd_vel_pub.publish(self.twist_msg) 
-            self.loop_rate.sleep()
+    
+        self.stop_robot()
 
+    def parking_robot(self):
+
+        while self.forward_distance > 1.0:
+            self.twist_msg.linear.x = 0.5
+            self.twist_msg.angular.z = 0.0
+            
+            self.cmd_vel_pub.publish(self.twist_msg)
+        
+        self.stop_robot()
+        
     def stop_robot(self):
-        clock_now  = self.get_clock().now().to_msg().sec
-        start_time = self.get_clock().now().to_msg().sec
+        self.twist_msg.linear.x = 0.0
+        self.twist_msg.angular.z = 0.0
+        self.cmd_vel_pub.publish(self.twist_msg) 
 
-        while (clock_now - start_time) < 2:
-            self.cmd_vel_pub.publish(self.stop_msg) 
-            self.loop_rate.sleep()
-            clock_now = self.get_clock().now().to_msg().sec
+        time.sleep(1)
 
     def execute_callback(self, goal_handle):
         self.get_logger().info("Executing goal...")
@@ -134,12 +123,8 @@ class MazeActionServer(Node):
             feedback.feedback_msg = f"Turning {direction_str_dict[val]}"
 
             self.turn_robot(direction_dict[val])
-            self.stop_robot()
-
             self.parking_robot()
-            self.stop_robot()
 
-            self.loop_rate.sleep()
             goal_handle.publish_feedback(feedback)
 
         image_sub_node = ImageSubscriber()
@@ -153,11 +138,12 @@ class MazeActionServer(Node):
             result.success = True
         else:
             goal_handle.abort()
-            self.get_logger().warn("==== Succeed ====")
+            self.get_logger().error("==== Fail ====")
             result = Maze.Result()
             result.success = False
 
         return result
+
 
 def main(args=None):
     rclpy.init(args=args)
@@ -165,17 +151,17 @@ def main(args=None):
     # Referenced from robotpilot/ros2-seminar-examples
     # https://github.com/robotpilot/ros2-seminar-examples/blob/main/topic_service_action_rclpy_example/topic_service_action_rclpy_example/calculator/main.py
     try:
-        fibonacci_action_server = MazeActionServer()
+        maze_action_server = MazeActionServer()
         executor = MultiThreadedExecutor()
-        executor.add_node(fibonacci_action_server)
+        executor.add_node(maze_action_server)
         try:
             executor.spin()
         except KeyboardInterrupt:
-            fibonacci_action_server.get_logger().info('Keyboard Interrupt (SIGINT)')
+            maze_action_server.get_logger().info('Keyboard Interrupt (SIGINT)')
         finally:
             executor.shutdown()
-            fibonacci_action_server._action_server.destroy()
-            fibonacci_action_server.destroy_node()
+            maze_action_server._action_server.destroy()
+            maze_action_server.destroy_node()
     finally:
         rclpy.shutdown()
 

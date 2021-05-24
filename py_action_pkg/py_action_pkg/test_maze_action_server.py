@@ -138,7 +138,7 @@ class MazeActionServer(Node):
             result.success = True
         else:
             goal_handle.abort()
-            self.get_logger().warn("==== Fail ====")
+            self.get_logger().error("==== Fail ====")
             result = Maze.Result()
             result.success = False
 
