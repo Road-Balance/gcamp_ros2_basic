@@ -7,7 +7,10 @@ import rclpy
 
 from rclpy.node import Node
 from sensor_msgs.msg import Image  # Image is the message type
-from cv_bridge import CvBridge, CvBridgeError  # Package to convert between ROS and OpenCV Images
+from cv_bridge import (
+    CvBridge,
+    CvBridgeError,
+)  # Package to convert between ROS and OpenCV Images
 
 
 class ImageSubscriber(Node):
@@ -40,7 +43,7 @@ class ImageSubscriber(Node):
 
         # Convert ROS Image message to OpenCV image
         try:
-            current_frame = self.cv_bridge.imgmsg_to_cv2(data, "bgr8")  
+            current_frame = self.cv_bridge.imgmsg_to_cv2(data, "bgr8")
         except CvBridgeError as e:
             print(e)
 
@@ -49,6 +52,7 @@ class ImageSubscriber(Node):
         # cv2.waitKey(1)
 
         self.center_pixel = current_frame[400, 400]
+
 
 def main(args=None):
 

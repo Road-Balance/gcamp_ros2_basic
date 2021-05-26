@@ -32,10 +32,12 @@ def euler_from_quaternion(quaternion):
 
     return roll, pitch, yaw
 
+
 class OdometrySubscriber(Node):
     """
     Create an OdometrySubscriber class, which is a subclass of the Node class.
     """
+
     def __init__(self):
         """
         Class constructor to set up the node
@@ -57,8 +59,9 @@ class OdometrySubscriber(Node):
     def listener_callback(self, data):
         orientation = data.pose.pose.orientation
         _, _, self._yaw = euler_from_quaternion(orientation)
-        
+
         print(self._yaw)
+
 
 def main(args=None):
 

@@ -11,7 +11,7 @@ from rclpy.node import Node
 
 from sensor_msgs.msg import LaserScan
 from geometry_msgs.msg import Twist
-from nav_msgs.msg import Odometry 
+from nav_msgs.msg import Odometry
 
 from custom_interfaces.action import Maze
 from py_action_pkg.robot_controller import euler_from_quaternion
@@ -31,6 +31,8 @@ Maze.action structure
     ---
     string feedback_msg
 """
+
+
 class MazeActionServer(Node):
     def __init__(self):
         super().__init__("maze_action_server")
@@ -40,26 +42,16 @@ class MazeActionServer(Node):
 
         self.twist_msg = Twist()
         self.loop_rate = self.create_rate(5, self.get_clock())
-        
+
         self.laser_sub = self.create_subscription(
-            LaserScan,
-            '/diffbot/scan',
-            self.laser_sub_cb,
-            10
+            LaserScan, "/diffbot/scan", self.laser_sub_cb, 10
         )
 
         self.odom_sub = self.create_subscription(
-            Odometry,
-            "/diffbot/odom",
-            self.odom_sub_cb,
-            10
+            Odometry, "/diffbot/odom", self.odom_sub_cb, 10
         )
 
-        self.cmd_vel_pub = self.create_publisher(
-            Twist,
-            "/diffbot/cmd_vel",
-            10
-        )
+        self.cmd_vel_pub = self.create_publisher(Twist, "/diffbot/cmd_vel", 10)
 
         timer_period = 0.1  # seconds
         self.timer = self.create_timer(timer_period, self.publish_callback)
@@ -68,7 +60,7 @@ class MazeActionServer(Node):
             self, Maze, "maze_action", self.execute_callback
         )
         self.get_logger().info("=== Maze Action Server Started ====")
-    
+
     def laser_sub_cb(self, data):
         self.forward_distance = data.ranges[360]
         # print(self.forward_distance)
@@ -90,8 +82,8 @@ class MazeActionServer(Node):
             turn_offset = 0.7 * (euler_angle - self.yaw)
             self.twist_msg.linear.x = 0.0
             self.twist_msg.angular.z = turn_offset
-            self.cmd_vel_pub.publish(self.twist_msg) 
-    
+            self.cmd_vel_pub.publish(self.twist_msg)
+
         self.stop_robot()
 
     def parking_robot(self):
@@ -99,15 +91,15 @@ class MazeActionServer(Node):
         while self.forward_distance > 1.0:
             self.twist_msg.linear.x = 0.5
             self.twist_msg.angular.z = 0.0
-            
+
             self.cmd_vel_pub.publish(self.twist_msg)
-        
+
         self.stop_robot()
-        
+
     def stop_robot(self):
         self.twist_msg.linear.x = 0.0
         self.twist_msg.angular.z = 0.0
-        self.cmd_vel_pub.publish(self.twist_msg) 
+        self.cmd_vel_pub.publish(self.twist_msg)
 
         time.sleep(1)
 
@@ -157,13 +149,14 @@ def main(args=None):
         try:
             executor.spin()
         except KeyboardInterrupt:
-            maze_action_server.get_logger().info('Keyboard Interrupt (SIGINT)')
+            maze_action_server.get_logger().info("Keyboard Interrupt (SIGINT)")
         finally:
             executor.shutdown()
             maze_action_server._action_server.destroy()
             maze_action_server.destroy_node()
     finally:
         rclpy.shutdown()
+
 
 if __name__ == "__main__":
     main()

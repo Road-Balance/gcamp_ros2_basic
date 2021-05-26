@@ -17,6 +17,7 @@ bool success
 string feedback_msg
 """
 
+
 class MazeActionClient(Node):
     def __init__(self):
         super().__init__("fibonacci_action_client")

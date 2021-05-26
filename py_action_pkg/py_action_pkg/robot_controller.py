@@ -10,7 +10,7 @@ from rclpy.node import Node
 
 from sensor_msgs.msg import LaserScan
 from geometry_msgs.msg import Twist
-from nav_msgs.msg import Odometry 
+from nav_msgs.msg import Odometry
 
 
 #    https://gist.github.com/salmagro/2e698ad4fbf9dae40244769c5ab74434
@@ -36,12 +36,14 @@ def euler_from_quaternion(quaternion):
     cosy_cosp = 1 - 2 * (y * y + z * z)
     yaw = np.arctan2(siny_cosp, cosy_cosp)
 
-    return roll, pitch, yaw 
+    return roll, pitch, yaw
+
 
 class RobotController(Node):
     """
     Create an RobotController class, which is a subclass of the Node class.
     """
+
     def __init__(self):
         """
         Class constructor to set up the node
@@ -69,10 +71,7 @@ class RobotController(Node):
         # Create the subscriber. This subscriber will receive an LaserScan
         # Data from the /diffbot/scan topic. The queue size is 10 messages.
         self.laser_sub = self.create_subscription(
-            LaserScan,
-            '/diffbot/scan',
-            self.laser_sub_cb,
-            self.sub_period
+            LaserScan, "/diffbot/scan", self.laser_sub_cb, self.sub_period
         )
 
         # Receive an Odometry from the /diffbot/odom topic.
@@ -86,9 +85,7 @@ class RobotController(Node):
         # Create the publisher. This publisher will control robot by
         # /diffbot/cmd_vel topic. The queue size is 10 messages.
         self.cmd_vel_pub = self.create_publisher(
-            Twist,
-            "/diffbot/cmd_vel",
-            self.pub_period
+            Twist, "/diffbot/cmd_vel", self.pub_period
         )
 
         # prevent unused variable warning
@@ -104,7 +101,7 @@ class RobotController(Node):
         orientation = data.pose.pose.orientation
         _, _, self.yaw = euler_from_quaternion(orientation)
         # print(f"yaw : {self.yaw}")
-    
+
     def laser_sub_cb(self, data):
         self.forward_distance = data.ranges[360]
         # print(f"Distance : {self.forward_distance}")
@@ -116,13 +113,13 @@ class RobotController(Node):
 
     def stop_robot(self):
         print("==== Stop Robot ====")
-        self.twist_msg.linear.x  = 0.0
-        self.twist_msg.angular.z  = 0.0
+        self.twist_msg.linear.x = 0.0
+        self.twist_msg.angular.z = 0.0
         self.cmd_vel_pub.publish(self.twist_msg)
 
     def turn_robot(self, angular_vel=0.0):
-        self.twist_msg.linear.x  = 0.0
-        self.twist_msg.angular.z  = angular_vel
+        self.twist_msg.linear.x = 0.0
+        self.twist_msg.angular.z = angular_vel
         self.cmd_vel_pub.publish(self.twist_msg)
 
 
@@ -144,6 +141,7 @@ def turn_robot(rclpy, controller, euler_angle):
 
     controller.stop_robot()
 
+
 def parking_robot(rclpy, controller):
     print("Going Forward Until 0.8m Obstacle Detection")
 
@@ -159,16 +157,16 @@ def parking_robot(rclpy, controller):
             rclpy.spin_once(controller)
             break
 
+
 def main(args=None):
     rclpy.init(args=args)
 
     robot_controller = RobotController()
 
-    while True:    
+    while True:
         robot_controller.move_robot(1.0)
         print(f"{robot_controller.forward_distance}")
 
-
     # parking_robot(rclpy, robot_controller)
     # turn_robot(rclpy, robot_controller, math.pi)
 
@@ -176,10 +174,10 @@ def main(args=None):
     # turn_robot(rclpy, robot_controller, math.pi)
 
     # parking_robot(rclpy, robot_controller)
-
 
     robot_controller.destroy_node()
     rclpy.shutdown()
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     main()

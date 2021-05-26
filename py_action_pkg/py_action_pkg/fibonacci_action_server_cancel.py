@@ -6,6 +6,7 @@ import time
 
 import rclpy
 from rclpy.action import ActionServer, CancelResponse, GoalResponse
+from rclpy.executors import MultiThreadedExecutor
 from rclpy.node import Node
 
 from custom_interfaces.action import Fibonacci
@@ -15,8 +16,10 @@ class FibonacciActionServer(Node):
     def __init__(self):
         super().__init__("fibonacci_action_server")
         self._action_server = ActionServer(
-            self, Fibonacci, "fibonacci", 
-            self.execute_callback,
+            self,
+            Fibonacci,
+            'fibonacci',
+            execute_callback=self.execute_callback,
             goal_callback=self.goal_callback,
             cancel_callback=self.cancel_callback)
 
@@ -66,7 +69,9 @@ def main(args=None):
     rclpy.init(args=args)
 
     fibonacci_action_server = FibonacciActionServer()
-    rclpy.spin(fibonacci_action_server)
+
+    executor = MultiThreadedExecutor()
+    rclpy.spin(fibonacci_action_server, executor=executor)
 
     fibonacci_action_server.destroy()
     rclpy.shutdown()

@@ -39,9 +39,12 @@ ros2 service call /delete_entity gazebo_msgs/srv/DeleteEntity "{name: 'skidbot'}
 ros2 run py_service_pkg robot_turning_client
 
 ros2 run py_action_pkg fibonacci_action_server 
+ros2 run py_action_pkg fibonacci_action_client 
+ros2 run py_action_pkg fibonacci_action_server_cancel 
+ros2 run py_action_pkg fibonacci_action_client_cancel
+
 ros2 action send_goal fibonacci custom_interfaces/action/Fibonacci "{order: 5}"
 ros2 action send_goal --feedback fibonacci custom_interfaces/action/Fibonacci "{order: 5}"
-ros2 run py_action_pkg fibonacci_action_client 
 
 ros2 run image_view image_view --ros-args --remap /image:=/diffbot/camera_sensor/image_raw
 ros2 run py_action_pkg img_subscriber_node 
