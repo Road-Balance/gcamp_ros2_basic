@@ -5,7 +5,7 @@
 import time
 
 import rclpy
-from rclpy.action import ActionServer, CancelResponse, GoalResponse
+from rclpy.action import ActionServer, GoalResponse
 from rclpy.node import Node
 
 from custom_interfaces.action import Fibonacci
@@ -17,8 +17,7 @@ class FibonacciActionServer(Node):
         self._action_server = ActionServer(
             self, Fibonacci, "fibonacci", 
             self.execute_callback,
-            goal_callback=self.goal_callback,
-            cancel_callback=self.cancel_callback)
+            goal_callback=self.goal_callback)
 
         self.get_logger().info("=== Fibonacci Action Server Started ====")
 
@@ -55,11 +54,6 @@ class FibonacciActionServer(Node):
         # This server allows multiple goals in parallel
         self.get_logger().info('Received goal request')
         return GoalResponse.ACCEPT
-
-    def cancel_callback(self, goal_handle):
-        """Accept or reject a client request to cancel an action."""
-        self.get_logger().info('Received cancel request')
-        return CancelResponse.ACCEPT
 
 
 def main(args=None):
