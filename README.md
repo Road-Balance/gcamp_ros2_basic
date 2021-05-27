@@ -105,6 +105,7 @@ https://answers.ros.org/question/302037/ros2-how-to-call-a-service-from-the-call
 
 ```
 colcon build --symlink-install --packages-select gcamp_gazebo
+colcon build --symlink-install --packages-select py_action_pkg
 install\setup.bat
 ros2 launch gcamp_gazebo gcamp_world_windows.launch.py
 
