@@ -13,7 +13,6 @@ class FBActionServer : public rclcpp::Node
 {
 private:
   rclcpp_action::Server<Fibonacci>::SharedPtr m_action_server;
-  // converting constructor
 public:
   FBActionServer() : Node("fb_action_server")
   {
@@ -33,7 +32,15 @@ public:
                                           std::shared_ptr<const Fibonacci::Goal> goal)
   {
     RCLCPP_INFO(get_logger(), "Got goal request with order %d", goal->order);
+    
+    std::cout << uuid << std::endl;
+    
     (void)uuid;
+
+
+    // for(const auto& i: uuid)
+    //     std::cout << i << ' ';
+        
     // Let's reject sequences that are over 9000
     if (goal->order > 9000)
     {
