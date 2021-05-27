@@ -58,7 +58,7 @@ class FibonacciActionClient(Node):
         self.get_logger().info("Goal accepted")
 
         # Start a 2 second timer
-        self._timer = self.create_timer(2.0, self.timer_callback)
+        self.timer = self.create_timer(2.0, self.timer_callback)
 
     def timer_callback(self):
         self.get_logger().info("Canceling goal")
@@ -67,7 +67,7 @@ class FibonacciActionClient(Node):
         future.add_done_callback(self.cancel_done)
 
         # Cancel the timer
-        self._timer.cancel()
+        # self.timer.cancel()
 
     def cancel_done(self, future):
         cancel_response = future.result()
