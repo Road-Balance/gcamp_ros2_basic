@@ -27,7 +27,7 @@ from custom_interfaces.action import Fibonacci
 class FibonacciActionClient(Node):
     def __init__(self):
         super().__init__("fibonacci_action_client")
-        self._action_client = ActionClient(self, Fibonacci, "fibonacci")
+        self.action_client = ActionClient(self, Fibonacci, "fibonacci")
         self.goal_handle = None
         self.get_logger().info("=== Fibonacci Action Client Started ====")
 
@@ -35,9 +35,10 @@ class FibonacciActionClient(Node):
         goal_msg = Fibonacci.Goal()
         goal_msg.order = order
 
-        self._action_client.wait_for_server()
+        if self.action_client.wait_for_server(10) is False:
+            self.get_logger().error("Server Not exists")
 
-        self._send_goal_future = self._action_client.send_goal_async(
+        self._send_goal_future = self.action_client.send_goal_async(
             goal_msg, feedback_callback=self.feedback_callback
         )
 
@@ -81,11 +82,11 @@ class FibonacciActionClient(Node):
 def main(args=None):
     rclpy.init(args=args)
 
-    action_client = FibonacciActionClient()
+    fibonacci_action_client = FibonacciActionClient()
 
-    future = action_client.send_goal(5)
+    future = fibonacci_action_client.send_goal(5)
 
-    rclpy.spin(action_client)
+    rclpy.spin(fibonacci_action_client)
 
 
 if __name__ == "__main__":
