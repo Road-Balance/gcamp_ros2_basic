@@ -14,7 +14,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# Also Referenced ROS Documents 
+# Also Referenced ROS Documents
 # https://docs.ros.org/en/foxy/Tutorials/Actions/Writing-a-Py-Action-Server-Client.html#id4
 
 import time
@@ -34,11 +34,12 @@ class FibonacciActionServer(Node):
         self.action_server = ActionServer(
             self,
             Fibonacci,
-            'fibonacci',
+            "fibonacci",
             callback_group=ReentrantCallbackGroup(),
             execute_callback=self.execute_callback,
             goal_callback=self.goal_callback,
-            cancel_callback=self.cancel_callback)
+            cancel_callback=self.cancel_callback,
+        )
 
         self.get_logger().info("=== Fibonacci Action Server Started ====")
 
@@ -52,7 +53,7 @@ class FibonacciActionServer(Node):
 
             if goal_handle.is_cancel_requested:
                 goal_handle.canceled()
-                self.get_logger().info('Goal canceled')
+                self.get_logger().info("Goal canceled")
                 return Fibonacci.Result()
 
             feedback_msg.partial_sequence.append(
@@ -73,12 +74,12 @@ class FibonacciActionServer(Node):
     def goal_callback(self, goal_request):
         """Accept or reject a client request to begin an action."""
         # This server allows multiple goals in parallel
-        self.get_logger().info('Received goal request')
+        self.get_logger().info("Received goal request")
         return GoalResponse.ACCEPT
 
     def cancel_callback(self, goal_handle):
         """Accept or reject a client request to cancel an action."""
-        self.get_logger().info('Received cancel request')
+        self.get_logger().info("Received cancel request")
         return CancelResponse.ACCEPT
 
 

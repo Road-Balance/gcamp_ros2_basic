@@ -14,7 +14,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# Also Referenced ROS Documents 
+# Also Referenced ROS Documents
 # https://docs.ros.org/en/foxy/Tutorials/Actions/Writing-a-Py-Action-Server-Client.html#id4
 
 import rclpy
@@ -54,7 +54,7 @@ class FibonacciActionClient(Node):
         if not self.goal_handle.accepted:
             self.get_logger().info("Goal rejected")
             return
-        
+
         self.get_logger().info("Goal accepted")
 
         # Start a 2 second timer
