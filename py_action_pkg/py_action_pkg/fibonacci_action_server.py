@@ -14,7 +14,7 @@ from custom_interfaces.action import Fibonacci
 class FibonacciActionServer(Node):
     def __init__(self):
         super().__init__("fibonacci_action_server")
-        self._action_server = ActionServer(
+        self.action_server = ActionServer(
             self, Fibonacci, "fibonacci", 
             self.execute_callback,
             goal_callback=self.goal_callback)
