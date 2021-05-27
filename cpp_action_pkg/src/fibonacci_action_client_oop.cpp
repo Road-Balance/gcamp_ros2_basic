@@ -1,4 +1,4 @@
-// Copyright 2018 Open Source Robotics Foundation, Inc.
+// Copyright 2021 Kimsooyoung
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -68,7 +68,7 @@ public:
     // timer cancel required for send goal once
     m_timer->cancel();
 
-    if (!m_action_client->wait_for_action_server())
+    if (!m_action_client->wait_for_action_server(std::chrono::seconds(10)))
     {
       RCLCPP_ERROR(get_logger(), "Action server not available after waiting");
       rclcpp::shutdown();
@@ -77,7 +77,6 @@ public:
     auto goal_msg = Fibonacci::Goal();
     goal_msg.order = 10;
 
-    RCLCPP_INFO(get_logger(), "Sending goal");
 
     auto send_goal_options = rclcpp_action::Client<Fibonacci>::SendGoalOptions();
 
@@ -132,7 +131,7 @@ public:
 
     std::cout << "Result received: ";
 
-    for (auto number : result.result->sequence)
+    for (const auto number : result.result->sequence)
       std::cout << number << " ";
 
     std::cout << std::endl;
