@@ -4,7 +4,6 @@ import rclpy
 from rclpy.action import ActionClient
 from rclpy.node import Node
 
-from custom_interfaces.action import Fibonacci
 from custom_interfaces.action import Maze
 
 """
@@ -20,7 +19,7 @@ string feedback_msg
 
 class MazeActionClient(Node):
     def __init__(self):
-        super().__init__("fibonacci_action_client")
+        super().__init__("maze_action_client")
         self._action_client = ActionClient(self, Maze, "maze_action")
         self.get_logger().info("=== Maze Action Client Started ====")
 
@@ -28,7 +27,8 @@ class MazeActionClient(Node):
         goal_msg = Maze.Goal()
         goal_msg.turning_sequence = turning_list
 
-        self._action_client.wait_for_server()
+        if self.action_client.wait_for_server(10) is False:
+            self.get_logger().error("Server Not exists")
 
         self._send_goal_future = self._action_client.send_goal_async(
             goal_msg, feedback_callback=self.feedback_callback
