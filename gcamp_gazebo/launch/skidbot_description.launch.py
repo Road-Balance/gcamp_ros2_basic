@@ -19,7 +19,7 @@ def generate_launch_description():
     use_sim_time = LaunchConfiguration('use_sim_time', default='false')
 
     package_name = "gcamp_gazebo"
-    robot_file = "diffbot.urdf"
+    robot_file = "skidbot.urdf"
     rviz_file = "description.rviz"
 
     urdf = os.path.join(get_package_share_directory(package_name), "urdf", robot_file)
