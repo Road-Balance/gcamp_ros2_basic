@@ -33,13 +33,7 @@ public:
   {
     RCLCPP_INFO(get_logger(), "Got goal request with order %d", goal->order);
     
-    std::cout << uuid << std::endl;
-    
     (void)uuid;
-
-
-    // for(const auto& i: uuid)
-    //     std::cout << i << ' ';
         
     // Let's reject sequences that are over 9000
     if (goal->order > 9000)
