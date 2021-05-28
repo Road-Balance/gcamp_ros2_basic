@@ -61,7 +61,7 @@ class MazeActionClient(Node):
 def main(args=None):
     rclpy.init(args=args)
 
-    action_client = MazeActionClient()
+    maze_action_client = MazeActionClient()
     user_inputs = []
     # Input Logic
     try:
@@ -74,9 +74,9 @@ def main(args=None):
         print("Your sequence list : ", user_inputs)
 
     print(f"==== Sending Goal ====")
-    future = action_client.send_goal(user_inputs)
+    future = maze_action_client.send_goal(user_inputs)
 
-    rclpy.spin(action_client)
+    rclpy.spin(maze_action_client)
 
 
 if __name__ == "__main__":
