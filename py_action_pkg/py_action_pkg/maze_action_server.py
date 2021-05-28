@@ -1,7 +1,5 @@
 #!/usr/bin/env/ python3
 
-# https://docs.ros.org/en/foxy/Tutorials/Actions/Writing-a-Py-Action-Server-Client.html#id4
-
 import math
 import time
 
@@ -31,7 +29,6 @@ Maze.action structure
     ---
     string feedback_msg
 """
-
 
 class MazeActionServer(Node):
     def __init__(self):
