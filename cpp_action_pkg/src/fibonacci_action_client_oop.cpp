@@ -77,7 +77,6 @@ public:
     auto goal_msg = Fibonacci::Goal();
     goal_msg.order = 10;
 
-
     auto send_goal_options = rclcpp_action::Client<Fibonacci>::SendGoalOptions();
 
     // TODO Cancel Logic
@@ -91,8 +90,6 @@ public:
   void goal_response_callback(std::shared_future<GoalHandleFibonacci::SharedPtr> future)
   {
     goal_handle = future.get();
-    auto result_future = m_action_client->async_get_result(goal_handle);
-    std::cout << "result_future" << std::endl;
 
     if (!goal_handle)
       RCLCPP_ERROR(get_logger(), "Goal was rejected by server");
