@@ -15,7 +15,7 @@ class CmdVelPublisher(Node):
         timer_period = 0.5  # seconds
         self.timer = self.create_timer(timer_period, self.publish_callback)
         self.get_logger().info(
-            " DriveForward node Started, move forward during 5 seconds \n"
+            " DriveForward Node Started, move forward endless \n"
         )
 
     def publish_callback(self):
@@ -38,7 +38,6 @@ def main(args=None):
 
     rclpy.spin(cmd_vel_publisher)
 
-    cmd_vel_publisher.stop_robot()
     cmd_vel_publisher.get_logger().info("\n==== Stop Publishing ====")
 
     cmd_vel_publisher.destroy_node()
