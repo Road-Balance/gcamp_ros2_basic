@@ -21,6 +21,7 @@ public:
   }
 
   ~Talker(){
+    // publisher
     RCLCPP_WARN(this->get_logger(), "Node Destructor");
   }
 };
@@ -28,11 +29,12 @@ public:
 int main(int argc, char **argv)
 {
   rclcpp::init(argc, argv);
-  
+
   auto talker = std::make_shared<Talker>();
   rclcpp::spin(talker);
-  
+
   RCLCPP_INFO(talker->get_logger(), "==== Spin Done ====");
+
   rclcpp::shutdown();
 
   std::cout << "==== After Shutdown ====" << std::endl;
