@@ -64,11 +64,11 @@ public:
 
     const auto goal = goal_handle->get_goal();
     auto feedback = std::make_shared<Fibonacci::Feedback>();
+    auto result = std::make_shared<Fibonacci::Result>();
     auto &sequence = feedback->partial_sequence;
     sequence.push_back(0);
     sequence.push_back(1);
 
-    auto result = std::make_shared<Fibonacci::Result>();
     for (int i = 1; (i < goal->order) && rclcpp::ok(); ++i)
     {
       // Check if there is a cancel request
