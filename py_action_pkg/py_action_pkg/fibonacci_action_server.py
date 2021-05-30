@@ -56,6 +56,7 @@ class FibonacciActionServer(Node):
         """Accept or reject a client request to begin an action."""
         # This server allows multiple goals in parallel
         self.get_logger().info("Received goal request")
+        
         return GoalResponse.ACCEPT
 
 
