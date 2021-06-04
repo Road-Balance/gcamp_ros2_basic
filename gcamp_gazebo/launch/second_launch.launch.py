@@ -25,6 +25,7 @@ def generate_launch_description():
         executable='draw_square',
         parameters=[],
         arguments=[],
+        output="screen",
     )
 
     # create and return launch description object

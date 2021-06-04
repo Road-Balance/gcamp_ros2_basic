@@ -35,7 +35,6 @@ class ParkingNode(Node):
             self.get_logger().info('==== Parking Done!!! ====\n')
             twist_msg.linear.x = 0.0
             self.publisher.publish(twist_msg)
-            self.destroy_node()
 
 
 def main(args=None):

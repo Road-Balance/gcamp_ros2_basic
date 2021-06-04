@@ -22,7 +22,7 @@ public:
 
     m_twist_pub = create_publisher<Twist>("/skidbot/cmd_vel", 10);
     m_service = create_service<TurningControl>(
-        "turn_robot", std::bind(&RobotTurnServer::response, this, std::placeholders::_1, std::placeholders::_2));
+        "turn_robot", std::bind(&RobotTurnServer::response_callback, this, std::placeholders::_1, std::placeholders::_2));
   }
 
   // uint32 time_duration
@@ -30,7 +30,7 @@ public:
   // float64 linear_vel_x
   // ---
   // bool success
-  void response(std::shared_ptr<TurningControl::Request> request, std::shared_ptr<TurningControl::Response> response)
+  void response_callback(std::shared_ptr<TurningControl::Request> request, std::shared_ptr<TurningControl::Response> response)
   {
     auto t_start = now();
     auto t_now = now();

@@ -106,7 +106,7 @@ class MazeActionServer(Node):
         feedback = Maze.Feedback()
         feedback.feedback_msg = ""
 
-        for i, val in enumerate(goal_handle.request.turning_sequence):
+        for _, val in enumerate(goal_handle.request.turning_sequence):
             print(f"Current Cmd: {val}")
 
             feedback.feedback_msg = f"Turning {direction_str_dict[val]}"

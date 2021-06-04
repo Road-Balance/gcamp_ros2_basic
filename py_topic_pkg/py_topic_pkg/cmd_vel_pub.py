@@ -38,7 +38,8 @@ def main(args=None):
     cmd_vel_publisher = CmdVelPublisher()
     start_time = cmd_vel_publisher.get_clock().now().to_msg().sec
     clock_now = start_time
-
+    time_delta = 0
+    
     while (clock_now - start_time) < 5:
         rclpy.spin_once(cmd_vel_publisher)
         clock_now = cmd_vel_publisher.get_clock().now().to_msg().sec

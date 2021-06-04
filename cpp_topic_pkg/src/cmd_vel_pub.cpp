@@ -29,7 +29,7 @@ public:
     m_twist_msg.angular.z = 1.0;
     m_pub->publish(m_twist_msg);
 
-    std::cout << "==== Move Robot ====" << std::endl;
+    // std::cout << "==== Move Robot ====" << std::endl;
   }
 
   void stop_robot()
@@ -50,13 +50,16 @@ int main(int argc, char **argv)
 
   auto t_start = twist_pub->now();
   auto t_now = twist_pub->now();
-  auto t_delta = 5 * 1e9;
 
-  while ((t_now - t_start).nanoseconds() < t_delta)
+  auto stop_time = 5 * 1e9;
+
+  while ((t_now - t_start).nanoseconds() < stop_time)
   {
     t_now = twist_pub->now();
-    // twist_pub->move_robot();
-    rclcpp::spin_some(twist_pub);
+    // rclcpp::spin_some(twist_pub);
+    twist_pub->move_robot();
+    
+    std::cout << (t_now - t_start).nanoseconds() / 1e9 << std::endl;
   }
 
   // publish doesn't require spin

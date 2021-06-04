@@ -67,7 +67,7 @@ class FibonacciActionClient(Node):
         future.add_done_callback(self.cancel_done)
 
         # Cancel the timer
-        # self.timer.cancel()
+        self.timer.cancel()
 
     def cancel_done(self, future):
         cancel_response = future.result()
