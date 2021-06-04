@@ -6,6 +6,7 @@ from rclpy.node import Node
 
 
 class RobotTurnClient(Node):
+
     def __init__(self):
         super().__init__('robot_turn_client')
         self.client = self.create_client(TurningControl, 'turn_robot')  # CHANGE
@@ -33,13 +34,13 @@ class RobotTurnClient(Node):
                 self.req.angular_vel_z = float(vel_z)
                 break
             except ArithmeticError as e:
-                print(e)
+                self.get_logger().warn(e)
             except Exception as e:
-                print(e)
-                print('Not a number, PLZ Type number Again')
+                self.get_logger().warn(e)
+                self.get_logger().warn('Not a number, PLZ Type number Again')
 
         self.future = self.client.call_async(self.req)
-        print(
+        self.get_logger().info(
             f'linear_x : {self.req.linear_vel_x} / angular_z : {self.req.angular_vel_z}'
         )
         self.get_logger().info(' Request Sended ')
@@ -57,14 +58,14 @@ def main(args=None):
     if future.done():
         try:
             response = future.result()
-        except Exception as e:
+        except Exception:
             raise RuntimeError(
                 'exception while calling service: %r' % future.exception()
             )
         else:
-            print('==== Service Call Done ====')
-            print(
-                f'Result Message : {'Success' if response.success == True else 'Fail'}'
+            robot_turn_client.get_logger().info('==== Service Call Done ====')
+            robot_turn_client.get_logger().info(
+                f'Result Message : {"Success" if response.success == True else "Fail"}'
             )
         finally:
             robot_turn_client.get_logger().warn('==== Shutting down node ====')
