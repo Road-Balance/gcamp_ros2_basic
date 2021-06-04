@@ -3,17 +3,21 @@
 <package format="3">
   <name>py_topic_pkg</name>
   <version>0.0.0</version>
-  <description>TODO: Package description</description>
+  <description>Basic Topic Template for GCamp ROS2 Lecture</description>
   <maintainer email="tge1375@naver.com">swimming</maintainer>
-  <license>TODO: License declaration</license>
+  <license>Apache License 2.0</license>
 
   <depend>rclpy</depend>
   <depend>sensor_msgs</depend>
   <depend>geometry_msgs</depend>
 
+  <test_depend>ament_lint_auto</test_depend>
+
   <test_depend>ament_copyright</test_depend>
   <test_depend>ament_flake8</test_depend>
   <test_depend>ament_pep257</test_depend>
+  <test_depend>ament_cmake_uncrustify</test_depend>
+  <test_depend>ament_cmake_xmllint</test_depend>
   <test_depend>python3-pytest</test_depend>
 
   <export>
