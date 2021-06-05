@@ -1,6 +1,6 @@
 # !/usr/bin/env/ python3
 
-from custom_interfaces.srv import TurningControl 
+from custom_interfaces.srv import TurningControl
 from geometry_msgs.msg import Twist
 import rclpy
 from rclpy.node import Node
