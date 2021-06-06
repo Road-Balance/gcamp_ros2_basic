@@ -1,15 +1,15 @@
-#!/usr/bin/env/ python3
+# !/usr/bin/env/ python3
 
-# Copyright 2021 Kimsooyoung
+# Copyright 2019 Open Source Robotics Foundation, Inc.
 #
-# Licensed under the Apache License, Version 2.0 (the "License");
+# Licensed under the Apache License, Version 2.0 (the 'License');
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
 #     http://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
+# distributed under the License is distributed on an 'AS IS' BASIS,
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
@@ -19,32 +19,33 @@
 
 import time
 
+from custom_interfaces.action import Fibonacci
+
 import rclpy
 from rclpy.action import ActionServer, CancelResponse, GoalResponse
 from rclpy.callback_groups import ReentrantCallbackGroup
 from rclpy.executors import MultiThreadedExecutor
 from rclpy.node import Node
 
-from custom_interfaces.action import Fibonacci
-
 
 class FibonacciActionServer(Node):
+
     def __init__(self):
-        super().__init__("fibonacci_action_server")
+        super().__init__('fibonacci_action_server')
         self.action_server = ActionServer(
             self,
             Fibonacci,
-            "fibonacci",
+            'fibonacci',
             callback_group=ReentrantCallbackGroup(),
             execute_callback=self.execute_callback,
             goal_callback=self.goal_callback,
             cancel_callback=self.cancel_callback,
         )
 
-        self.get_logger().info("=== Fibonacci Action Server Started ====")
+        self.get_logger().info('=== Fibonacci Action Server Started ====')
 
     async def execute_callback(self, goal_handle):
-        self.get_logger().info("Executing goal...")
+        self.get_logger().info('Executing goal...')
 
         feedback_msg = Fibonacci.Feedback()
         feedback_msg.partial_sequence = [0, 1]
@@ -53,19 +54,19 @@ class FibonacciActionServer(Node):
 
             if goal_handle.is_cancel_requested:
                 goal_handle.canceled()
-                self.get_logger().info("Goal canceled")
+                self.get_logger().info('Goal canceled')
                 return Fibonacci.Result()
 
             feedback_msg.partial_sequence.append(
                 feedback_msg.partial_sequence[i] + feedback_msg.partial_sequence[i - 1]
             )
 
-            print(f"Feedback: {feedback_msg.partial_sequence}")
+            print(f'Feedback: {feedback_msg.partial_sequence}')
             goal_handle.publish_feedback(feedback_msg)
             time.sleep(1)
 
         goal_handle.succeed()
-        self.get_logger().warn("==== Succeed ====")
+        self.get_logger().warn('==== Succeed ====')
 
         result = Fibonacci.Result()
         result.sequence = feedback_msg.partial_sequence
@@ -74,12 +75,12 @@ class FibonacciActionServer(Node):
     def goal_callback(self, goal_request):
         """Accept or reject a client request to begin an action."""
         # This server allows multiple goals in parallel
-        self.get_logger().info("Received goal request")
+        self.get_logger().info('Received goal request')
         return GoalResponse.ACCEPT
 
     def cancel_callback(self, goal_handle):
         """Accept or reject a client request to cancel an action."""
-        self.get_logger().info("Received cancel request")
+        self.get_logger().info('Received cancel request')
         return CancelResponse.ACCEPT
 
 
@@ -95,5 +96,5 @@ def main(args=None):
     rclpy.shutdown()
 
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     main()
