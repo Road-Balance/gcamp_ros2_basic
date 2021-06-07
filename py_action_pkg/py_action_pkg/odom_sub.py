@@ -1,16 +1,18 @@
 #!/usr/bin/env/ python3
 
 import cv2
-import rclpy
-import numpy as np
 
-from rclpy.node import Node
 from nav_msgs.msg import Odometry  # Odometry is the message type
+import numpy as np
+import rclpy
+from rclpy.node import Node
+
 
 # https://gist.github.com/salmagro/2e698ad4fbf9dae40244769c5ab74434
 def euler_from_quaternion(quaternion):
     """
-    Converts quaternion (w in last place) to euler roll, pitch, yaw
+    Return Converted euler roll, pitch, yaw from quaternion (w in last place).
+
     quaternion = [x, y, z, w]
     Bellow should be replaced when porting for ROS 2 Python tf_conversions is done.
     """
@@ -34,23 +36,19 @@ def euler_from_quaternion(quaternion):
 
 
 class OdometrySubscriber(Node):
-    """
-    Create an OdometrySubscriber class, which is a subclass of the Node class.
-    """
+    """Create an OdometrySubscriber class, which is a subclass of the Node class."""
 
     def __init__(self):
-        """
-        Class constructor to set up the node
-        """
+        """Class constructor to set up the node."""
         # Initiate the Node class's constructor and give it a name
-        super().__init__("odom_subscriber")
+        super().__init__('odom_subscriber')
         self.sub_period = 10  # Hz
 
         # Create the subscriber. This subscriber will receive an Odometry
         # from the /skidbot/odom topic. The queue size is 10 messages.
         self.subscription = self.create_subscription(
             Odometry,
-            "/diffbot/odom",
+            '/diffbot/odom',
             self.listener_callback,
             self.sub_period,
         )
@@ -83,5 +81,5 @@ def main(args=None):
     rclpy.shutdown()
 
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     main()

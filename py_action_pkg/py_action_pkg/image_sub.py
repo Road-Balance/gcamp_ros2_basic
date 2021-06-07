@@ -1,36 +1,34 @@
+# !/usr/bin/env/ python3
+
+# Original code from link below
 # https://automaticaddison.com/getting-started-with-opencv-in-ros-2-foxy-fitzroy-python/
 
-#!/usr/bin/env/ python3
-
 import cv2
-import rclpy
 
-from rclpy.node import Node
-from sensor_msgs.msg import Image  # Image is the message type
 from cv_bridge import (
     CvBridge,
     CvBridgeError,
 )  # Package to convert between ROS and OpenCV Images
 
+import rclpy
+from rclpy.node import Node
+from sensor_msgs.msg import Image  # Image is the message type
+
 
 class ImageSubscriber(Node):
-    """
-    Create an ImageSubscriber class, which is a subclass of the Node class.
-    """
+    """Create an ImageSubscriber class, which is a subclass of the Node class."""
 
     def __init__(self):
-        """
-        Class constructor to set up the node
-        """
+        """Class constructor to set up the node."""
         # Initiate the Node class's constructor and give it a name
-        super().__init__("image_subscriber")
+        super().__init__('image_subscriber')
         self.sub_period = 10  # Hz
 
         # Create the subscriber. This subscriber will receive an Image
         # from the /diffbot/camera_sensor/image_raw topic. The queue size is 10 messages.
         self.subscription = self.create_subscription(
             Image,
-            "/diffbot/camera_sensor/image_raw",
+            '/diffbot/camera_sensor/image_raw',
             self.listener_callback,
             self.sub_period,
         )
@@ -43,12 +41,12 @@ class ImageSubscriber(Node):
 
         # Convert ROS Image message to OpenCV image
         try:
-            current_frame = self.cv_bridge.imgmsg_to_cv2(data, "bgr8")
+            current_frame = self.cv_bridge.imgmsg_to_cv2(data, 'bgr8')
         except CvBridgeError as e:
             print(e)
 
         # Display image
-        # cv2.imshow("camera", current_frame)
+        # cv2.imshow('camera', current_frame)
         # cv2.waitKey(1)
 
         self.center_pixel = current_frame[400, 400]
@@ -74,5 +72,5 @@ def main(args=None):
     rclpy.shutdown()
 
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     main()
