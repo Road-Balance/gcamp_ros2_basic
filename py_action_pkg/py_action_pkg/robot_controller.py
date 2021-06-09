@@ -1,22 +1,18 @@
-#!/usr/bin/env/ python3
+# !/usr/bin/env/ python3
 
-import sys
-import time
-import math
-import rclpy
-import numpy as np
-
-from rclpy.node import Node
-
-from sensor_msgs.msg import LaserScan
 from geometry_msgs.msg import Twist
 from nav_msgs.msg import Odometry
+import numpy as np
+import rclpy
+from rclpy.node import Node
+from sensor_msgs.msg import LaserScan
 
 
 #    https://gist.github.com/salmagro/2e698ad4fbf9dae40244769c5ab74434
 def euler_from_quaternion(quaternion):
     """
-    Converts quaternion (w in last place) to euler roll, pitch, yaw
+    Return Converted euler roll, pitch, yaw from quaternion (w in last place).
+
     quaternion = [x, y, z, w]
     Bellow should be replaced when porting for ROS 2 Python tf_conversions is done.
     """
@@ -40,19 +36,15 @@ def euler_from_quaternion(quaternion):
 
 
 class RobotController(Node):
-    """
-    Create an RobotController class, which is a subclass of the Node class.
-    """
+    """Create an RobotController class, which is a subclass of the Node class."""
 
     def __init__(self):
-        """
-        Class constructor to set up the node
-        """
+        """Class constructor to set up the node."""
         # Initiate the Node class's constructor and give it a name
-        super().__init__("robot_controller")
+        super().__init__('robot_controller')
 
         """
-        Clockwise Heading Used
+        Clockwise Heading Used.
         0 : Upper
         1 : Right
         2 : Down
@@ -71,13 +63,13 @@ class RobotController(Node):
         # Create the subscriber. This subscriber will receive an LaserScan
         # Data from the /diffbot/scan topic. The queue size is 10 messages.
         self.laser_sub = self.create_subscription(
-            LaserScan, "/diffbot/scan", self.laser_sub_cb, self.sub_period
+            LaserScan, '/diffbot/scan', self.laser_sub_cb, self.sub_period
         )
 
         # Receive an Odometry from the /diffbot/odom topic.
         self.odom_sub = self.create_subscription(
             Odometry,
-            "/diffbot/odom",
+            '/diffbot/odom',
             self.odom_sub_cb,
             self.sub_period,
         )
@@ -85,14 +77,14 @@ class RobotController(Node):
         # Create the publisher. This publisher will control robot by
         # /diffbot/cmd_vel topic. The queue size is 10 messages.
         self.cmd_vel_pub = self.create_publisher(
-            Twist, "/diffbot/cmd_vel", self.pub_period
+            Twist, '/diffbot/cmd_vel', self.pub_period
         )
 
         # prevent unused variable warning
         self.cmd_vel_pub
         self.laser_sub
         self.odom_sub
-        self.get_logger().info("==== Robot Control Node Started ====\n")
+        self.get_logger().info('====Robot Control Node Started ====\n')
 
     def is_ok(self):
         return self.ok
@@ -100,11 +92,9 @@ class RobotController(Node):
     def odom_sub_cb(self, data):
         orientation = data.pose.pose.orientation
         _, _, self.yaw = euler_from_quaternion(orientation)
-        # print(f"yaw : {self.yaw}")
 
     def laser_sub_cb(self, data):
         self.forward_distance = data.ranges[360]
-        # print(f"Distance : {self.forward_distance}")
 
     def move_robot(self, linear_vel=0.0):
         self.twist_msg.linear.x = linear_vel
@@ -112,7 +102,7 @@ class RobotController(Node):
         self.cmd_vel_pub.publish(self.twist_msg)
 
     def stop_robot(self):
-        print("==== Stop Robot ====")
+        self.get_logger().info('====Stop Robot ====')
         self.twist_msg.linear.x = 0.0
         self.twist_msg.angular.z = 0.0
         self.cmd_vel_pub.publish(self.twist_msg)
@@ -124,7 +114,7 @@ class RobotController(Node):
 
 
 def turn_robot(rclpy, controller, euler_angle):
-    print("Robot Turns to Object Angle")
+    print('Robot Turns to Object Angle')
 
     controller.stop_robot()
 
@@ -143,7 +133,7 @@ def turn_robot(rclpy, controller, euler_angle):
 
 
 def parking_robot(rclpy, controller):
-    print("Going Forward Until 0.8m Obstacle Detection")
+    print('Going Forward Until 0.8m Obstacle Detection')
 
     controller.stop_robot()
 
@@ -165,7 +155,7 @@ def main(args=None):
 
     while True:
         robot_controller.move_robot(1.0)
-        print(f"{robot_controller.forward_distance}")
+        robot_controller.get_logger().info(robot_controller.forward_distance)
 
     # parking_robot(rclpy, robot_controller)
     # turn_robot(rclpy, robot_controller, math.pi)
@@ -179,5 +169,5 @@ def main(args=None):
     rclpy.shutdown()
 
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     main()

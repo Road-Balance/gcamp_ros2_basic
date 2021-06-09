@@ -4,26 +4,21 @@ import os
 
 from ament_index_python.packages import get_package_share_directory
 
-import launch
 from launch import LaunchDescription
-from launch.actions import IncludeLaunchDescription, DeclareLaunchArgument, ExecuteProcess
-from launch.launch_description_sources import PythonLaunchDescriptionSource
-from launch.substitutions import LaunchConfiguration, Command
+from launch.substitutions import LaunchConfiguration
 
 from launch_ros.actions import Node
-
-import xacro
 
 
 def generate_launch_description():
     use_sim_time = LaunchConfiguration('use_sim_time', default='false')
 
-    package_name = "gcamp_gazebo"
-    robot_file = "diffbot.urdf"
-    rviz_file = "description.rviz"
+    package_name = 'gcamp_gazebo'
+    robot_file = 'diffbot.urdf'
+    rviz_file = 'description.rviz'
 
-    urdf = os.path.join(get_package_share_directory(package_name), "urdf", robot_file)
-    rviz = os.path.join(get_package_share_directory(package_name), "rviz", rviz_file)
+    urdf = os.path.join(get_package_share_directory(package_name), 'urdf', robot_file)
+    rviz = os.path.join(get_package_share_directory(package_name), 'rviz', rviz_file)
 
     robot_desc = open(urdf, 'r').read()
 
