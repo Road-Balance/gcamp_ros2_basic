@@ -3,22 +3,22 @@
 import math
 import time
 
-import rclpy
-from rclpy.action import ActionServer
-from rclpy.node import Node
-
-from sensor_msgs.msg import LaserScan
+from custom_interfaces.action import Maze
 from geometry_msgs.msg import Twist
 from nav_msgs.msg import Odometry
 
-from custom_interfaces.action import Maze
-from py_action_pkg.robot_controller import euler_from_quaternion
 from py_action_pkg.image_sub import ImageSubscriber
+from py_action_pkg.robot_controller import euler_from_quaternion
 
+import rclpy
+from rclpy.action import ActionServer
 from rclpy.executors import MultiThreadedExecutor
+from rclpy.node import Node
+
+from sensor_msgs.msg import LaserScan
 
 direction_dict = {0: (-1 * math.pi / 2), 1: math.pi, 2: math.pi / 2, 3: 0.0}
-direction_str_dict = {0: "Up", 1: "Right", 2: "Down", 3: "Left"}
+direction_str_dict = {0: 'Up', 1: 'Right', 2: 'Down', 3: 'Left'}
 
 """
 Maze.action structure
@@ -30,7 +30,9 @@ Maze.action structure
     string feedback_msg
 """
 
+
 class MazeActionServer(Node):
+
     def __init__(self):
         super().__init__('maze_action_server')
 
