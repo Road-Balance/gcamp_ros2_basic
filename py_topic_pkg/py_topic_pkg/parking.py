@@ -28,7 +28,7 @@ class ParkingNode(Node):
         distance_forward = msg.ranges[360]
 
         if distance_forward > 0.5:
-            print(f'Distance from Front Object : {distance_forward}')
+            self.get_logger().info(f'Distance from Front Object : {distance_forward}')
             twist_msg.linear.x = 0.5
             self.publisher.publish(twist_msg)
         else:
@@ -45,9 +45,9 @@ def main(args=None):
     try:
         rclpy.spin(parking_node)
     except KeyboardInterrupt:
-        print('==== Server stopped cleanly ====')
+        parking_node.get_logger().info('==== Server stopped cleanly ====')
     except BaseException:
-        print('!! Exception in server:', file=sys.stderr)
+        parking_node.get_logger().info('!! Exception in server:', file=sys.stderr)
         raise
     finally:
         # (optional - Done automatically when node is garbage collected)
