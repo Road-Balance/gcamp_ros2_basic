@@ -1,6 +1,22 @@
+// Copyright 2016 Open Source Robotics Foundation, Inc.
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
 // referenced from docs.ros.org
 // https://docs.ros.org/en/foxy/Tutorials/Writing-A-Simple-Cpp-Service-And-Client.html#write-the-client-node
+// License Link https://github.com/ros2/ros2_documentation/blob/foxy/LICENSE
 
+#include <memory>
 #include <chrono>
 #include <cstdlib>
 
@@ -37,9 +53,7 @@ int main(int argc, char **argv)
   {
     RCLCPP_INFO(node->get_logger(), "%s", (result.get()->success ? "true" : "false"));
     std::cout << result.get()->message << std::endl;
-  }
-  else
-  {
+  } else {
     RCLCPP_ERROR(node->get_logger(), "Failed to call service add_two_ints");
   }
 
