@@ -4,8 +4,7 @@
 #include "rclcpp/rclcpp.hpp"
 #include "std_msgs/msg/int32.hpp"
 
-int main(int argc, char **argv)
-{
+int main(int argc, char **argv) {
   rclcpp::init(argc, argv);
 
   auto node = rclcpp::Node::make_shared("topic_pub_node");
@@ -16,8 +15,7 @@ int main(int argc, char **argv)
   msg->data = 0;
   rclcpp::WallRate r(1);
 
-  while (rclcpp::ok())
-  {
+  while (rclcpp::ok()) {
     publisher->publish(*msg);
 
     msg->data++;
