@@ -48,7 +48,8 @@ int main(int argc, char **argv) {
   rclcpp::init(argc, argv);
 
   node = rclcpp::Node::make_shared("service_server_node");
-  auto srv_server = node->create_service<SetBool>("/setbool_srv", server_callback);
+  auto srv_server =
+      node->create_service<SetBool>("/setbool_srv", server_callback);
   RCLCPP_WARN(node->get_logger(), "Service Server Node Started!!");
   RCLCPP_INFO(node->get_logger(), "Waiting for Client...");
 
