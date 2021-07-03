@@ -1,3 +1,4 @@
+# Referenced from Below Link
 # https://discourse.ros.org/t/spawning-a-robot-entity-using-a-node-with-gazebo-and-ros-2/9985
 
 # !/usr/bin/env/ python3
@@ -36,7 +37,7 @@ class SpawnRobot(Node):
         self.req.initial_pose.position.y = 1.0
         self.req.initial_pose.position.z = 0.3
 
-        print('==== Sending service request to `/spawn_entity` ====')
+        self.get_logger().debug('==== Sending service request to `/spawn_entity` ====')
         self.future = self.client.call_async(self.req)
 
         return self.future
@@ -59,8 +60,8 @@ def main(args=None):
                 'exception while calling service: %r' % future.exception()
             )
         else:
-            print('==== Service Call Done ====')
-            print(f'Status_message : {response.status_message}')
+            robot_spawn_node.get_logger().info('==== Service Call Done ====')
+            robot_spawn_node.get_logger().info(f'Status_message : {response.status_message}')
         finally:
             robot_spawn_node.get_logger().warn('==== Shutting down node. ====')
             robot_spawn_node.destroy_node()
