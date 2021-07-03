@@ -58,7 +58,7 @@ class OdometrySubscriber(Node):
         orientation = data.pose.pose.orientation
         _, _, self._yaw = euler_from_quaternion(orientation)
 
-        print(self._yaw)
+        self.get_logger().info(self._yaw)
 
 
 def main(args=None):

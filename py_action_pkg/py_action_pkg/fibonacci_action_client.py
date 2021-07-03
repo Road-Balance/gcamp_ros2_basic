@@ -1,5 +1,5 @@
 # !/usr/bin/env/ python3
-
+#
 # Copyright 2019 Open Source Robotics Foundation, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the 'License');
@@ -43,7 +43,7 @@ class FibonacciActionClient(Node):
 
     def feedback_callback(self, feedback_msg):
         feedback = feedback_msg.feedback
-        print(f'Received feedback: {feedback.partial_sequence}')
+        self.get_logger().info(f'Received feedback: {feedback.partial_sequence}')
 
     def goal_response_callback(self, future):
         goal_handle = future.result()

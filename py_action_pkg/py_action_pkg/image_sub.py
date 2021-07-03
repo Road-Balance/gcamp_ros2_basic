@@ -1,5 +1,5 @@
 # !/usr/bin/env/ python3
-
+#
 # Original code from link below
 # https://automaticaddison.com/getting-started-with-opencv-in-ros-2-foxy-fitzroy-python/
 
@@ -43,7 +43,7 @@ class ImageSubscriber(Node):
         try:
             current_frame = self.cv_bridge.imgmsg_to_cv2(data, 'bgr8')
         except CvBridgeError as e:
-            print(e)
+            self.get_logger().info(e)
 
         # Display image
         # cv2.imshow('camera', current_frame)

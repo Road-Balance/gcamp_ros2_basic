@@ -1,7 +1,8 @@
+# !/usr/bin/env/ python3
+#
 # Referenced from Below Link
 # https://discourse.ros.org/t/spawning-a-robot-entity-using-a-node-with-gazebo-and-ros-2/9985
 
-# !/usr/bin/env/ python3
 
 import os
 

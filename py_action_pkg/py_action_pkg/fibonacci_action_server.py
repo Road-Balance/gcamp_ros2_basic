@@ -56,7 +56,7 @@ class FibonacciActionServer(Node):
                 feedback_msg.partial_sequence[i] + feedback_msg.partial_sequence[i - 1]
             )
 
-            print(f'Feedback: {feedback_msg.partial_sequence}')
+            self.get_logger().info(f'Feedback: {feedback_msg.partial_sequence}')
             goal_handle.publish_feedback(feedback_msg)
             time.sleep(1)
 

@@ -20,16 +20,13 @@ from sensor_msgs.msg import LaserScan
 direction_dict = {0: (-1 * math.pi / 2), 1: math.pi, 2: math.pi / 2, 3: 0.0}
 direction_str_dict = {0: 'Up', 1: 'Right', 2: 'Down', 3: 'Left'}
 
-"""
-Maze.action structure
+# Maze.action structure
 
-    int32[] turning_sequence
-    ---
-    bool success
-    ---
-    string feedback_msg
-"""
-
+#     int32[] turning_sequence
+#     ---
+#     bool success
+#     ---
+#     string feedback_msg
 
 class MazeActionServer(Node):
 
@@ -62,18 +59,18 @@ class MazeActionServer(Node):
 
     def laser_sub_cb(self, data):
         self.forward_distance = data.ranges[360]
-        # print(self.forward_distance)
+        # self.get_logger().info(self.forward_distance)
 
     def odom_sub_cb(self, data):
         orientation = data.pose.pose.orientation
         _, _, self.yaw = euler_from_quaternion(orientation)
-        # print(f'yaw : {self.yaw}')
+        # self.get_logger().info(f'yaw : {self.yaw}')
 
     def publish_callback(self):
         self.cmd_vel_pub.publish(self.twist_msg)
 
     def turn_robot(self, euler_angle):
-        print(f'Robot Turns to {euler_angle}')
+        self.get_logger().info(f'Robot Turns to {euler_angle}')
 
         turn_offset = 100
 
@@ -109,7 +106,7 @@ class MazeActionServer(Node):
         feedback.feedback_msg = ''
 
         for _, val in enumerate(goal_handle.request.turning_sequence):
-            print(f'Current Cmd: {val}')
+            self.get_logger().info(f'Current Cmd: {val}')
 
             feedback.feedback_msg = f'Turning {direction_str_dict[val]}'
 

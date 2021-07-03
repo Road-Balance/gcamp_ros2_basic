@@ -1,5 +1,5 @@
 # !/usr/bin/env/ python3
-
+#
 # Copyright 2019 Open Source Robotics Foundation, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the 'License');
@@ -61,7 +61,7 @@ class FibonacciActionServer(Node):
                 feedback_msg.partial_sequence[i] + feedback_msg.partial_sequence[i - 1]
             )
 
-            print(f'Feedback: {feedback_msg.partial_sequence}')
+            self.get_logger().info(f'Feedback: {feedback_msg.partial_sequence}')
             goal_handle.publish_feedback(feedback_msg)
             time.sleep(1)
 
