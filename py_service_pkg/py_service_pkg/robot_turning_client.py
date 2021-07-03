@@ -1,3 +1,17 @@
+# Copyright 2021 Seoul Business Agency Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
 # !/usr/bin/env/ python3
 
 from custom_interfaces.srv import TurningControl
@@ -15,7 +29,7 @@ class RobotTurnClient(Node):
             self.get_logger().info('service not available, waiting again...')
 
         self.req = TurningControl.Request()
-        print('==== Robot Turn Service Client ====')
+        self.get_logger().debug('==== Robot Turn Service Client ====')
 
     def send_request(self):
 
@@ -40,10 +54,10 @@ class RobotTurnClient(Node):
                 self.get_logger().warn('Not a number, PLZ Type number Again')
 
         self.future = self.client.call_async(self.req)
-        self.get_logger().info(
+        self.get_logger().debug(
             f'linear_x : {self.req.linear_vel_x} / angular_z : {self.req.angular_vel_z}'
         )
-        self.get_logger().info(' Request Sended ')
+        self.get_logger().debug(' Request Sended ')
         return self.future
 
 
@@ -63,9 +77,9 @@ def main(args=None):
                 'exception while calling service: %r' % future.exception()
             )
         else:
-            robot_turn_client.get_logger().info('==== Service Call Done ====')
-            robot_turn_client.get_logger().info(
-                f'Result Message : {"Success" if response.success == True else "Fail"}'
+            robot_turn_client.get_logger().debug('==== Service Call Done ====')
+            robot_turn_client.get_logger().debug(
+                f"Result Message : {'Success' if response.success == True else 'Fail'}"
             )
         finally:
             robot_turn_client.get_logger().warn('==== Shutting down node ====')
