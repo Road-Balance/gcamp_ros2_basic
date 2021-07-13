@@ -30,7 +30,7 @@ class ParkingNode(Node):
         self.publisher = self.create_publisher(Twist, '/skidbot/cmd_vel', 10)
 
         self.subscriber = self.create_subscription(
-            LaserScan, '/skidbot/scan', self.sub_callback, 10
+            LaserScan, 'skidbot/scan', self.sub_callback, 10
         )
         self.subscriber  # prevent unused variable warning
         self.publisher  # prevent unused variable warning

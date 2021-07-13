@@ -25,7 +25,7 @@ class LaserSubscriber(Node):
         super().__init__('laser_sub_node')
         queue_size = 10  # Queue Size
         self.subscriber = self.create_subscription(
-            LaserScan, '/skidbot/scan', self.sub_callback, queue_size
+            LaserScan, 'skidbot/scan', self.sub_callback, queue_size
         )
         self.subscriber  # prevent unused variable warning
 

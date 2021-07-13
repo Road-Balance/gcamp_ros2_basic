@@ -25,12 +25,12 @@ class LaserSubscriber(Node):
         super().__init__('laser_sub_node')
         queue_size = 10  # Hz
         self.subscriber = self.create_subscription(
-            LaserScan, '/skidbot/scan', self.sub_callback, queue_size
+            LaserScan, 'skidbot/scan', self.sub_callback, queue_size
         )
         self.subscriber  # prevent unused variable warning
 
     def sub_callback(self, msg):
-        self.get_logger().info(f'Distance from Front Object : {msg.ranges}')
+        self.get_logger().info(f'Raw Laser Data : {msg.ranges}')
 
 
 def main(args=None):
