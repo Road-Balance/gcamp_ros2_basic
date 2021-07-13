@@ -50,7 +50,6 @@ int main(int argc, char **argv) {
       rclcpp::FutureReturnCode::SUCCESS) {
     RCLCPP_INFO(node->get_logger(), "%s",
                 (result.get()->success ? "true" : "false"));
-    std::cout << result.get()->message << std::endl;
   } else {
     RCLCPP_ERROR(node->get_logger(), "Failed to call service add_two_ints");
   }

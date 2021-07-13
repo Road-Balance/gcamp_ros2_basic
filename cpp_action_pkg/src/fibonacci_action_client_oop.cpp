@@ -101,12 +101,10 @@ public:
   void
   feedback_callback(GoalHandleFibonacci::SharedPtr,
                     const std::shared_ptr<const Fibonacci::Feedback> feedback) {
-    std::cout << "Next number in sequence received: ";
+    RCLCPP_WARN(get_logger(), "Next number in sequence received: ");
 
     for (auto number : feedback->partial_sequence)
-      std::cout << number << " ";
-
-    std::cout << std::endl;
+      RCLCPP_INFO(get_logger(), "%d", number);
   }
 
   void result_callback(const GoalHandleFibonacci::WrappedResult &result) {
@@ -119,19 +117,18 @@ public:
       return;
     case rclcpp_action::ResultCode::CANCELED:
       rclcpp::shutdown();
-      RCLCPP_ERROR(get_logger(), "Goal canceled");
+      RCLCPP_WARN(get_logger(), "Goal canceled");
       return;
     default:
       RCLCPP_ERROR(get_logger(), "Unknown result code");
       return;
     }
 
-    std::cout << "Result received: ";
+    RCLCPP_WARN(get_logger(), "Result received: ");
 
     for (const auto number : result.result->sequence)
-      std::cout << number << " ";
+      RCLCPP_INFO(get_logger(), "%d", number);
 
-    std::cout << std::endl;
     rclcpp::shutdown();
   }
 };
@@ -140,8 +137,6 @@ int main(int argc, char **argv) {
   rclcpp::init(argc, argv);
 
   auto client_node = std::make_shared<FBActionClient>();
-
-  // rclcpp::spin(client_node);
 
   while (rclcpp::ok()) {
     rclcpp::spin_some(client_node);

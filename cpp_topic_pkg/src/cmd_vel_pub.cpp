@@ -29,7 +29,7 @@ public:
   TwistPub() : Node("cmd_vel_pub_node") {
     RCLCPP_INFO(get_logger(), "Cmd_vel Pub Node Created");
 
-    m_pub = create_publisher<geometry_msgs::msg::Twist>("/skidbot/cmd_vel", 10);
+    m_pub = create_publisher<geometry_msgs::msg::Twist>("skidbot/cmd_vel", 10);
     m_timer = create_wall_timer(std::chrono::milliseconds(100),
                                 std::bind(&TwistPub::timer_callback, this));
   }
@@ -38,8 +38,6 @@ public:
     m_twist_msg.linear.x = 0.5;
     m_twist_msg.angular.z = 1.0;
     m_pub->publish(m_twist_msg);
-
-    // std::cout << "==== Move Robot ====" << std::endl;
   }
 
   void stop_robot() {
@@ -47,7 +45,7 @@ public:
     m_twist_msg.angular.z = 0.0;
     m_pub->publish(m_twist_msg);
 
-    std::cout << "==== Stop Robot ====" << std::endl;
+    RCLCPP_INFO(get_logger(), "==== Stop Robot ====");
   }
 };
 
@@ -59,14 +57,14 @@ int main(int argc, char **argv) {
   auto t_start = twist_pub->now();
   auto t_now = twist_pub->now();
 
-  auto stop_time = 5 * 1e9;
+  auto stop_time = 5.0;
 
-  while ((t_now - t_start).nanoseconds() < stop_time) {
+  while ((t_now - t_start).seconds() < stop_time) {
     t_now = twist_pub->now();
     // rclcpp::spin_some(twist_pub);
     twist_pub->move_robot();
 
-    std::cout << (t_now - t_start).nanoseconds() / 1e9 << std::endl;
+    RCLCPP_INFO(twist_pub->get_logger(), "%f Seconds Passed", (t_now - t_start).seconds());
   }
 
   // publish doesn't require spin

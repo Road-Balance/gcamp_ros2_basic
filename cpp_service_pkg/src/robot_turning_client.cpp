@@ -22,13 +22,15 @@
 using namespace std::chrono_literals;
 using TurningControl = custom_interfaces::srv::TurningControl;
 
-class RobotTurnClient : public rclcpp::Node {
+class RobotTurnClient : public rclcpp::Node
+{
 private:
   rclcpp::Client<TurningControl>::SharedPtr m_client;
   std::shared_ptr<TurningControl::Request> m_request;
 
 public:
-  RobotTurnClient() : Node("robot_turn_client") {
+  RobotTurnClient() : Node("robot_turn_client")
+  {
     m_client = create_client<TurningControl>("turn_robot");
     m_request = std::make_shared<TurningControl::Request>();
 
@@ -44,11 +46,11 @@ public:
   // ---
   // bool success
   auto get_result_future(const int &time_in, const float &linear_x_in,
-                         const float &angular_z_in) {
-    std::cout << "Input Info" << std::endl
-              << "time_duration : " << time_in << std::endl
-              << "linear_vel_x : " << linear_x_in << std::endl
-              << "angular_vel_z : " << angular_z_in << std::endl;
+                         const float &angular_z_in)
+  {
+    RCLCPP_WARN(get_logger(), "Input Info");
+    RCLCPP_INFO(get_logger(), "time_duration : %d\nlinear_vel_x : %f\nangular_vel_z : %f",
+      time_in, linear_x_in, angular_z_in);
 
     m_request->time_duration = time_in;
     m_request->linear_vel_x = linear_x_in;
@@ -58,10 +60,12 @@ public:
   }
 };
 
-int main(int argc, char **argv) {
+int main(int argc, char **argv)
+{
   rclcpp::init(argc, argv);
 
-  if (argc != 4) {
+  if (argc != 4)
+  {
     RCLCPP_INFO(
         rclcpp::get_logger("rclcpp"),
         "usage: robot_turning_client [seconds] [linear_vel_x] [angular_vel_z]");

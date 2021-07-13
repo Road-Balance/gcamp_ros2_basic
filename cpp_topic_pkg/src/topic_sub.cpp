@@ -7,8 +7,7 @@
 rclcpp::Node::SharedPtr node = nullptr;
 
 void sub_callback(const std_msgs::msg::Int32::SharedPtr msg) {
-  // RCLCPP_INFO(node->get_logger(), "I got %d", msg->data);
-  std::cout << "I got " << msg->data << std::endl;
+  RCLCPP_INFO(node->get_logger(), "I got %d", msg->data);
 }
 
 int main(int argc, char **argv) {

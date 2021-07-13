@@ -17,7 +17,6 @@ public:
 
   void sub_callback(const std_msgs::msg::Int32::SharedPtr msg) {
     RCLCPP_INFO(this->get_logger(), "I got %d", msg->data);
-    // std::cout << "I got " << msg->data << std::endl;
   }
 };
 

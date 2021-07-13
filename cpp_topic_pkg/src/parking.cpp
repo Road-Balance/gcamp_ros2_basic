@@ -30,9 +30,9 @@ public:
   ParkingNode() : Node("robot_parking_node") {
     RCLCPP_INFO(get_logger(), "Parking Node Created");
 
-    m_pub = create_publisher<Twist>("/skidbot/cmd_vel", 10);
+    m_pub = create_publisher<Twist>("skidbot/cmd_vel", 10);
     m_sub = create_subscription<LaserScan>(
-        "/skidbot/scan", 10,
+        "skidbot/scan", 10,
         std::bind(&ParkingNode::sub_callback, this, std::placeholders::_1));
   }
 
@@ -52,8 +52,7 @@ public:
     m_twist_msg.angular.z = 0.0;
     m_pub->publish(m_twist_msg);
 
-    std::cout << "Distance from Obstacle ahead : " << forward_distance
-              << std::endl;
+    RCLCPP_INFO(get_logger(), "Distance from Obstacle ahead : %f", forward_distance);
   }
 
   void stop_robot() {

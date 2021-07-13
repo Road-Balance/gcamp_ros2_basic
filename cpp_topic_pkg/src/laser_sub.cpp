@@ -23,7 +23,7 @@ private:
 public:
   LaserSub() : Node("topic_sub_oop_node") {
     m_sub = this->create_subscription<sensor_msgs::msg::LaserScan>(
-        "/skidbot/scan", 10,
+        "skidbot/scan", 10,
         std::bind(&LaserSub::sub_callback, this, std::placeholders::_1));
   }
 
@@ -33,7 +33,7 @@ public:
     // for (auto e : msg->ranges)
     //   std::cout << e << std::endl;
 
-    RCLCPP_INFO(this->get_logger(), "I got %f", (msg->ranges)[360]);
+    RCLCPP_INFO(this->get_logger(), "Distance from Front Object : %f", (msg->ranges)[360]);
   }
 };
 

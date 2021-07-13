@@ -31,7 +31,7 @@ public:
   RobotTurnServer() : Node("robot_turn_server") {
     RCLCPP_WARN(get_logger(), "Robot Turn Server Started");
 
-    m_twist_pub = create_publisher<Twist>("/skidbot/cmd_vel", 10);
+    m_twist_pub = create_publisher<Twist>("skidbot/cmd_vel", 10);
     m_service = create_service<TurningControl>(
         "turn_robot", std::bind(&RobotTurnServer::response_callback, this,
                                 std::placeholders::_1, std::placeholders::_2));
@@ -48,9 +48,8 @@ public:
     auto t_now = now();
     auto t_delta = request->time_duration * 1e9;
 
-    std::cout << "Time Duration : " << request->time_duration << std::endl;
-    std::cout << "Linear X Cmd : " << request->linear_vel_x << std::endl;
-    std::cout << "Angular Z Cmd : " << request->angular_vel_z << std::endl;
+    RCLCPP_INFO(get_logger(), "\nTime Duration : %d\nLinear X Cmd : %f\nAngular Z Cmd : %f",
+      request->time_duration, request->linear_vel_x, request->angular_vel_z);
 
     RCLCPP_INFO(get_logger(), "Request Received Robot Starts to Move");
 
