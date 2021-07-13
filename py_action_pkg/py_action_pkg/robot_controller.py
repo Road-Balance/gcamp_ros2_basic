@@ -61,23 +61,23 @@ class RobotController(Node):
         self.pub_period = 10  # Hz
 
         # Create the subscriber. This subscriber will receive an LaserScan
-        # Data from the /diffbot/scan topic. The queue size is 10 messages.
+        # Data from the diffbot/scan topic. The queue size is 10 messages.
         self.laser_sub = self.create_subscription(
-            LaserScan, '/diffbot/scan', self.laser_sub_cb, self.sub_period
+            LaserScan, 'diffbot/scan', self.laser_sub_cb, self.sub_period
         )
 
-        # Receive an Odometry from the /diffbot/odom topic.
+        # Receive an Odometry from the diffbot/odom topic.
         self.odom_sub = self.create_subscription(
             Odometry,
-            '/diffbot/odom',
+            'diffbot/odom',
             self.odom_sub_cb,
             self.sub_period,
         )
 
         # Create the publisher. This publisher will control robot by
-        # /diffbot/cmd_vel topic. The queue size is 10 messages.
+        # diffbot/cmd_vel topic. The queue size is 10 messages.
         self.cmd_vel_pub = self.create_publisher(
-            Twist, '/diffbot/cmd_vel', self.pub_period
+            Twist, 'diffbot/cmd_vel', self.pub_period
         )
 
         # prevent unused variable warning

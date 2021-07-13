@@ -27,7 +27,7 @@ class ParkingNode(Node):
     def __init__(self):
         super().__init__('parking_node')
 
-        self.publisher = self.create_publisher(Twist, '/skidbot/cmd_vel', 10)
+        self.publisher = self.create_publisher(Twist, 'skidbot/cmd_vel', 10)
 
         self.subscriber = self.create_subscription(
             LaserScan, 'skidbot/scan', self.sub_callback, 10

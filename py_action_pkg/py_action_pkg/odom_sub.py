@@ -45,10 +45,10 @@ class OdometrySubscriber(Node):
         self.sub_period = 10  # Hz
 
         # Create the subscriber. This subscriber will receive an Odometry
-        # from the /skidbot/odom topic. The queue size is 10 messages.
+        # from the skidbot/odom topic. The queue size is 10 messages.
         self.subscription = self.create_subscription(
             Odometry,
-            '/diffbot/odom',
+            'diffbot/odom',
             self.listener_callback,
             self.sub_period,
         )

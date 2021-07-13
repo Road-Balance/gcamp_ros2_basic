@@ -31,7 +31,7 @@ class RobotTurnServer(Node):
 
     def __init__(self):
         super().__init__('robot_turn_server')
-        self.publisher = self.create_publisher(Twist, '/skidbot/cmd_vel', 10)
+        self.publisher = self.create_publisher(Twist, 'skidbot/cmd_vel', 10)
         self.srv = self.create_service(
             TurningControl, 'turn_robot', self.robot_turn_callback
         )
