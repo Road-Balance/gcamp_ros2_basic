@@ -47,7 +47,7 @@ handle_cancel(const std::shared_ptr<GoalHandleFibonacci> goal_handle) {
 void execute(const std::shared_ptr<GoalHandleFibonacci> goal_handle) {
   RCLCPP_INFO(rclcpp::get_logger("server"), "Executing goal");
 
-  rclcpp::Rate loop_rate(2);  // 0.5 sec
+  rclcpp::WallRate loop_rate(2);  // 0.5 sec
 
   const auto goal = goal_handle->get_goal();
   auto feedback = std::make_shared<Fibonacci::Feedback>();
