@@ -23,7 +23,7 @@ class LaserSubscriber(Node):
 
     def __init__(self):
         super().__init__('laser_sub_node')
-        queue_size = 10  # Hz
+        queue_size = 10
         self.subscriber = self.create_subscription(
             LaserScan, 'skidbot/scan', self.sub_callback, queue_size
         )
