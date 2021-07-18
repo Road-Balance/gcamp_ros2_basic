@@ -1,4 +1,9 @@
-# gcamp_ros2_basic
+# GCamp ROS 2 Basic 
+
+| Full Tutorial for ROS 2 Beginner
+
+NEWS
+* Thers's full notion lecture note for all code/theory
 
 ## Create Package
 
@@ -6,6 +11,8 @@
 .gazebo + .xacro => .urdf
 
 ```
+
+## Notepad
 
 ```
 rosdep install -i --from-path src --rosdistro foxy -y
@@ -23,7 +30,12 @@ ros2 launch gcamp_gazebo maze_world.launch.py
 
 ros2 launch gcamp_gazebo skidbot_description.launch.py
 ros2 launch gcamp_gazebo diffbot_description.launch.py
+```
 
+## rclpy Examples
+
+
+```
 ros2 run py_topic_pkg cmd_vel_pub_node 
 ros2 run py_topic_pkg laser_raw_node 
 ros2 run py_topic_pkg laser_sub_node
@@ -65,15 +77,20 @@ $ ros2 pkg create my_python_pkg --build-type ament_python rclpy
 $ ros2 pkg create my_cpp_py_pkg --build-type ament_cmake
 ```
 
+## rclcpp Examples
 
 ```
+ros2 run cpp_first_pkg simple_node
+ros2 run cpp_first_pkg simple_loop_node
+ros2 run cpp_first_pkg simple_oop_node
+ros2 run cpp_first_pkg lifecycle_node
+
 ros2 run cpp_topic_pkg cmd_vel_pub_node
 ros2 run cpp_topic_pkg laser_sub_node 
 ros2 run cpp_topic_pkg parking_node
 
 ros2 run cpp_service_pkg basic_server 
 ros2 run cpp_service_pkg basic_client 1 3
-
 ros2 run cpp_service_pkg robot_turning_server
 ros2 run cpp_service_pkg robot_turning_client 5 0.5 1.0
 
@@ -81,8 +98,8 @@ ros2 service call /turn_robot custom_interfaces/srv/TurningControl "{time_durati
 
 ros2 run cpp_action_pkg fibonacci_action_server_node
 ros2 run cpp_action_pkg fibonacci_action_client_node
-ros2 run cpp_action_pkg fibonacci_action_server_oop_node 
-ros2 run cpp_action_pkg fibonacci_action_client_oop_node 
+ros2 run cpp_action_pkg fibonacci_action_server_oop_node
+ros2 run cpp_action_pkg fibonacci_action_client_oop_node
 
 ros2 interface show example_interfaces/srv/AddTwoInts
 ros2 interface show custom_interfaces/srv/TurningControl
@@ -95,14 +112,12 @@ ros2 pkg create --build-type ament_cmake  cpp_action_pkg     --dependencies rclc
 ros2 pkg create --dependencies action_tutorials_interfaces rclcpp rclcpp_action rclcpp_components -- action_tutorials_cpp
 ros2 pkg create --build-type ament_cmake  cpp_srvcli --dependencies rclcpp example_interfaces
 ros2 pkg create --build-type ament_cmake  custom_interfaces
-
-
 ```
 
 https://answers.ros.org/question/302037/ros2-how-to-call-a-service-from-the-callback-function-of-a-subscriber/
 
 
-## windows 
+## For Windows Users
 
 ```
 colcon build --symlink-install --packages-select gcamp_gazebo
