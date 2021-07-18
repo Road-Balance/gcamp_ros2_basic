@@ -67,7 +67,6 @@ int main(int argc, char **argv) {
     RCLCPP_INFO(twist_pub->get_logger(), "%f Seconds Passed", (t_now - t_start).seconds());
   }
 
-  // publish doesn't require spin
   twist_pub->stop_robot();
 
   rclcpp::shutdown();
