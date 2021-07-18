@@ -28,6 +28,7 @@ direction_str_dict = {0: 'Up', 1: 'Right', 2: 'Down', 3: 'Left'}
 #     ---
 #     string feedback_msg
 
+
 class MazeActionServer(Node):
 
     def __init__(self):
@@ -40,14 +41,14 @@ class MazeActionServer(Node):
         self.loop_rate = self.create_rate(5, self.get_clock())
 
         self.laser_sub = self.create_subscription(
-            LaserScan, 'diffbot/scan', self.laser_sub_cb, 10
+            LaserScan, 'scan', self.laser_sub_cb, 10
         )
 
         self.odom_sub = self.create_subscription(
-            Odometry, 'diffbot/odom', self.odom_sub_cb, 10
+            Odometry, 'odom', self.odom_sub_cb, 10
         )
 
-        self.cmd_vel_pub = self.create_publisher(Twist, 'diffbot/cmd_vel', 10)
+        self.cmd_vel_pub = self.create_publisher(Twist, 'cmd_vel', 10)
 
         timer_period = 0.1  # seconds
         self.timer = self.create_timer(timer_period, self.publish_callback)

@@ -20,7 +20,7 @@ class MazeActionClient(Node):
 
     def __init__(self):
         super().__init__('maze_action_client')
-        self._action_client = ActionClient(self, Maze, 'maze_action')
+        self.action_client = ActionClient(self, Maze, 'diffbot/maze_action')
         self.get_logger().info('=== Maze Action Client Started ====')
 
     def send_goal(self, turning_list):
@@ -30,7 +30,7 @@ class MazeActionClient(Node):
         if self.action_client.wait_for_server(10) is False:
             self.get_logger().error('Server Not exists')
 
-        self._send_goal_future = self._action_client.send_goal_async(
+        self._send_goal_future = self.action_client.send_goal_async(
             goal_msg, feedback_callback=self.feedback_callback
         )
 
@@ -63,6 +63,7 @@ def main(args=None):
 
     maze_action_client = MazeActionClient()
     user_inputs = []
+
     # Input Logic
     try:
         maze_action_client.get_logger().info('Enter numbers [or stop] : ')
@@ -71,8 +72,7 @@ def main(args=None):
             user_inputs.append(int(input()))
     # if the input is not-integer, just print the list
     except Exception:
-        maze_action_client.get_logger().info('Your sequence list : ', user_inputs)
-
+        maze_action_client.get_logger().info(f'Your sequence list : {user_inputs}')
     maze_action_client.get_logger().info('==== Sending Goal ====')
     maze_action_client.send_goal(user_inputs)
 
