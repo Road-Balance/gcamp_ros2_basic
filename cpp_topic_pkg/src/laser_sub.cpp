@@ -16,6 +16,8 @@
 #include "rclcpp/rclcpp.hpp"
 #include "sensor_msgs/msg/laser_scan.hpp"
 
+using LaserScan = sensor_msgs::msg::LaserScan;
+
 class LaserSub : public rclcpp::Node {
 private:
   rclcpp::Subscription<sensor_msgs::msg::LaserScan>::SharedPtr m_sub;
