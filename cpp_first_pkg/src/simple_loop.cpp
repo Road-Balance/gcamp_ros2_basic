@@ -20,7 +20,7 @@ int main(int argc, char **argv) {
 
   // WallRate & Rate
   // https://qiita.com/NeK/items/bcf518f6dd79f970bb8e
-  rclcpp::WallRate rate(2); // Hz
+  rclcpp::WallRate rate(2);  // Hz
 
   while (rclcpp::ok()) {
     RCLCPP_INFO(node->get_logger(), "Simple Loop Node");
