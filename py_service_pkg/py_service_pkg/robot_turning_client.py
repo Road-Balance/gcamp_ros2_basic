@@ -30,7 +30,7 @@ class RobotTurnClient(Node):
             self.get_logger().info('service not available, waiting again...')
 
         self.req = TurningControl.Request()
-        self.get_logger().debug('==== Robot Turn Service Client ====')
+        self.get_logger().info('==== Robot Turn Service Client ====')
 
     def send_request(self):
 
@@ -55,10 +55,10 @@ class RobotTurnClient(Node):
                 self.get_logger().warn('Not a number, PLZ Type number Again')
 
         self.future = self.client.call_async(self.req)
-        self.get_logger().debug(
+        self.get_logger().info(
             f'linear_x : {self.req.linear_vel_x} / angular_z : {self.req.angular_vel_z}'
         )
-        self.get_logger().debug(' Request Sended ')
+        self.get_logger().info(' Request Sended ')
         return self.future
 
 
@@ -78,8 +78,8 @@ def main(args=None):
                 'exception while calling service: %r' % future.exception()
             )
         else:
-            robot_turn_client.get_logger().debug('==== Service Call Done ====')
-            robot_turn_client.get_logger().debug(
+            robot_turn_client.get_logger().info('==== Service Call Done ====')
+            robot_turn_client.get_logger().info(
                 f"Result Message : {'Success' if response.success == True else 'Fail'}"
             )
         finally:
