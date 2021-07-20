@@ -1,7 +1,10 @@
 # !/usr/bin/env/ python3
 #
-# Original code from link below
-# https://automaticaddison.com/getting-started-with-opencv-in-ros-2-foxy-fitzroy-python/
+# Basic ROS 2 program to publish real-time streaming 
+# video from your built-in webcam
+# Author:
+# - Addison Sears-Collins
+# - https://automaticaddison.com
 
 import cv2
 
