@@ -60,7 +60,7 @@ ros2 action send_goal --feedback fibonacci custom_interfaces/action/Fibonacci "{
 
 ros2 run image_view image_view --ros-args --remap /image:=/diffbot/camera_sensor/image_raw
 ros2 run py_action_pkg img_subscriber_node 
-ros2 run py_action_pkg odome_sub_node 
+ros2 run py_action_pkg odom_sub_node 
 ros2 run py_action_pkg robot_controller
 ros2 run py_action_pkg maze_action_server
 ros2 run py_action_pkg maze_action_client
