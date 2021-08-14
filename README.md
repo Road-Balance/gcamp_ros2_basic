@@ -51,7 +51,7 @@ Use ROS 2 topic to park the robot correctly in the simulation.
 * Twist publish
 
 <p align="center">
-    <img src="./image/parking.gif" height="200">
+    <img src="./image/parking.gif" height="300">
 </p>
 
 ### Service Examples
@@ -75,7 +75,7 @@ Use ROS 2 service to bring a robot into the simulation.
 * URDF
 
 <p align="center">
-    <img src="./image/spawn_robot.gif" height="200">
+    <img src="./image/spawn_robot.gif" height="300">
 </p>
 
 ### Action Examples
@@ -109,7 +109,7 @@ Use ROS 2 action to get the robot out of the maze.
 * OpenCV
 
 <p align="center">
-    <img src="./image/maze.gif" height="200">
+    <img src="./image/maze.gif" height="300">
 </p>
 
 ### Theory - Robot Dynamics
