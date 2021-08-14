@@ -1,55 +1,88 @@
 # GCamp ROS 2 Basic 
 
-| Full Tutorial for ROS 2 Beginner
+## ROS 2 Basics with Gazebo Simulations
 
-NEWS
-* Thers's full notion lecture note for all code/theory
+> Feel Free to use this repo as an template code 😀
 
-## Create Package
+### News
 
-```
-.gazebo + .xacro => .urdf
+There's Lecture note for all codes, all packages (**Written in Korean**) 
+- [Lecture Note Notion Link](https://www.notion.so/ROS-2-for-G-Camp-6f86b29e997e445badb69cc0af825a71)
 
-```
-
-## Notepad
+Repo Structure
 
 ```
-rosdep install -i --from-path src --rosdistro foxy -y
-
-ros2 run teleop_twist_keyboard teleop_twist_keyboard --ros-args -r __ns:=/skidbot
-
-ros2 run teleop_twist_keyboard teleop_twist_keyboard --ros-args -r __ns:=/diffbot
-
-
-ros2 bag record -a -o skidbot_record 
-ros2 bag play skidbot_record
-
-ros2 launch gcamp_gazebo gcamp_world.launch.py 
-ros2 launch gcamp_gazebo maze_world.launch.py 
-
-ros2 launch gcamp_gazebo skidbot_description.launch.py
-ros2 launch gcamp_gazebo diffbot_description.launch.py
+├── cpp_first_pkg
+├── cpp_topic_pkg
+├── cpp_service_pkg
+├── cpp_action_pkg
+├── py_first_pkg
+├── py_topic_pkg
+├── py_service_pkg
+├── py_action_pkg
+├── custom_interfaces
+├── gcamp_gazebo
+└── image
 ```
 
-## rclpy Examples
+* `gcamp_gazebo` :  Gazeobo Package with Worlds and Robot.
+* `cpp_<sth>_pkg` : C++ ROS 2 packages for each ROS Communication Mechanisms
+* `py_<sth>_pkg` : Python ROS 2 packages for each ROS Communication Mechanisms
+* `custom_interfaces` : Package for custom ROS 2 communication interfaces
 
+## Examples - `rclpy`
+
+### Topic Examples
+
+* Available nodes and Execution commands
 
 ```
 ros2 run py_topic_pkg cmd_vel_pub_node 
 ros2 run py_topic_pkg laser_raw_node 
 ros2 run py_topic_pkg laser_sub_node
 ros2 run py_topic_pkg parking_node
+```
 
-ros2 interface show custom_interfaces/srv/AddThreeInts
-# "rosfoxy" required after custom msg/srv build
+### Project - Parking 
 
+Use ROS 2 topic to park the robot correctly in the simulation.
+
+* LaserScan data Subscribe
+* Twist publish
+
+<p align="center">
+    <img src="./image/parking.gif" height="200">
+</p>
+
+### Service Examples
+
+* Available nodes and Execution commands
+
+```
 ros2 run py_service_pkg gazebo_model_spawner
 ros2 run py_service_pkg robot_turning_server
 ros2 service call /turn_robot custom_interfaces/srv/TurningControl "{time_duration: 5, angular_vel_z: 1.0, linear_vel_x: 0.5}"
 ros2 service call /delete_entity gazebo_msgs/srv/DeleteEntity "{name: 'skidbot'}"
 ros2 run py_service_pkg robot_turning_client
+```
 
+### Project - Spawn Cloned Robot 
+
+Use ROS 2 service to bring a robot into the simulation.
+
+* ROS Gazebo Service
+* Service Client
+* URDF
+
+<p align="center">
+    <img src="./image/spawn_robot.gif" height="200">
+</p>
+
+### Action Examples
+
+* Available nodes and Execution commands
+
+```
 ros2 run py_action_pkg fibonacci_action_server 
 ros2 run py_action_pkg fibonacci_action_client 
 ros2 run py_action_pkg fibonacci_action_server_cancel 
@@ -65,68 +98,35 @@ ros2 run py_action_pkg robot_controller
 ros2 run py_action_pkg maze_action_server
 ros2 run py_action_pkg maze_action_client
 ros2 action send_goal --feedback maze_action custom_interfaces/action/Maze "{turning_sequence: [2,1,0,1,2]}"
-
-ros2 pkg create --build-type ament_python py_first_pkg   --dependencies rclpy
-ros2 pkg create --build-type ament_python py_topic_pkg   --dependencies rclpy sensor_msgs geometry_msgs
-ros2 pkg create --build-type ament_python py_service_pkg --dependencies rclpy gazebo_msgs
-ros2 pkg create --build-type ament_python py_action_pkg --dependencies rclpy gazebo_msgs custom_interfaces image_transport cv_bridge sensor_msgs std_msgs opencv2
-
-ros2 interface show geometry_msgs/msg/Twist
-
-$ ros2 pkg create my_python_pkg --build-type ament_python rclpy
-$ ros2 pkg create my_cpp_py_pkg --build-type ament_cmake
 ```
 
-## rclcpp Examples
+### Project - Maze Escape
 
-```
-ros2 run cpp_first_pkg simple_node
-ros2 run cpp_first_pkg simple_loop_node
-ros2 run cpp_first_pkg simple_oop_node
-ros2 run cpp_first_pkg lifecycle_node
+Use ROS 2 action to get the robot out of the maze.
 
-ros2 run cpp_topic_pkg cmd_vel_pub_node
-ros2 run cpp_topic_pkg laser_sub_node 
-ros2 run cpp_topic_pkg parking_node
+* Action Client & Server
+* ROS 2 odometry
+* OpenCV
 
-ros2 run cpp_service_pkg basic_server 
-ros2 run cpp_service_pkg basic_client 1 3
-ros2 run cpp_service_pkg robot_turning_server
-ros2 run cpp_service_pkg robot_turning_client 5 0.5 1.0
+<p align="center">
+    <img src="./image/maze.gif" height="200">
+</p>
 
-ros2 service call /turn_robot custom_interfaces/srv/TurningControl "{time_duration: 5, angular_vel_z: 1.0, linear_vel_x: 0.5}"
+### Theory - Robot Dynamics
 
-ros2 run cpp_action_pkg fibonacci_action_server_node
-ros2 run cpp_action_pkg fibonacci_action_client_node
-ros2 run cpp_action_pkg fibonacci_action_server_oop_node
-ros2 run cpp_action_pkg fibonacci_action_client_oop_node
+* Make skid_drive robot and differential_drive robot with URDF, and make them moving in Gazebo Environment.
+* Check difference btw them
 
-ros2 interface show example_interfaces/srv/AddTwoInts
-ros2 interface show custom_interfaces/srv/TurningControl
-
-
-ros2 pkg create --build-type ament_cmake  cpp_topic_pkg     --dependencies rclcpp sensor_msgs geometry_msgs
-ros2 pkg create --build-type ament_cmake  cpp_service_pkg     --dependencies rclcpp gazebo_msgs geometry_msgs custom_interfaces
-ros2 pkg create --build-type ament_cmake  cpp_action_pkg     --dependencies rclcpp rclcpp_action rclcpp_components custom_interfaces
-
-ros2 pkg create --dependencies action_tutorials_interfaces rclcpp rclcpp_action rclcpp_components -- action_tutorials_cpp
-ros2 pkg create --build-type ament_cmake  cpp_srvcli --dependencies rclcpp example_interfaces
-ros2 pkg create --build-type ament_cmake  custom_interfaces
-```
-
-https://answers.ros.org/question/302037/ros2-how-to-call-a-service-from-the-callback-function-of-a-subscriber/
-
-
-## For Windows Users
-
-```
-colcon build --symlink-install --packages-select gcamp_gazebo
-colcon build --symlink-install --packages-select py_action_pkg
-install\setup.bat
-ros2 launch gcamp_gazebo gcamp_world_windows.launch.py
-
-```
+<p align="center">
+    <img src="./image/diffbot_rviz.png" height="200">
+    <img src="./image/skidbot_rviz.png" height="200">
+</p>
 
 ## Update & TODO
 
-- [ ] Lint Check (ament_flake8 && )
+- [ ] Upload Youtube lectures
+
+
+## Contributor
+* Package Development : [kimsooyoung](https://github.com/kimsooyoung)
+* Error Review & Contribution : [YoonSeok Pyo](https://github.com/robotpilot)
