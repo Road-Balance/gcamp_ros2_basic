@@ -129,7 +129,7 @@ Use ROS 2 action to get the robot out of the maze.
 
 ## Update & TODO
 
-- [ ] Upload Youtube lectures
+- [ ] Tutorial for Windows Users
 
 
 ## Contributor
