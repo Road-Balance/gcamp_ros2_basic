@@ -15,9 +15,9 @@
 // referenced from docs.ros.org
 // https://docs.ros.org/en/foxy/Tutorials/Writing-A-Simple-Cpp-Service-And-Client.html#write-the-client-node
 
-#include <memory>
 #include <chrono>
 #include <cstdlib>
+#include <memory>
 
 #include "rclcpp/rclcpp.hpp"
 #include "std_srvs/srv/set_bool.hpp"
@@ -47,7 +47,7 @@ int main(int argc, char **argv) {
 
   // Wait for the result.
   if (rclcpp::spin_until_future_complete(node, result) ==
-      rclcpp::FutureReturnCode::SUCCESS) {
+      rclcpp::executor::FutureReturnCode::SUCCESS) {
     RCLCPP_INFO(node->get_logger(), "%s",
                 (result.get()->success ? "true" : "false"));
   } else {
