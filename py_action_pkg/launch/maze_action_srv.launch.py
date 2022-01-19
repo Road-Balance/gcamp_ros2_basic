@@ -8,10 +8,13 @@ def generate_launch_description():
 
     maze_action_srv_node = Node(
         package='py_action_pkg',
-        namespace='diffbot',
+        namespace='',
         executable='maze_action_server',
         name='maze_action_server',
-        output='screen'
+        output='screen',
+        parameters=[
+            {"robot_namespace": "diffbot"},
+        ]
     )
 
     return LaunchDescription(

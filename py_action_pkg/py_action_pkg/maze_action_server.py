@@ -48,6 +48,9 @@ class MazeActionServer(Node):
     def __init__(self):
         super().__init__('maze_action_server')
 
+        self.declare_parameter('robot_namespace', 'diffbot')
+        self.robot_namespace = self.get_parameter('robot_namespace').value + '/'
+
         self.yaw = 0.0
         self.forward_distance = 0.0
 
@@ -55,20 +58,23 @@ class MazeActionServer(Node):
         self.loop_rate = self.create_rate(5, self.get_clock())
 
         self.laser_sub = self.create_subscription(
-            LaserScan, 'scan', self.laser_sub_cb, 10
+            LaserScan, self.robot_namespace + 'scan', self.laser_sub_cb, 10
         )
 
         self.odom_sub = self.create_subscription(
-            Odometry, 'odom', self.odom_sub_cb, 10
+            Odometry, self.robot_namespace + 'odom', self.odom_sub_cb, 10
         )
 
-        self.cmd_vel_pub = self.create_publisher(Twist, 'cmd_vel', 10)
+        self.cmd_vel_pub = self.create_publisher(Twist, self.robot_namespace + 'cmd_vel', 10)
 
         timer_period = 0.1  # seconds
         self.timer = self.create_timer(timer_period, self.publish_callback)
 
         self._action_server = ActionServer(
-            self, Maze, 'maze_action', self.execute_callback
+            self, 
+            Maze, 
+            self.robot_namespace + 'maze_action', 
+            self.execute_callback,
         )
         self.get_logger().info('=== Maze Action Server Started ====')
 
@@ -146,7 +152,6 @@ class MazeActionServer(Node):
             result.success = False
 
         return result
-
 
 def main(args=None):
     rclpy.init(args=args)

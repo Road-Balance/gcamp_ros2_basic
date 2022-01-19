@@ -34,7 +34,11 @@ class MazeActionClient(Node):
 
     def __init__(self):
         super().__init__('maze_action_client')
-        self.action_client = ActionClient(self, Maze, 'diffbot/maze_action')
+
+        self.declare_parameter('robot_namespace', 'diffbot')
+        self.robot_namespace = self.get_parameter('robot_namespace').value + '/'
+        
+        self.action_client = ActionClient(self, Maze, self.robot_namespace + 'maze_action')
         self.get_logger().info('=== Maze Action Client Started ====')
 
     def send_goal(self, turning_list):
