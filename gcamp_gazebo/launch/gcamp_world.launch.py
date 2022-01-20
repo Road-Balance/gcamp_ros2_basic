@@ -34,32 +34,56 @@ def generate_launch_description():
     # this is argument format for spwan_entity service
     spwan_args = '{name: "skidbot", xml: "' + xml + '" }'
 
+    # robot_state_publisher_node = Node(
+    #     package='robot_state_publisher',
+    #     executable='robot_state_publisher',
+    #     parameters=[{'use_sim_time': use_sim_time, 'robot_description': robot_desc}],
+    #     arguments=[urdf],
+    # )
+
     robot_state_publisher_node = Node(
         package='robot_state_publisher',
         executable='robot_state_publisher',
-        parameters=[{'use_sim_time': use_sim_time, 'robot_description': robot_desc}],
-        arguments=[urdf],
+        output='screen',
+        parameters=[{'use_sim_time': True}],
+        arguments=[urdf]
+    )
+    
+    joint_state_publisher = Node(
+        package='joint_state_publisher',
+        executable='joint_state_publisher',
+        name='joint_state_publisher'
     )
 
+    spawn_entity = Node(
+        package='gazebo_ros', 
+        executable='spawn_entity.py',
+        output='screen',
+        arguments=['-topic', 'robot_description', '-entity', 'skidbot'],
+    )
 
     # create and return launch description object
     return LaunchDescription(
         [
             # robot state publisher allows robot model spawn in RVIZ
             robot_state_publisher_node,
+            joint_state_publisher,
+
             # start gazebo, notice we are using libgazebo_ros_factory.so instead of libgazebo_ros_init.so
             # That is because only libgazebo_ros_factory.so contains the service call to /spawn_entity
             ExecuteProcess(
                 cmd=["gazebo", "--verbose", world, "-s", "libgazebo_ros_factory.so"],
                 output="screen",
             ),
-            # tell gazebo to spwan your robot in the world by calling service
-            ExecuteProcess(
-                cmd=[ "ros2", "service", "call", "/spawn_entity", "gazebo_msgs/SpawnEntity", spwan_args ],
-                output="screen",
-            ),
-            ExecuteProcess(
-                cmd=["ros2", "run", "rviz2", "rviz2", "-d", rviz], output="screen"
-            ),
+            spawn_entity,
+
+            # # tell gazebo to spwan your robot in the world by calling service
+            # ExecuteProcess(
+            #     cmd=[ "ros2", "service", "call", "/spawn_entity", "gazebo_msgs/SpawnEntity", spwan_args ],
+            #     output="screen",
+            # ),
+            # ExecuteProcess(
+            #     cmd=["ros2", "run", "rviz2", "rviz2", "-d", rviz], output="screen"
+            # ),
         ]
     )
