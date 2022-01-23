@@ -1,5 +1,5 @@
 name: Bug Report
-description: File a bug report
+description: File a bug report (각종 버그에 대한 Issue를 남겨주세요)
 title: "[Bug]: "
 labels: ["bug", "triage"]
 assignees:
@@ -9,18 +9,11 @@ body:
     attributes:
       value: |
         Thanks for taking the time to fill out this bug report!
-  - type: input
-    id: contact
-    attributes:
-      label: Contact Details
-      description: How can we get in touch with you if we need more info?
-      placeholder: ex. email@example.com
-    validations:
-      required: false
+        Issue를 남겨주심에 감사드립니다. 더 좋은 코드를 위해 피드백을 반영하겠습니다.
   - type: textarea
     id: what-happened
     attributes:
-      label: What happened?
+      label: What happened? 어떤 문제가 생겼는지 상세히 기술해주세요.
       description: Also tell us, what did you expect to happen?
       placeholder: Tell us what you see!
       value: "A bug happened!"
@@ -29,23 +22,16 @@ body:
   - type: dropdown
     id: version
     attributes:
-      label: Version
+      label: OS Version
       description: What version of our software are you running?
       options:
-        - 1.0.2 (Default)
-        - 1.0.3 (Edge)
+        - Ubuntu 18.04
+        - Ubuntu 20.04
+        - Windows 10 (native)
+        - Windows 10 (WSL2)
+        - Windows 11
     validations:
       required: true
-  - type: dropdown
-    id: browsers
-    attributes:
-      label: What browsers are you seeing the problem on?
-      multiple: true
-      options:
-        - Firefox
-        - Chrome
-        - Safari
-        - Microsoft Edge
   - type: textarea
     id: logs
     attributes:
@@ -55,8 +41,12 @@ body:
   - type: checkboxes
     id: terms
     attributes:
-      label: Code of Conduct
+      label: Before Issuing... (이슈를 만들기 전에...)
       description: By submitting this issue, you agree to follow our [Code of Conduct](https://example.com)
       options:
-        - label: I agree to follow this project's Code of Conduct
+        - label: 구글링을 통해 충분한 검색을 해보았다.
+          required: true
+        - label: Repo내 같은 이슈가 존재하는지 확인해 보았다.
+          required: true
+        - label: 문제 해결을 위해 이슈에 충분한 정보를 제공하였다. 
           required: true
