@@ -8,15 +8,15 @@ body:
   - type: markdown
     attributes:
       value: |
-        Thanks for taking the time to fill out this bug report!
-        Issue를 남겨주심에 감사드립니다. 더 좋은 코드를 위해 피드백을 반영하겠습니다.
+        Thanks for taking the time to fill out this bug report! 
+        (Issue를 남겨주심에 감사드립니다. 더 좋은 코드를 위해 피드백을 반영하겠습니다.)
   - type: textarea
     id: what-happened
     attributes:
       label: What happened? 어떤 문제가 생겼는지 상세히 기술해주세요.
       description: Also tell us, what did you expect to happen?
       placeholder: Tell us what you see!
-      value: "A bug happened!"
+      value: "실행한 프로그램 및 커멘드 라인 / 예상한 결과 / 문제 상황 / 시도해본 내용 (스크린샷이 있을 시 첨부하면 더욱 좋습니다.)"
     validations:
       required: true
   - type: dropdown
@@ -35,7 +35,7 @@ body:
   - type: textarea
     id: logs
     attributes:
-      label: Relevant log output
+      label: Relevant log output (관련 로그 output을 적어주세요)
       description: Please copy and paste any relevant log output. This will be automatically formatted into code, so no need for backticks.
       render: shell
   - type: checkboxes
