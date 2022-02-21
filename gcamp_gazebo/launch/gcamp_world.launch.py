@@ -2,11 +2,12 @@ import os
 
 from ament_index_python.packages import get_package_share_directory
 from launch import LaunchDescription
-from launch.actions import ExecuteProcess, IncludeLaunchDescription
+from launch.actions import ExecuteProcess, IncludeLaunchDescription, TimerAction
 from launch.launch_description_sources import PythonLaunchDescriptionSource
 from launch.substitutions import LaunchConfiguration
 
 from launch_ros.actions import Node
+from launch_ros.substitutions import FindPackageShare
 
 # this is the function launch  system will look for
 def generate_launch_description():
@@ -17,42 +18,19 @@ def generate_launch_description():
     package_name = "gcamp_gazebo"
     world_file_name = "gcamp_world.world"
 
-    # full  path to urdf and world file
-    world = os.path.join(
-        get_package_share_directory(package_name), "worlds", world_file_name
-    )
-    urdf = os.path.join(get_package_share_directory(package_name), "urdf", robot_file)
-    rviz = os.path.join(get_package_share_directory(package_name), "rviz", rviz_file)
+    pkg_path = os.path.join(get_package_share_directory(package_name))
+    pkg_gazebo_ros = FindPackageShare(package='gazebo_ros').find('gazebo_ros')   
 
-    # read urdf contents because to spawn an entity in
-    # gazebo we need to provide entire urdf as string on  command line
-    robot_desc = open(urdf, "r").read()
-
-    # double quotes need to be with escape sequence
-    xml = robot_desc.replace('"', '\\"')
-
-    # this is argument format for spwan_entity service
-    spwan_args = '{name: "skidbot", xml: "' + xml + '" }'
-
-    # robot_state_publisher_node = Node(
-    #     package='robot_state_publisher',
-    #     executable='robot_state_publisher',
-    #     parameters=[{'use_sim_time': use_sim_time, 'robot_description': robot_desc}],
-    #     arguments=[urdf],
-    # )
+    urdf_file = os.path.join(pkg_path, "urdf", robot_file)
+    rviz_config = os.path.join(pkg_path, "rviz", rviz_file)
+    world_path = os.path.join(pkg_path, "worlds", world_file_name)
 
     robot_state_publisher_node = Node(
         package='robot_state_publisher',
         executable='robot_state_publisher',
         output='screen',
         parameters=[{'use_sim_time': True}],
-        arguments=[urdf]
-    )
-    
-    joint_state_publisher = Node(
-        package='joint_state_publisher',
-        executable='joint_state_publisher',
-        name='joint_state_publisher'
+        arguments=[urdf_file]
     )
 
     spawn_entity = Node(
@@ -62,28 +40,30 @@ def generate_launch_description():
         arguments=['-topic', 'robot_description', '-entity', 'skidbot'],
     )
 
+    rviz_start = ExecuteProcess(
+        cmd=["ros2", "run", "rviz2", "rviz2", "-d", rviz_config], output="screen"
+    )
+
     # create and return launch description object
     return LaunchDescription(
         [
-            # robot state publisher allows robot model spawn in RVIZ
-            robot_state_publisher_node,
-            joint_state_publisher,
-
+            TimerAction(
+                period=3.0,
+                actions=[rviz_start]
+            ),
             # start gazebo, notice we are using libgazebo_ros_factory.so instead of libgazebo_ros_init.so
             # That is because only libgazebo_ros_factory.so contains the service call to /spawn_entity
             ExecuteProcess(
-                cmd=["gazebo", "--verbose", world, "-s", "libgazebo_ros_factory.so"],
+                cmd=["gazebo", "--verbose", world_path, "-s", "libgazebo_ros_factory.so"],
                 output="screen",
             ),
+            robot_state_publisher_node,
             spawn_entity,
 
             # # tell gazebo to spwan your robot in the world by calling service
             # ExecuteProcess(
             #     cmd=[ "ros2", "service", "call", "/spawn_entity", "gazebo_msgs/SpawnEntity", spwan_args ],
             #     output="screen",
-            # ),
-            # ExecuteProcess(
-            #     cmd=["ros2", "run", "rviz2", "rviz2", "-d", rviz], output="screen"
             # ),
         ]
     )
