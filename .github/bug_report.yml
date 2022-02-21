@@ -1,0 +1,52 @@
+name: Bug Report
+description: File a bug report (각종 버그에 대한 Issue를 남겨주세요)
+title: "[Bug]: "
+labels: ["bug", "triage"]
+assignees:
+  - octocat
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to fill out this bug report! 
+        (Issue를 남겨주심에 감사드립니다. 더 좋은 코드를 위해 피드백을 반영하겠습니다.)
+  - type: textarea
+    id: what-happened
+    attributes:
+      label: What happened? 어떤 문제가 생겼는지 상세히 기술해주세요.
+      description: Also tell us, what did you expect to happen?
+      placeholder: Tell us what you see!
+      value: "실행한 프로그램 및 커멘드 라인 / 예상한 결과 / 문제 상황 / 시도해본 내용 (스크린샷이 있을 시 첨부하면 더욱 좋습니다.)"
+    validations:
+      required: true
+  - type: dropdown
+    id: version
+    attributes:
+      label: OS Version
+      description: What version of our software are you running?
+      options:
+        - Ubuntu 18.04
+        - Ubuntu 20.04
+        - Windows 10 (native)
+        - Windows 10 (WSL2)
+        - Windows 11
+    validations:
+      required: true
+  - type: textarea
+    id: logs
+    attributes:
+      label: Relevant log output (관련 로그 output을 적어주세요)
+      description: Please copy and paste any relevant log output. This will be automatically formatted into code, so no need for backticks.
+      render: shell
+  - type: checkboxes
+    id: terms
+    attributes:
+      label: Before Issuing... (이슈를 만들기 전에...)
+      description: By submitting this issue, you agree to follow our [Code of Conduct](https://example.com)
+      options:
+        - label: 구글링을 통해 충분한 검색을 해보았다.
+          required: true
+        - label: Repo내 같은 이슈가 존재하는지 확인해 보았다.
+          required: true
+        - label: 문제 해결을 위해 이슈에 충분한 정보를 제공하였다. 
+          required: true
