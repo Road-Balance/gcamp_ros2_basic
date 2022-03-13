@@ -66,7 +66,7 @@ ros2 pkg create --build-type ament_python py_service_pkg --dependencies rclpy ga
 ros2 pkg create --build-type ament_python py_action_pkg --dependencies rclpy gazebo_msgs custom_interfaces image_transport cv_bridge sensor_msgs std_msgs opencv2
 
 ros2 interface show geometry_msgs/msg/Twist
-
+s
 $ ros2 pkg create my_python_pkg --build-type ament_python rclpy
 $ ros2 pkg create my_cpp_py_pkg --build-type ament_cmake
 ```
