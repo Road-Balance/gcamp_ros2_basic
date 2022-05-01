@@ -19,10 +19,10 @@ endif()
 find_package(ament_cmake REQUIRED)
 find_package(rclcpp REQUIRED)
 
-# Generate .urdf files from .urdf.xacro files
-find_package(xacro REQUIRED)
-# Xacro files
-file(GLOB xacro_files urdf/*.urdf.xacro)
+# # Generate .urdf files from .urdf.xacro files
+# find_package(xacro REQUIRED)
+# # Xacro files
+# file(GLOB xacro_files urdf/*.urdf.xacro)
 
 # if error occurs, comment below lines and try colcon build first
 # then, build with uncomment again
@@ -37,8 +37,8 @@ file(GLOB xacro_files urdf/*.urdf.xacro)
 #   list(APPEND urdf_files ${output_filename})
 # endforeach(it)
 
-# add an abstract target to actually trigger the builds
-add_custom_target(media_files ALL DEPENDS ${urdf_files})
+# # add an abstract target to actually trigger the builds
+# add_custom_target(media_files ALL DEPENDS ${urdf_files})
 
 if(BUILD_TESTING)
   find_package(ament_lint_auto REQUIRED)
