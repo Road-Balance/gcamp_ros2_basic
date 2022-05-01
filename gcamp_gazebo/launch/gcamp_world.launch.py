@@ -64,10 +64,10 @@ def generate_launch_description():
     # create and return launch description object
     return LaunchDescription(
         [
-            # TimerAction(
-            #     period=3.0,
-            #     actions=[rviz_start]
-            # ),
+            TimerAction(
+                period=3.0,
+                actions=[rviz_start]
+            ),
             # start gazebo, notice we are using libgazebo_ros_factory.so instead of libgazebo_ros_init.so
             # That is because only libgazebo_ros_factory.so contains the service call to /spawn_entity
             # ExecuteProcess(
