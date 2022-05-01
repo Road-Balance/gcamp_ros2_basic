@@ -9,6 +9,8 @@ from launch.substitutions import LaunchConfiguration
 from launch_ros.actions import Node
 from launch_ros.substitutions import FindPackageShare
 
+import xacro
+
 # this is the function launch  system will look for
 def generate_launch_description():
     use_sim_time = LaunchConfiguration('use_sim_time', default='false')
@@ -25,12 +27,27 @@ def generate_launch_description():
     rviz_config = os.path.join(pkg_path, "rviz", rviz_file)
     world_path = os.path.join(pkg_path, "worlds", world_file_name)
 
+    # Start Gazebo server
+    start_gazebo_server_cmd = IncludeLaunchDescription(
+        PythonLaunchDescriptionSource(os.path.join(pkg_gazebo_ros, 'launch', 'gzserver.launch.py')),
+        launch_arguments={'world': world_path}.items()
+    )
+
+    # Start Gazebo client    
+    start_gazebo_client_cmd = IncludeLaunchDescription(
+        PythonLaunchDescriptionSource(os.path.join(pkg_gazebo_ros, 'launch', 'gzclient.launch.py'))
+    )
+
+    # Robot State Publisher
+    doc = xacro.parse(open(urdf_file))
+    xacro.process_doc(doc)
+    robot_description = {'robot_description': doc.toxml()}
+
     robot_state_publisher_node = Node(
         package='robot_state_publisher',
         executable='robot_state_publisher',
         output='screen',
-        parameters=[{'use_sim_time': True}],
-        arguments=[urdf_file]
+        parameters=[robot_description]
     )
 
     spawn_entity = Node(
@@ -47,23 +64,20 @@ def generate_launch_description():
     # create and return launch description object
     return LaunchDescription(
         [
-            TimerAction(
-                period=3.0,
-                actions=[rviz_start]
-            ),
+            # TimerAction(
+            #     period=3.0,
+            #     actions=[rviz_start]
+            # ),
             # start gazebo, notice we are using libgazebo_ros_factory.so instead of libgazebo_ros_init.so
             # That is because only libgazebo_ros_factory.so contains the service call to /spawn_entity
-            ExecuteProcess(
-                cmd=["gazebo", "--verbose", world_path, "-s", "libgazebo_ros_factory.so"],
-                output="screen",
-            ),
-            robot_state_publisher_node,
-            spawn_entity,
-
-            # # tell gazebo to spwan your robot in the world by calling service
             # ExecuteProcess(
-            #     cmd=[ "ros2", "service", "call", "/spawn_entity", "gazebo_msgs/SpawnEntity", spwan_args ],
+            #     cmd=["gazebo", "--verbose", world_path, "-s", "libgazebo_ros_factory.so"],
             #     output="screen",
             # ),
+            start_gazebo_server_cmd,
+            start_gazebo_client_cmd,
+            robot_state_publisher_node,
+            # tell gazebo to spwan your robot in the world by calling service
+            spawn_entity,
         ]
     )
