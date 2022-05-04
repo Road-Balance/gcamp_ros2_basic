@@ -25,7 +25,7 @@ docker run -it -p 6080:80 --name gcamp_ros2_foxy --privileged tge1375/gcamp-ros2
     <img src="./image/vnc_maze.png" height="300">
 </p>
 
-(Special thanks to @Tiryoh )
+(Special thanks to [Tiryoh](https://github.com/Tiryoh) )
 
 _Comming Soon... All process with *Windows OS*_
 
