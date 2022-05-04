@@ -12,11 +12,26 @@ There's Youtube Lecture note for all codes, all packages (**Written in Korean**)
 There's Lecture note for all codes, all packages (**Written in Korean**) 
 - [Lecture Note Notion Link](https://www.notion.so/ROS-2-for-G-Camp-6f86b29e997e445badb69cc0af825a71)
 
+You can pull prepared Docker Image for this lecture.
+All you need to install is already prepared in this setup!
+
+```
+docker pull tge1375/gcamp-ros2-foxy:0.0.4
+docker run -it -p 6080:80 --name gcamp_ros2_foxy --privileged tge1375/gcamp-ros2-foxy:0.0.4
+# open your web brower and enter to http://127.0.0.1:6080
+```
+
+<p align="center">
+    <img src="./image/vnc_maze.png" height="300">
+</p>
+
+(Special thanks to @Tiryoh )
+
 _Comming Soon... All process with *Windows OS*_
 
+---
+
 Repo Structure
-
-
 
 ```
 ├── cpp_first_pkg
