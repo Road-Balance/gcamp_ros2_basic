@@ -146,7 +146,8 @@ Use ROS 2 action to get the robot out of the maze.
 
 ## Update & TODO
 
-- [ ] Tutorial for Windows Users
+- [x] Tutorial for Windows Users
+- [ ] Renew tutorial with NVIDIA [Isaac Sim](https://developer.nvidia.com/isaac-sim) 
 
 
 ## Contributor
