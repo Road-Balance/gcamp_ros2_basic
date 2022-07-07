@@ -12,13 +12,13 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#include <rclcpp/rclcpp.hpp>
+#include <rclcpp/rclcpp.hpp> 
 
 int main(int argc, char **argv) {
   rclcpp::init(argc, argv);
-  auto node = rclcpp::Node::make_shared("simple_node");
+  auto node = rclcpp::Node::make_shared("hello_ros_node");
 
-  RCLCPP_INFO(node->get_logger(), "Logger Test");
+  RCLCPP_INFO(node->get_logger(), "Hello ROS!! :D");
 
   rclcpp::shutdown();
   return 0;

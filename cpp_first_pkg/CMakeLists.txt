@@ -50,54 +50,24 @@ function(custom_executable target)
   add_executable(${target}_node src/${target}.cpp)
   ament_target_dependencies(${target}_node
     "rclcpp")
-  install(TARGETS ${target}_node
-  DESTINATION lib/${PROJECT_NAME})
+  install(
+    TARGETS ${target}_node
+    DESTINATION lib/${PROJECT_NAME}
+  )
 endfunction()
+
+file(GLOB cpp_files src/*.cpp)
 
 custom_executable(lifecycle)
 custom_executable(simple_loop)
 custom_executable(simple_oop)
 custom_executable(simple_without_oop)
 custom_executable(simple)
-
-ament_package()
-
-# add_executable(simple_node src/simple.cpp)
-# ament_target_dependencies(simple_node rclcpp)
-
-# add_executable(simple_loop_node src/simple_loop.cpp)
-# ament_target_dependencies(simple_loop_node rclcpp)
-
-# add_executable(simple_oop_node src/simple_oop)
-# ament_target_dependencies(simple_oop_node rclcpp)
-
-# add_executable(simple_without_oop_node src/simple_without_oop)
-# ament_target_dependencies(simple_without_oop_node rclcpp)
-
-# install(TARGETS
-#   simple_node
-#   DESTINATION lib/${PROJECT_NAME}
-# )
-
-# install(TARGETS
-#   simple_loop_node
-#   DESTINATION lib/${PROJECT_NAME}
-# )
-
-# install(TARGETS
-#   simple_oop_node
-#   DESTINATION lib/${PROJECT_NAME}
-# )
-
-# install(TARGETS
-#   simple_without_oop_node
-#   DESTINATION lib/${PROJECT_NAME}
-# )
-
+custom_executable(hello_ros)
 
 install(DIRECTORY
   launch
   DESTINATION share/${PROJECT_NAME}/
 )
 
-
+ament_package()
