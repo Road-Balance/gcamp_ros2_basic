@@ -18,7 +18,7 @@ def generate_launch_description():
     rviz_file = "skidbot.rviz"
     robot_file = "skidbot.urdf"
     package_name = "gcamp_gazebo"
-    world_file_name = "gcamp_world.world"
+    world_file_name = "temp.world"
 
     pkg_path = os.path.join(get_package_share_directory(package_name))
     pkg_gazebo_ros = FindPackageShare(package='gazebo_ros').find('gazebo_ros')   
