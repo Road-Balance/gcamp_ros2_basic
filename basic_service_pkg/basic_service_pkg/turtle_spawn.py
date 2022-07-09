@@ -33,7 +33,7 @@ class SpawnTurtle(Node):
         self.get_logger().info('=== [Ready to Call Service Request] ===')
 
     def send_request(self):
-        #  "{x: 5.0, y: 5.0, theta: 0.0, name: 'turtle2'}"
+        # example) "{x: 5.0, y: 5.0, theta: 0.0, name: 'turtle2'}"
         self.req.x = float(input('> Turtle X position : '))
         self.req.y = float(input('> Turtle Y position : '))
         self.req.theta = float(input('> Turtle Angle : '))
@@ -57,7 +57,7 @@ def main(args=None):
                 response = future.result()
             except Exception as e:
                 turtle_spawn_client.get_logger().info('Service call failed %r' % (e,))
-            else:
+            finally:
                 turtle_spawn_client.get_logger().info(
                     'Turtle Named : %s Spawned Successfully.'
                     % (response.name)
