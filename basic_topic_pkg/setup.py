@@ -28,8 +28,7 @@ setup(
             'example_node_6 = basic_topic_pkg.node_example_6:main',
             'topic_pub_node = basic_topic_pkg.topic_example_1_publisher:main',
             'topic_sub_node = basic_topic_pkg.topic_example_2_subscriber:main',
-            'topic_pub_sub_node = basic_topic_pkg.topic_example_3_pub_and_sub:main',
-            'mimic_node = basic_topic_pkg.topic_example_4_mimic:main'
+            'mimic_node = basic_topic_pkg.topic_example_3_pub_and_sub:main',
         ],
     },
 )
