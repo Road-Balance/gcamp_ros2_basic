@@ -28,6 +28,7 @@ rosidl_generate_interfaces(${PROJECT_NAME}
   "msg/Num.msg"
   "srv/AddThreeInts.srv"
   "srv/TurningControl.srv"
+  "srv/TurtleJail.srv"
   "action/Fibonacci.action"
   "action/Maze.action"
 )
