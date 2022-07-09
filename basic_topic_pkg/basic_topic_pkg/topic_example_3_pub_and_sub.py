@@ -40,7 +40,7 @@ class PoseSubTwistPubNode(Node):
 
         You must type name of the node in inheritanced initializer.
         """
-        super().__init__('pose_sub_twist_pub_node')
+        super().__init__('mimic_node')
         queue_size = 10  # Queue Size
         # Create publisher & subscriber at the same time.
         # Look carefully at below two lines.
@@ -60,9 +60,10 @@ class PoseSubTwistPubNode(Node):
         pub_msg.angular.z = msg.angular_velocity
 
         self.twist_publisher.publish(pub_msg)
-        self.get_logger().info(f"""x : {msg.x:.3f} / y : {msg.y:.3f} / z : {msg.theta:.3f}
-        linear_velocity : {msg.linear_velocity} / angular_velocity : {msg.angular_velocity }""")
-
+        # self.get_logger().info(
+        #     f"""\nx : {msg.x:.3f} / y : {msg.y:.3f} / z : {msg.theta:.3f}
+        #         \nlinear_velocity : {msg.linear_velocity} / angular_velocity : {msg.angular_velocity }
+        #     """)
 
 def main(args=None):
     """Do enter into this main function first."""

@@ -62,11 +62,12 @@ def main(args=None):
     """Do enter into this main function first."""
     rclpy.init(args=args)
 
-    laser_subscriber = TurtlePoseSubNode()
+    tp_sub_node = TurtlePoseSubNode()
 
-    rclpy.spin(laser_subscriber)
+    rclpy.spin(tp_sub_node)
+    # rclpy.spin_once(tp_sub_node)
 
-    laser_subscriber.destroy_node()
+    tp_sub_node.destroy_node()
     rclpy.shutdown()
 
 
