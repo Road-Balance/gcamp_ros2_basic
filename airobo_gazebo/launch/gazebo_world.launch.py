@@ -43,7 +43,10 @@ def generate_launch_description():
 
     doc = xacro.parse(open(urdf_file))
     xacro.process_doc(doc)
-    robot_description = {'robot_description': doc.toxml()}
+    robot_description = {
+        'robot_description': doc.toxml(),
+        'ignore_timestamp': True
+    }
 
     robot_state_publisher = Node(
         package='robot_state_publisher',
@@ -65,10 +68,20 @@ def generate_launch_description():
                                    '-entity', 'fusionbot'],
                         output='screen')
 
+    # rviz_config = os.path.join(this_pkg_path, "rviz", "skidbot.rviz")
+
+    # rviz2 = Node(
+    #     package='rviz2',
+    #     executable='rviz2',
+    #     name='rviz2',
+    #     arguments=['-d', rviz_config],
+    # )
+
     return LaunchDescription([
         start_gazebo_server_cmd,
         start_gazebo_client_cmd,
         robot_state_publisher,
         joint_state_publisher,
         spawn_entity,
+        # rviz2,
     ])
