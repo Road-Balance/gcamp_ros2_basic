@@ -21,6 +21,7 @@ Let's learn about those things.
 Create topic subscriber then check the value from that with ros2 command line tools.
 Listen to pose of turtle in the turtlesim.
 """
+
 import rclpy
 from rclpy.node import Node
 from turtlesim.msg import Pose

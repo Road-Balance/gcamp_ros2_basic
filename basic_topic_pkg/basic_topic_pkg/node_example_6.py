@@ -18,8 +18,10 @@ This is an third example code for ROS 2 rclpy node programming.
 
 Let's learn about those things.
 
-Implement Example 3 with ROS 2 Node Composition.
+ROS 2 Node Composition.
+ROS 2 Logger Level
 """
+
 import rclpy
 from rclpy.node import Node
 

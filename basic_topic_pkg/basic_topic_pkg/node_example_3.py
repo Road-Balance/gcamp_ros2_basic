@@ -21,6 +21,7 @@ Let's learn about those things.
 How can spin node only once?
 Print ROS 2 log console in public function.
 """
+
 import rclpy
 from rclpy.node import Node
 
@@ -46,6 +47,9 @@ def main(args=None):
 
     while True:
         rclpy.spin_once(node, timeout_sec=10)
+
+    # rclpy.spin_once(node, timeout_sec=10)
+
 
     node.destroy_node()
 

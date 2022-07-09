@@ -5,6 +5,10 @@ from rclpy.node import Node
 
 
 class HelloROS(Node):
+    """First ROS 2 Node Code
+
+    Print Line once when it constructed.
+    """
 
     def __init__(self):
         super().__init__('hello_ros_node')
@@ -19,6 +23,6 @@ def main(args=None):
 
     rclpy.shutdown()
 
-
+# Always devide main & __main__
 if __name__ == '__main__':
     main()

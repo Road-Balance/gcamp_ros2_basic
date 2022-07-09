@@ -21,6 +21,7 @@ Let's learn about those things.
 Create topic publisher then check the value from that with ros2 command line tools.
 Try control turtle in the turtlesim through turtlesim node.
 """
+
 import random
 
 from geometry_msgs.msg import Twist

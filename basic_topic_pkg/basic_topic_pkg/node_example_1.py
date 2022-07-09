@@ -22,6 +22,7 @@ How to create ROS 2 node.
 How to destroy ROS 2 node.
 How to print information log in ROS 2.
 """
+
 import rclpy
 from rclpy.node import Node
 

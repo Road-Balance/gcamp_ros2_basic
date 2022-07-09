@@ -21,6 +21,7 @@ Let's learn about those things.
 How can place publisher & subscriber in the same Node.
 Make turtle2 following turtle1.
 """
+
 from geometry_msgs.msg import Twist
 import rclpy
 from rclpy.node import Node

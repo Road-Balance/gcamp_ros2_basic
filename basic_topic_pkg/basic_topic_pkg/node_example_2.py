@@ -22,6 +22,7 @@ How to run ROS 2 node periodically(=rclpy.spin).
 How to create ROS 2 timer.
 Problems could occur during Procedural programming.
 """
+
 import rclpy
 from rclpy.node import Node
 

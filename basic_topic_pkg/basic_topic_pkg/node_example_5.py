@@ -20,6 +20,7 @@ Let's learn about those things.
 
 Implement Example 3 with ROS 2 Node Composition.
 """
+
 import rclpy
 from rclpy.node import Node
 
@@ -38,12 +39,12 @@ class NodeClass(Node):
         super().__init__('composition_example_node')
         self.create_timer(0.2, self.timer_callback)
 
-        self.count = 1
+        self._count = 1
 
     def timer_callback(self):
         """Timer will run this function periodically."""
-        self.get_logger().info(f'==== Hello ROS 2 : {self.count}====')
-        self.count += 1
+        self.get_logger().info(f'==== Hello ROS 2 : {self._count}====')
+        self._count += 1
 
 
 def main(args=None):
@@ -51,6 +52,7 @@ def main(args=None):
     rclpy.init(args=args)
 
     node = NodeClass()
+
     rclpy.spin(node)
     node.destroy_node()
 
