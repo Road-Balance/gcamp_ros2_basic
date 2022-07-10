@@ -187,6 +187,12 @@
     </collision>
   </link>
 
+  <link name="imu_link">
+    <inertial>
+      <mass value="0.01" />
+      <inertia ixx="1.0" ixy="0" ixz="0" iyy="1.0" iyz="0" izz="1.0" />
+    </inertial>
+  </link>
 
   <joint type="continuous" name="front_left_wheel_joint">
     <origin xyz="0.13 0.15 0" rpy="0 0 0"/>
@@ -248,6 +254,12 @@
     <child link="hokuyo"/>
     <parent link="chassis"/>
     <axis xyz="0 1 0" rpy="0 0 0"/>
+  </joint>
+
+  <joint name="imu_joint" type="fixed">
+    <origin xyz="0.0 0.0 0.0" rpy="0 0 0" />
+    <child link="imu_link" />
+    <parent link="chassis" />
   </joint>
 
   <gazebo reference="chassis">
