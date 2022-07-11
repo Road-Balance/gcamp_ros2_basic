@@ -1,0 +1,5 @@
+float32 move_time
+---
+bool succeed
+---
+float32 remaining
