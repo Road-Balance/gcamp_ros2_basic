@@ -16,28 +16,32 @@
 
 # https://docs.ros.org/en/foxy/Tutorials/Actions/Writing-a-Py-Action-Server-Client.html#id4
 
-import time
+import math
 
-from custom_interfaces.action import TimedMove
+from custom_interfaces.action import PointMove
+from turtlesim.action import RotateAbsolute
 from geometry_msgs.msg import Twist
 from turtlesim.msg import Pose
 
 import rclpy
+from rclpy.action import ActionClient
 from rclpy.action import ActionServer, GoalResponse
 from rclpy.executors import MultiThreadedExecutor
 from rclpy.node import Node
 
 from queue import Queue
 
-"""
-float32 move_time
----
-float32 remaining
+"""custom_interfaces/action/PointMove
+float32 point_x
+float32 point_y
 ---
 bool succeed
+---
+float32 remaining_pose
 """
 
-pose_q = Queue()
+position_q = Queue()
+angle_q = Queue()
 
 class PoseSubscriber(Node):
 
@@ -60,23 +64,26 @@ class PoseSubscriber(Node):
         self.pose_x = msg.x
         self.pose_y = msg.y
 
-        print(self.pose_y, self.pose_x)
+        if position_q.empty() is False:
+            position_q.queue.clear()
 
-        pose_q.put((self.pose_y, self.pose_x))
+        position_q.put((self.pose_y, self.pose_x))
 
     @property
     def turtle_pose(self):
         return (self.pose_x, self.pose_y)
 
-
-class TimedMoveServer(Node):
+class PointMoveServer(Node):
 
     def __init__(self):
-        super().__init__('timed_move_action_server')
+        super().__init__('point_move_action_server')
+
+        self.turning_action_client = ActionClient(self, RotateAbsolute, 'turtle1/rotate_absolute')
+
         self.action_server = ActionServer(
             self,
-            TimedMove,
-            'timed_move',
+            PointMove,
+            'point_move',
             self.execute_callback,
             goal_callback=self.goal_callback,
         )
@@ -87,36 +94,91 @@ class TimedMoveServer(Node):
             10
         )
 
+        self.can_move = False
+
         self.time_start = 0.0
         self.move_msg = Twist()
         self.stop_msg = Twist()
 
-        self.get_logger().info('=== TimedMove Action Server Started ====')
+        self.get_logger().info('=== PointMove Action Server Started ====')
+
+    def send_goal(self, theta):
+        goal_msg = RotateAbsolute.Goal()
+        goal_msg.theta = theta
+
+        if self.turning_action_client.wait_for_server(10) is False:
+            self.get_logger().error('Server Not exists')
+
+        self.send_goal_future = self.turning_action_client.send_goal_async(
+            goal_msg, feedback_callback=self.feedback_callback
+        )
+        rclpy.spin_until_future_complete(self, self.send_goal_future)
+        self.goal_handle = self.send_goal_future.result()
+
+        if not self.goal_handle.accepted:
+            self.get_logger().info('Goal rejected')
+            return
+
+        self.get_logger().info('Goal accepted')
+
+        self.result_future = self.goal_handle.get_result_async()
+        rclpy.spin_until_future_complete(self, self.result_future)
+
+        self.get_logger().info(f'rotate done ...')
+        self.can_move = True
+
+        return True
+
+    def feedback_callback(self, feedback_msg):
+        feedback = feedback_msg.feedback
+
+    def calc_dist(self, cur_point, obj_point):
+
+        distance = math.sqrt(
+            math.pow(cur_point[0] - obj_point[0], 2) + 
+            math.pow(cur_point[1] - obj_point[1], 2)
+        )
+        return distance
+
+    def calc_angle(self, cur_point, obj_point):
+
+        theta = math.atan2(
+            obj_point[1] - cur_point[1], 
+            obj_point[0] - cur_point[0] 
+        )
+        return theta
 
     async def execute_callback(self, goal_handle):
         self.get_logger().info('Executing goal...')
 
-        feedback_msg = TimedMove.Feedback()
+        feedback_msg = PointMove.Feedback()
+
+        obj_point = (goal_handle.request.point_x, goal_handle.request.point_y)
+        cur_point = position_q.get()
+        self.get_logger().info(f'...{obj_point}, {cur_point}...')
+        
+        distance = self.calc_dist(cur_point=cur_point, obj_point=obj_point)
+        angle = self.calc_angle(cur_point=cur_point, obj_point=obj_point)
+        self.get_logger().info(f'...{distance}, {angle}...')
+
+        self.send_goal(angle)
 
         self.time_now = self.get_clock().now().to_msg().sec
-
         remaining = self.time_now - self.time_start
 
-        if pose_q.empty() is False:
-            pose_x, pose_y = pose_q.get()
+        print(remaining, distance)
 
-        while remaining < goal_handle.request.move_time:
+        while self.can_move and remaining < distance:
 
-            print("=========", pose_q.get())
-            if pose_q.empty() is False:
-                pose_q.queue.clear()
+            cur_point = position_q.get()
+            distance = self.calc_dist(cur_point, obj_point)
 
             if goal_handle.is_cancel_requested:
                 goal_handle.canceled()
                 self.get_logger().info('Goal canceled')
-                return TimedMove.Result()
+                return PointMove.Result()
 
-            feedback_msg.remaining = float(remaining)
+            feedback_msg.remaining_pose = float(distance)
 
             self.cmd_vel_pub.publish(self.move_msg)
             goal_handle.publish_feedback(feedback_msg)
@@ -127,7 +189,7 @@ class TimedMoveServer(Node):
         goal_handle.succeed()
         self.get_logger().warn('==== Succeed ====')
 
-        result = TimedMove.Result()
+        result = PointMove.Result()
         result.succeed = True
         return result
 
@@ -138,9 +200,9 @@ class TimedMoveServer(Node):
 
         # start to count time
         self.time_start = self.get_clock().now().to_msg().sec
-        
+
         # prepare moving cmds
-        self.move_msg.linear.x = 2.0
+        self.move_msg.linear.x = 1.0
         self.move_msg.angular.z = 0.0
 
         return GoalResponse.ACCEPT
@@ -148,26 +210,19 @@ class TimedMoveServer(Node):
 def main(args=None):
     rclpy.init(args=args)
 
-    # fibonacci_action_server = TimedMoveServer()
-    # rclpy.spin(fibonacci_action_server)
-
-    # fibonacci_action_server.destroy()
-    # rclpy.shutdown()
-
-    # tp_sub_node = PoseSubscriber()
-
-    # rclpy.spin(tp_sub_node)
-
     try:
         executor = MultiThreadedExecutor()
-        maze_action_server = TimedMoveServer()
+        maze_action_server = PointMoveServer()
         pose_sub_node = PoseSubscriber()
+
         executor.add_node(maze_action_server)
         executor.add_node(pose_sub_node)
         try:
             executor.spin()
         except KeyboardInterrupt:
             maze_action_server.get_logger().info('Keyboard Interrupt (SIGINT)')
+        except Exception as e:
+            maze_action_server.get_logger().info(repr(e))
         finally:
             executor.shutdown()
             maze_action_server._action_server.destroy()

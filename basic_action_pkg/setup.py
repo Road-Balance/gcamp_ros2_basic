@@ -20,9 +20,11 @@ setup(
     tests_require=['pytest'],
     entry_points={
         'console_scripts': [
-            'fibonacci_action_server = py_action_pkg.fibonacci_action_server:main',
-            'fibonacci_action_client = py_action_pkg.fibonacci_action_client:main',
+            'fibonacci_action_server = basic_action_pkg.fibonacci_action_server:main',
+            'fibonacci_action_client = basic_action_pkg.fibonacci_action_client:main',
             'timed_move_server       = basic_action_pkg.timed_move_server:main',
+            'turtle_turning_client   = basic_action_pkg.turtle_turning_client:main',
+            'pose_fb_server          = basic_action_pkg.pose_fb_server:main',
         ],
     },
 )

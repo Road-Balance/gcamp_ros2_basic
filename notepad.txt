@@ -120,3 +120,28 @@ install\setup.bat
 ros2 launch gcamp_gazebo gcamp_world_windows.launch.py
 
 ```
+
+# Basic Action
+
+$ ros2 run basic_action_pkg turtle_turning_client
+$ ros2 action send_goal /timed_move custom_interfaces/action/TimedMove "{move_time: 2.0}"
+
+ros2 run py_action_pkg fibonacci_action_server
+ros2 run py_action_pkg fibonacci_action_client
+ros2 run basic_action_pkg timed_move_server
+
+ros2 run basic_action_pkg turtle_turning_client
+
+0.785398
+
+ros2 run basic_action_pkg fibonacci_action_server
+ros2 run basic_action_pkg fibonacci_action_client
+
+ros2 interface show turtlesim/action/RotateAbsolute
+
+
+ros2 action send_goal /timed_move 
+ros2 run basic_action_pkg pose_fb_server
+
+ros2 action send_goal /timed_move custom_interfaces/action/TimedMove "{move_time: 2.0}"
+ros2 action send_goal /point_move custom_interfaces/action/PointMove "{point_x: 0.0, point_y: 0.0}"
