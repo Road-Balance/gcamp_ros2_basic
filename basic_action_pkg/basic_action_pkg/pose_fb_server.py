@@ -168,7 +168,7 @@ class PointMoveServer(Node):
 
         print(remaining, distance)
 
-        while self.can_move and remaining < distance:
+        while self.can_move and (remaining < distance):
 
             cur_point = position_q.get()
             distance = self.calc_dist(cur_point, obj_point)

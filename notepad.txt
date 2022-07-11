@@ -145,3 +145,5 @@ ros2 run basic_action_pkg pose_fb_server
 
 ros2 action send_goal /timed_move custom_interfaces/action/TimedMove "{move_time: 2.0}"
 ros2 action send_goal /point_move custom_interfaces/action/PointMove "{point_x: 0.0, point_y: 0.0}"
+
+ros2 run tf2_tools view_frames.py
