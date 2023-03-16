@@ -50,6 +50,12 @@ def generate_launch_description():
         parameters=[robot_description]
     )
 
+    joint_state_publisher = Node(
+        package='joint_state_publisher',
+        executable='joint_state_publisher',
+        name='joint_state_publisher'
+    )
+
     spawn_entity = Node(
         package='gazebo_ros', 
         executable='spawn_entity.py',
@@ -77,6 +83,7 @@ def generate_launch_description():
             start_gazebo_server_cmd,
             start_gazebo_client_cmd,
             robot_state_publisher_node,
+            joint_state_publisher,
             # tell gazebo to spwan your robot in the world by calling service
             spawn_entity,
         ]
