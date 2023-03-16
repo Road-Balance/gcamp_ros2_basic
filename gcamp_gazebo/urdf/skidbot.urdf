@@ -27,8 +27,7 @@
       <max_wheel_torque>15</max_wheel_torque>
       <publish_odom>true</publish_odom>
       <publish_odom_tf>true</publish_odom_tf>
-      <publish_wheel_tf>true</publish_wheel_tf>
-      <odometry_source>world</odometry_source>
+      <publish_wheel_tf>false</publish_wheel_tf>
     </plugin>
   </gazebo>
   <!-- camera -->
